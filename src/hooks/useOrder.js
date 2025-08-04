@@ -3,6 +3,30 @@ import { useState } from 'react';
 export const useOrder = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [orders, setOrders] = useState([]); // Initialize as empty array
+
+  const getAllOrders = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/order');
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch orders');
+      }
+      
+      // Ensure we always set an array, even if data.data is undefined
+      setOrders(Array.isArray(data?.data) ? data.data : []);
+      return data.data || [];
+    } catch (err) {
+      setError(err.message);
+      setOrders([]); // Reset to empty array on error
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const createOrder = async (orderData) => {
     setLoading(true);
@@ -31,5 +55,5 @@ export const useOrder = () => {
     }
   };
 
-  return { createOrder, loading, error };
+  return { createOrder, getAllOrders, orders,loading, error };
 };

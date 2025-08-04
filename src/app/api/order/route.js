@@ -86,7 +86,7 @@
 
 
 import { NextResponse } from 'next/server';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { addDoc, collection, getDocs, Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 import { db } from '@/firebase/config';
 
@@ -181,6 +181,45 @@ export async function POST(req) {
       { 
         success: false, 
         error: error.message || 'Failed to create order'
+      },
+      { status: 500 }
+    );
+  }
+}
+
+
+export async function GET() {
+  try {
+    // Get all documents from the 'orders' collection
+    const querySnapshot = await getDocs(collection(db, 'orders'));
+    
+    // Convert documents to array of order objects
+    const orders = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      orders.push({
+        id: doc.id,
+        ...data,
+        // Convert Firestore Timestamps to JavaScript Dates
+        createdAt: data.createdAt?.toDate() || new Date(),
+        updatedAt: data.updatedAt?.toDate() || null
+      });
+    });
+
+    // Sort by createdAt date (newest first) manually
+    orders.sort((a, b) => b.createdAt - a.createdAt);
+
+    return NextResponse.json({ 
+      success: true, 
+      data: orders 
+    });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: error.message || 'Failed to fetch orders',
+        data: [] // Return empty array on error
       },
       { status: 500 }
     );

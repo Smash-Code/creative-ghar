@@ -104,9 +104,9 @@ const Sidebar = () => {
           </li>
           <li>
             <Link 
-              href="/dashboard/sales" 
+              href="/admin/dashboard/orders" 
               className={`flex items-center p-2 rounded transition-colors ${
-                isActive('/dashboard/sales') 
+                isActive('/admin/dashboard/orders') 
                   ? 'bg-indigo-600' 
                   : 'hover:bg-indigo-600'
               }`}
@@ -114,7 +114,7 @@ const Sidebar = () => {
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z" />
               </svg>
-              Sales
+              Orders
             </Link>
           </li>
           <li>
