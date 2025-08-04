@@ -56,7 +56,7 @@ export default function ProductListPage() {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">All Products</h2>
             <Link 
-              href="/dashboard/products/add" 
+              href="/dashboard/products/product-form" 
               className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
