@@ -91,7 +91,7 @@ export default function OrdersList() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {orders.map((order) => (
-              order.role == 'admin' &&
+                order.role == "user" &&
               <tr key={order.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   #{order.id.slice(0, 8)}
