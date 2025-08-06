@@ -91,7 +91,7 @@ const Sidebar = () => {
             <Link 
               href="/admin/dashboard/products" 
               className={`flex items-center p-2 rounded transition-colors ${
-                isActive('/dashboard/products') 
+                isActive('/admin/dashboard/products') 
                   ? 'bg-indigo-600' 
                   : 'hover:bg-indigo-600'
               }`}
@@ -119,6 +119,33 @@ const Sidebar = () => {
           </li>
           <li>
             <Link 
+              href="/admin/dashboard/category" 
+              className={`flex items-center p-2 rounded transition-colors ${
+                isActive('/admin/dashboard/category') 
+                  ? 'bg-indigo-600' 
+                  : 'hover:bg-indigo-600'
+              }`}
+            >
+              <svg 
+                className="w-5 h-5 mr-3" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M7 7h.01M4 4h5l2 2h9a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z" 
+                />
+              </svg>
+              Categories
+            </Link>
+          </li>
+
+          {/* <li>
+            <Link 
               href="/dashboard/accounts" 
               className={`flex items-center p-2 rounded transition-colors ${
                 isActive('/dashboard/accounts') 
@@ -131,7 +158,7 @@ const Sidebar = () => {
               </svg>
               Accounts
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

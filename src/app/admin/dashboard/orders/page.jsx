@@ -6,7 +6,7 @@ import Link from 'next/link'
 const page = () => {
   return (
     <div className='flex min-h-screen' >
-        <Sidebar/>
+        {/* <Sidebar/> */}
          <div className="flex-1 overflow-auto">
         <div className="p-6">
               {/* Header */}
