@@ -142,37 +142,37 @@ export default function OrdersList() {
                   {new Date(order.createdAt).toLocaleDateString()}
                 </td>
                <td className="px-6 py-4 whitespace-nowrap">
-  {order?.orderFulfillment?.trackingNumber ? (
-    <div className="flex flex-col space-y-1">
-      <div className="flex items-center">
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 mr-2">
-          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
-          Tracking ID :
-        </span>
-        <span className="font-mono text-sm text-gray-700">
-          {order.orderFulfillment.trackingNumber}
-        </span>
-      </div>
-      {order?.orderFulfillment?.trackingLink && (
-        <a 
-          href={order.orderFulfillment.trackingLink} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-900 hover:underline"
-        >
-          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-          Track Package
-        </a>
-      )}
-    </div>
-  ) : (
-    <span className="text-sm text-gray-500">Not shipped yet</span>
-  )}
-</td>
+                  {order?.orderFulfillment?.trackingNumber ? (
+                    <div className="flex flex-col space-y-1">
+                      <div className="flex items-center">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800 mr-2">
+                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                          </svg>
+                          Tracking ID :
+                        </span>
+                        <span className="font-mono text-sm text-gray-700">
+                          {order.orderFulfillment.trackingNumber}
+                        </span>
+                      </div>
+                      {order?.orderFulfillment?.trackingLink && (
+                        <a 
+                          href={order.orderFulfillment.trackingLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-900 hover:underline"
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                          Track Package
+                        </a>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-sm text-gray-500">Not shipped yet</span>
+                  )}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button className="text-indigo-600 hover:text-indigo-900 mr-3">
                     View
