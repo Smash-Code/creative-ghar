@@ -27,6 +27,25 @@ export const useOrder = () => {
       setLoading(false);
     }
   };
+  const updateOrder = async (orderId, updateData) => {
+  try {
+    const response = await fetch(`/api/order/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateData),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to update order');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
+};
 
   const createOrder = async (orderData) => {
     setLoading(true);
@@ -55,5 +74,5 @@ export const useOrder = () => {
     }
   };
 
-  return { createOrder, getAllOrders, orders,loading, error };
+  return { updateOrder,createOrder, getAllOrders, orders,loading, error };
 };

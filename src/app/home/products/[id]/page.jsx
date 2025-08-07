@@ -22,8 +22,8 @@ export default function ProductDetailPage() {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const res = await getProductById(id);
         await getAllCategories();
+        const res = await getProductById(id);
         setProduct(res.data);
       } catch (err) {
         setError(err.message);
@@ -89,8 +89,6 @@ export default function ProductDetailPage() {
        return item.name
     }
   })
-
-  
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">

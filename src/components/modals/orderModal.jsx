@@ -38,36 +38,32 @@ export default function OrderModal({
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      const userId = 'current-user-id'; // Replace with actual user ID
-      await createOrder({
-        productId: product.id,
-        userId,
-        quantity,
-        size: selectedSize,
-        color: selectedColor,
-        totalPrice: (product.discounted_price || product.orignal_price) * quantity,
-        username,
-        email,
-        phone,
-        address,
-        city,
-        role:'admin',
-        paymentStatus,
-        orderFulfillment: {
-          trackingNumber,
-          trackingLink
-        },
-        country: 'Pakistan'
-      });
-      
-      onOrderSubmit();
-      onClose();
-    } catch (error) {
-      alert(error.message || 'Failed to place order');
-    }
-  };
+ const handleSubmit = async () => {
+  try {
+    const userId = 'current-user-id'; // Replace with actual user ID
+    await createOrder({
+      productId: product.id,
+      userId,
+      quantity,
+      size: selectedSize,
+      color: selectedColor,
+      totalPrice: (product.discounted_price || product.orignal_price) * quantity,
+      username,
+      email,
+      phone,
+      address,
+      city,
+      role: 'admin',
+      paymentStatus,
+      country: 'Pakistan'
+    });
+    
+    onOrderSubmit();
+    onClose();
+  } catch (error) {
+    alert(error.message || 'Failed to place order');
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -282,7 +278,7 @@ export default function OrderModal({
               </div>
 
               {/* Order Fulfillment Accordion */}
-              <div className="border rounded-md overflow-hidden">
+              {/* <div className="border rounded-md overflow-hidden">
                 <details className="group">
                   <summary className="flex justify-between items-center p-3 cursor-pointer bg-gray-50">
                     <span className="font-medium">Order Fulfillment</span>
@@ -312,7 +308,7 @@ export default function OrderModal({
                     </div>
                   </div>
                 </details>
-              </div>
+              </div> */}
 
               {/* Payment Methods */}
               <div className="space-y-2">
