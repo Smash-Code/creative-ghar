@@ -27,9 +27,6 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link href="/home/order" className="text-gray-700 hover:text-indigo-600 transition-colors font-medium">
-            My Orders
-          </Link>
           
           <div className="flex items-center space-x-4">
             <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
@@ -61,13 +58,6 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-lg pb-4 px-4">
           <div className="flex flex-col space-y-3 pt-2">
-            <Link 
-              href="/my-orders" 
-              className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              My Orders
-            </Link>
             
             <div className="flex items-center space-x-4 pt-2 border-t border-gray-100">
               <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
