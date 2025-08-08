@@ -220,9 +220,14 @@ export default function OrderModal({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                 <input
-                  type="tel"
+                  type="number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length <= 11) {
+                        setPhone(value);
+                      }
+                    }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   required
                 />
@@ -262,53 +267,6 @@ export default function OrderModal({
                   className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
                 />
               </div>
-
-              {/* Payment Status */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
-                <select
-                  value={paymentStatus}
-                  onChange={(e) => setPaymentStatus(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="pending">Pending</option>
-                  <option value="paid">Paid</option>
-                  <option value="failed">Failed</option>
-                </select>
-              </div>
-
-              {/* Order Fulfillment Accordion */}
-              {/* <div className="border rounded-md overflow-hidden">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-3 cursor-pointer bg-gray-50">
-                    <span className="font-medium">Order Fulfillment</span>
-                    <svg className="w-5 h-5 text-gray-500 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <div className="p-3 bg-white space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Number</label>
-                      <input
-                        type="text"
-                        value={trackingNumber}
-                        onChange={(e) => setTrackingNumber(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Link</label>
-                      <input
-                        type="url"
-                        value={trackingLink}
-                        onChange={(e) => setTrackingLink(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        placeholder="https://example.com/tracking/123"
-                      />
-                    </div>
-                  </div>
-                </details>
-              </div> */}
 
               {/* Payment Methods */}
               <div className="space-y-2">

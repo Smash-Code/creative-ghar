@@ -83,7 +83,7 @@ export async function POST(req) {
       ...(validatedData.streetAddress && { streetAddress: validatedData.streetAddress }),
       ...(validatedData.city && { city: validatedData.city }),
       country: validatedData.country,
-      paymentStatus: validatedData.paymentStatus,
+      paymentStatus: "pending",
       ...(validatedData.paymentOption && { paymentOption: validatedData.paymentOption }),
       // ...(validatedData.orderFulfillment && { orderFulfillment: validatedData.orderFulfillment }),
       status: validatedData.status,

@@ -186,9 +186,14 @@ export default function OrderModal({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
                 <input
-                  type="tel"
+                  type="number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length <= 11) {
+                        setPhone(value);
+                      }
+                    }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   required
                 />
@@ -236,6 +241,20 @@ export default function OrderModal({
                     />
                     <label htmlFor="easypaisa" className="ml-2 block text-sm text-gray-700">
                       EasyPaisa (031234567)
+                    </label>
+                  </div>
+                   <div className="flex items-center">
+                    <input
+                      type="radio"
+                      id="cod"
+                      name="payment"
+                      value="cod"
+                      checked={paymentOption === 'cod'}
+                      onChange={() => setPaymentOption('cod')}
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <label htmlFor="cod" className="ml-2 block text-sm text-gray-700">
+                      Cash On Delivery 
                     </label>
                   </div>
                 </div>

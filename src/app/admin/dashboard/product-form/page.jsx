@@ -31,6 +31,8 @@ import { useCategory } from '@/hooks/useCategory';
   const [uploading, setUploading] = useState(false);
   const [catLoading , setCatLoading] =useState(false)
   const [categories, setCategories] = useState([]); // State for categories
+  const [priceError, setPriceError] = useState(false); // State for categories
+
   const MAX_IMAGES = 5;
 
   // Fetch categories on component mount
@@ -119,6 +121,19 @@ import { useCategory } from '@/hooks/useCategory';
         })();
       }
     }, [productId]);
+
+    const handlePriceChange = (e) => {
+      const { name, value } = e.target;
+      
+      if (name === 'discounted_price' && formData.orignal_price && parseFloat(value) > parseFloat(formData.orignal_price)) {
+        // alert('Discounted price cannot be greater than original price');
+        setPriceError(true)
+        return;
+      }
+      
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      setPriceError(false)
+    };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -279,7 +294,7 @@ import { useCategory } from '@/hooks/useCategory';
                       <input
                         name="orignal_price"
                         value={formData.orignal_price}
-                        onChange={handleChange}
+                        onChange={handlePriceChange}
                         placeholder="Enter original price"
                         type="number"
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
@@ -287,16 +302,21 @@ import { useCategory } from '@/hooks/useCategory';
                       />
                     </div>
 
-                    <div>
+                    <div className='relative' > 
                       <label className="block text-sm font-medium text-gray-700 mb-1">Discounted Price</label>
                       <input
                         name="discounted_price"
                         value={formData.discounted_price}
-                        onChange={handleChange}
+                        onChange={handlePriceChange}
                         placeholder="Enter discounted price"
                         type="number"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                        className={`w-full px-4 py-2 border  ${priceError ? "border-red-400" : "border-gray-300"} rounded-md focus:ring-indigo-500 focus:border-indigo-500`}
                       />
+                      {priceError &&
+                      <div className='px-6 text-[10px] py-1 absolute bottom-[-24px] text-red-500 bg-red-200/40 border border-red-500 rounded-[6px]' >
+                        Discounted Price can not be greater than Original Price!
+                      </div>
+                      }
                     </div>
 
                     <div>
