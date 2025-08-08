@@ -4,6 +4,7 @@ export const useOrder = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [orders, setOrders] = useState([]); // Initialize as empty array
+  const [order , setOrder] = useState(null)
 
   const getAllOrders = async () => {
     setLoading(true);
@@ -50,6 +51,7 @@ export const useOrder = () => {
   const createOrder = async (orderData) => {
     setLoading(true);
     setError(null);
+    setOrder(orderData)
     
     try {
       const response = await fetch('/api/order', {
@@ -74,5 +76,5 @@ export const useOrder = () => {
     }
   };
 
-  return { updateOrder,createOrder, getAllOrders, orders,loading, error };
+  return { updateOrder,createOrder, getAllOrders, orders, order,loading, error };
 };

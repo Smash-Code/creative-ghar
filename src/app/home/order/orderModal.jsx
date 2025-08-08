@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useOrder } from '@/hooks/useOrder';
+import OrderReceiptModal from '@/components/modals/orderReciept';
 
 export default function OrderModal({ 
   product, 
@@ -17,7 +18,9 @@ export default function OrderModal({
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-  const { createOrder, loading } = useOrder();
+  const { createOrder, loading ,order } = useOrder();
+    const [showReceipt, setShowReceipt] = useState(false);
+const [orderDetails, setOrderDetails] = useState(null);
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
   const colors = [
@@ -46,9 +49,13 @@ export default function OrderModal({
         paymentStatus: 'pending', // Default status
         country: 'Pakistan' // Hardcoded as per your requirement
       });
-      
       onOrderSubmit();
-      onClose();
+      setOrderDetails({
+        ...order,
+        product // Include the full product details
+      });
+  setShowReceipt(true);
+      // onClose();
     } catch (error) {
       alert(error.message || 'Failed to place order');
     }
@@ -296,6 +303,13 @@ export default function OrderModal({
           </div>
         </div>
       </div>
+      {showReceipt  && (
+        <OrderReceiptModal 
+          orderDetails={orderDetails.product}
+          onClose={() => setShowReceipt(false)}
+        />
+      )}
+
     </div>
   );
 }

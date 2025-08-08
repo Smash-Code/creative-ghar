@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useOrder } from '@/hooks/useOrder';
+import OrderReceiptModal from './orderReciept';
 
 export default function OrderModal({ 
   product, 
@@ -21,7 +22,9 @@ export default function OrderModal({
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [trackingNumber, setTrackingNumber] = useState('');
   const [trackingLink, setTrackingLink] = useState('');
-  const { createOrder, loading } = useOrder();
+  const { createOrder, loading ,order } = useOrder();
+  const [showReceipt, setShowReceipt] = useState(false);
+const [orderDetails, setOrderDetails] = useState(null);
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
   const colors = [
@@ -58,14 +61,20 @@ export default function OrderModal({
       country: 'Pakistan'
     });
     
+    setOrderDetails({
+    ...order,
+    product // Include the full product details
+  });
+  setShowReceipt(true);
     onOrderSubmit();
-    onClose();
+    // onClose();
   } catch (error) {
     alert(error.message || 'Failed to place order');
   }
 };
 
   return (
+    <div>
     <div className="fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
@@ -333,6 +342,14 @@ export default function OrderModal({
           )}
         </div>
       </div>
+
+    </div>
+    {showReceipt && (
+      <OrderReceiptModal 
+        orderDetails={orderDetails.product}
+        onClose={() => setShowReceipt(false)}
+      />
+    )}
     </div>
   );
 }
