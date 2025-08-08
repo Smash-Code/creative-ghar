@@ -38,11 +38,11 @@ export default function HeroSection() {
   if (banners.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[120vh] overflow-hidden">
+    <div className="relative mt-20 w-full h-[115vh] overflow-hidden">
       {banners.map((banner, index) => (
         <div
           key={banner.id}
-          className={`absolute top-20 inset-0 transition-opacity duration-1000 ${
+          className={`absolute top-0 inset-0 transition-opacity duration-1000 ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -50,7 +50,7 @@ export default function HeroSection() {
             src={banner.url}
             alt="Banner"
             fill
-            className="object-cover"
+            className="object-contain bg-white" // black background to fill empty space
             priority={index === 0}
           />
         </div>
