@@ -29,10 +29,10 @@ const orderSchema = z.object({
   paymentStatus: z.enum(['pending', 'paid', 'failed']).default('pending'),
   paymentOption: z.string().optional(), // For the new modal
   // Optional fulfillment info
-  orderFulfillment: z.object({
-    trackingNumber: z.string().optional(),
-    trackingLink: z.string().url("Invalid tracking URL").optional(),
-  }).optional(),
+  // orderFulfillment: z.object({
+  //   trackingNumber: z.string().optional(),
+  //   trackingLink: z.string().url("Invalid tracking URL").optional(),
+  // }).optional(),
   status: z.enum(['pending', 'processing', 'shipped', 'delivered', 'cancelled']).default('pending'),
   createdAt: z.date().default(new Date()),
   updatedAt: z.date().default(new Date()),
@@ -85,7 +85,7 @@ export async function POST(req) {
       country: validatedData.country,
       paymentStatus: validatedData.paymentStatus,
       ...(validatedData.paymentOption && { paymentOption: validatedData.paymentOption }),
-      ...(validatedData.orderFulfillment && { orderFulfillment: validatedData.orderFulfillment }),
+      // ...(validatedData.orderFulfillment && { orderFulfillment: validatedData.orderFulfillment }),
       status: validatedData.status,
       createdAt: Timestamp.fromDate(validatedData.createdAt),
       updatedAt: Timestamp.fromDate(validatedData.updatedAt),

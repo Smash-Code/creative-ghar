@@ -13,7 +13,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-indigo-700 text-white shadow-md">
+    <div className="w-44 md:w-64 h-screen  bg-indigo-700 text-white shadow-md">
       <div className="p-4 border-b border-indigo-600">
         <h1 className="text-xl font-bold">Admin Dashboard</h1>
       </div>
@@ -133,7 +133,7 @@ const Sidebar = () => {
               Hero Banner
             </Link>
           </li>
-          <li>
+          {/* <li>
              <Link 
               href="/admin/dashboard/heading" 
               className={`flex items-center p-2 rounded transition-colors ${
@@ -158,7 +158,7 @@ const Sidebar = () => {
               </svg>
               Top Heading
             </Link>
-          </li>
+          </li> */}
 
         </ul>
       </nav>

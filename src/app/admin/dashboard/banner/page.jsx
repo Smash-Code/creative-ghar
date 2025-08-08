@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import MarqueeAdmin from '../heading/page';
 
 const BannerItem = ({ banner, index, moveBanner, onDelete }) => {
   const [, ref] = useDrop({
@@ -42,8 +43,7 @@ const BannerItem = ({ banner, index, moveBanner, onDelete }) => {
     </div>
   );
 };
-
-export default function AdminBannerManager() {
+ function AdminBannerManager() {
   const [banners, setBanners] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [files, setFiles] = useState([]);
@@ -182,4 +182,14 @@ export default function AdminBannerManager() {
       </div>
     </DndProvider>
   );
+}
+
+
+export default function page(){
+  return(
+    <div>
+      <AdminBannerManager/>
+      <MarqueeAdmin/>
+    </div>
+  )
 }
