@@ -102,7 +102,7 @@ export default function CategoriesPage() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
     
-    setDeleteLoading(true);
+    // setDeleteLoading(true);
     try {
       await deleteCategory(id);
       setCategories(categories.filter(cat => cat.id !== id));
@@ -124,7 +124,7 @@ export default function CategoriesPage() {
   };
 
   const handleSubmit = async (formData) => {
-    setFormLoading(true);
+    // setFormLoading(true);
     try {
       if (currentCategory) {
         await updateCategory(currentCategory.id, formData);
@@ -160,11 +160,11 @@ export default function CategoriesPage() {
         </div>
       )}
 
-      {loading ? (
+      {/* {loading ? (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
-      ) : (
+      ) : ( */}
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -203,7 +203,7 @@ export default function CategoriesPage() {
             </tbody>
           </table>
         </div>
-      )}
+      {/* )} */}
 
    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
   <div className="p-6">

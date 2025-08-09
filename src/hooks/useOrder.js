@@ -19,6 +19,7 @@ export const useOrder = () => {
       
       // Ensure we always set an array, even if data.data is undefined
       setOrders(Array.isArray(data?.data) ? data.data : []);
+      console.log(data.data , "data here")
       return data.data || [];
     } catch (err) {
       setError(err.message);

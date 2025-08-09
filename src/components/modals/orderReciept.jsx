@@ -1,123 +1,40 @@
-// components/OrderReceiptModal.js
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-// import html2pdf from 'html2pdf.js';
-// import html2canvas from 'html2canvas';
-// import html2canvas from 'html2canvas';
-// import { jsPDF } from 'jspdf';
 
-export default function OrderReceiptModal({ 
-  orderDetails, 
-  onClose 
-}) {
-    console.log(orderDetails , "details")
-    const receiptRef = useRef(null);
+import { useRef, useState } from 'react';
+import * as htmlToImage from 'html-to-image';
+
+
+export default function OrderReceiptModal({ orderDetails, onClose }) {
+
+
+  const receiptRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-//   const downloadReceipt = async () => {
-//        if (!receiptRef.current || !orderDetails) return;
-    
-//     setIsDownloading(true);
-//     try {
-//       // First, create a clone of the receipt element
-//       const receiptElement = receiptRef.current;
-//       const clone = receiptElement.cloneNode(true);
-      
-//       // Remove any problematic styles or elements
-//       clone.querySelectorAll('*').forEach(el => {
-//         // Remove background gradients or complex colors
-//         if (window.getComputedStyle(el).backgroundImage.includes('gradient')) {
-//           el.style.backgroundImage = 'none';
-//           el.style.backgroundColor = '#ffffff';
-//         }
-//       });
+  const handleDownload = async () => {
+    if (!receiptRef.current) return;
 
-//       // Temporarily append the clone to body
-//       clone.style.position = 'absolute';
-//       clone.style.left = '-9999px';
-//       document.body.appendChild(clone);
+    setIsDownloading(true);
+    try {
+      const dataUrl = await htmlToImage.toPng(receiptRef.current, { cacheBust: true });
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `receipt-${orderDetails.id.slice(0, 8)}.png`;
+      link.click();
+    } catch (error) {
+      console.error('Error downloading receipt:', error);
+    }
+    setIsDownloading(false);
+  };
 
-//       // Capture the clone instead of the original
-//       const canvas = await html2canvas(clone, {
-//         scale: 2,
-//         logging: true,
-//         useCORS: true,
-//         backgroundColor: '#ffffff',
-//         removeContainer: true,
-//         ignoreElements: (element) => {
-//           // Ignore any elements that might cause color parsing issues
-//           return false;
-//         }
-//       });
-
-//       // Remove the clone
-//       document.body.removeChild(clone);
-
-//       // Create PDF with simple color space
-//       const pdf = new jsPDF({
-//         orientation: 'portrait',
-//         unit: 'mm',
-//         compress: true
-//       });
-
-//       // Convert canvas to image data
-//       const imgData = canvas.toDataURL('image/jpeg', 0.95);
-      
-//       // Calculate dimensions to fit A4
-//       const imgWidth = 190; // Slightly smaller than A4 width (210mm)
-//       const pageHeight = 277; // A4 height in mm (297mm - 10mm margins)
-//       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-//       // Add image to PDF
-//       pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
-      
-//       // Add footer
-//       pdf.setFontSize(10);
-//       pdf.setTextColor(100);
-//       pdf.text('Thank you for your purchase!', 105, 280, { align: 'center' });
-      
-//       // Download the PDF
-//       pdf.save(`receipt_${orderDetails.id.slice(0, 8)}.pdf`);
-      
-//     } catch (error) {
-//       console.error('Error generating PDF:', error);
-//       alert('Failed to generate PDF. Please try again or contact support.');
-//     } finally {
-//       setIsDownloading(false);
-//     }
-//   };
-
-
-//   const downloadReceipt = async () => {
-//     if (!receiptRef.current) return;
-    
-//     setIsDownloading(true);
-//     try {
-//       const canvas = await html2canvas(receiptRef.current, {
-//         scale: 2, // Higher quality
-//         logging: false,
-//         useCORS: true,
-//       });
-      
-//       const link = document.createElement('a');
-//       link.download = `order-${orderDetails.id}.jpg`;
-//       link.href = canvas.toDataURL('image/jpeg', 0.9);
-//       link.click();
-//     } catch (error) {
-//       console.error('Error generating receipt:', error);
-//     } finally {
-//       setIsDownloading(false);
-//     }
-//   };
 
   return (
-    <div   className="fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold text-gray-900">Order Confirmation</h3>
-            <button 
+            <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
             >
@@ -127,9 +44,9 @@ export default function OrderReceiptModal({
             </button>
           </div>
 
-          {/* Receipt Content - This will be converted to image */}
-          <div 
-            ref={receiptRef} 
+          {/* Receipt Content */}
+          <div
+            ref={receiptRef}
             className="bg-white p-6 border border-gray-200 rounded-lg shadow-sm"
           >
             <div className="text-center mb-6">
@@ -157,8 +74,8 @@ export default function OrderReceiptModal({
             <div className="border-t border-b border-gray-200 py-4 mb-4">
               <h3 className="font-medium text-lg mb-2">Order Summary</h3>
               <div className="flex items-center space-x-4 mb-3">
-                <img 
-                  src={orderDetails.images?.[0] || '/no-image.png'} 
+                <img
+                  src={orderDetails.images?.[0] || '/no-image.png'}
                   alt={orderDetails.title}
                   className="w-16 h-16 object-cover rounded"
                 />
@@ -176,10 +93,6 @@ export default function OrderReceiptModal({
             </div>
 
             <div className="mb-6">
-              {/* <div className="flex justify-between py-2">
-                <span>Subtotal:</span>
-                <span>${((orderDetails.discounted_price || orderDetails.orignal_price) * orderDetails.quantity)}</span>
-              </div> */}
               <div className="flex justify-between py-2">
                 <span>Shipping:</span>
                 <span>Free</span>
@@ -204,19 +117,15 @@ export default function OrderReceiptModal({
             </div>
           </div>
 
-          {/* <div className="mt-6 flex justify-center">
+          {/* Buttons */}
+          <div className="mt-4 flex justify-center gap-4">
             <button
-              onClick={downloadReceipt}
+              onClick={handleDownload}
               disabled={isDownloading}
-              className={`px-6 py-2 rounded-md text-white font-medium ${
-                isDownloading ? 'bg-gray-400' : 'bg-indigo-600 hover:bg-indigo-700'
-              }`}
+              className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:bg-gray-400"
             >
               {isDownloading ? 'Downloading...' : 'Download Receipt'}
             </button>
-          </div> */}
-
-          <div className="mt-4 text-center">
             <button
               onClick={onClose}
               className="text-indigo-600 hover:text-indigo-800 font-medium"

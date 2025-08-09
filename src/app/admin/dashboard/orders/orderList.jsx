@@ -409,6 +409,9 @@ export default function OrdersList() {
                 Payment Status
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tracking ID
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Date
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -443,19 +446,6 @@ export default function OrdersList() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {editingStatus === order.id ? (
-                      // <select
-                      //   defaultValue={order.status}
-                      //   onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                      //   onBlur={() => setEditingStatus(null)}
-                      //   autoFocus
-                      //   className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                      // >
-                      //   {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => (
-                      //     <option key={status} value={status}>
-                      //       {status}
-                      //     </option>
-                      //   ))}
-                      // </select>
                       <div className='relative' >
                         <span 
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[order.status]}`}
@@ -521,6 +511,9 @@ export default function OrdersList() {
                         {order.paymentStatus || 'pending'}
                       </span>
                     )}
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500' >
+                    {( order.orderFulfillment != undefined && order.orderFulfillment.trackingNumber.trim().length != 0 ) ? order.orderFulfillment.trackingNumber : "N/A" }
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(order.createdAt).toLocaleDateString()}

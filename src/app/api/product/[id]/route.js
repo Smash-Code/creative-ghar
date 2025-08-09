@@ -5,27 +5,81 @@ import { productSchema } from "@/firebase/schemas/productSchema";
 // import { productSchema } from "@/schemas/productSchema";
 
 // GET /api/product/[id]
+// export async function GET(_req, { params }) {
+//     const data = await params;
+//   const { id } = data
+
+
+
+//   if (!id) {
+//     return NextResponse.json({ success: false, error: "Product ID is required" }, { status: 400 });
+//   }
+
+//   try {
+//     const docRef = doc(db, "products", id);
+//     const docSnap = await getDoc(docRef);
+
+//     if (!docSnap.exists()) {
+//       return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+//     }
+
+//     return NextResponse.json({ success: true, data: { id: docSnap.id, ...docSnap.data() } });
+//   } catch (error) {
+//     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+//   }
+// }
+
+
 export async function GET(_req, { params }) {
-    const data = await params;
-  const { id } = data
-
-
+  const data = await params;
+  const { id } = data;
 
   if (!id) {
-    return NextResponse.json({ success: false, error: "Product ID is required" }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: "Product ID is required" },
+      { status: 400 }
+    );
   }
 
   try {
-    const docRef = doc(db, "products", id);
-    const docSnap = await getDoc(docRef);
+    // 1. Fetch the product
+    const productRef = doc(db, "products", id);
+    const productSnap = await getDoc(productRef);
 
-    if (!docSnap.exists()) {
-      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+    if (!productSnap.exists()) {
+      return NextResponse.json(
+        { success: false, error: "Product not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ success: true, data: { id: docSnap.id, ...docSnap.data() } });
+    const productData = { id: productSnap.id, ...productSnap.data() };
+
+    // 2. If product has a categoryId, fetch the category
+    let categoryName = null;
+    if (productData.category) {
+      const categoryRef = doc(db, "categories", productData.category);
+      const categorySnap = await getDoc(categoryRef);
+      
+      if (categorySnap.exists()) {
+        categoryName = categorySnap.data().name; // Make sure this matches your field name
+      }
+    }
+
+    // 3. Return combined data
+    return NextResponse.json({
+      success: true,
+      data: {
+        ...productData,
+        category: categoryName || ' ' // Add category name to response
+      }
+    });
+
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
   }
 }
 

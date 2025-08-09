@@ -84,12 +84,6 @@ export default function ProductDetailPage() {
   const price = product.discounted_price || product.orignal_price;
   const hasDiscount = product.discounted_price && product.discounted_price < product.orignal_price;
 
-  const category_name = category?.find((item) => {
-    if(item.id == product.category){
-       return item.name
-    }
-  })
-
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -131,7 +125,8 @@ export default function ProductDetailPage() {
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
-                <p className="text-lg text-gray-500 mt-2">{category_name.name}</p>
+                {/* <p className="text-lg text-gray-500 mt-2">{category_name.name}</p> */}
+                <p className="text-lg text-gray-500 mt-2">{product.category}</p>
               </div>
 
               <div className="flex items-center">

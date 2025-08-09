@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { collection, addDoc, doc, updateDoc, deleteDoc, Timestamp, getDocs } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, deleteDoc, Timestamp, getDocs, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { productSchema } from "@/firebase/schemas/productSchema";
 // import { getPaginatedQuery } from "@/lib/getPaginatedQuery";
@@ -45,19 +45,56 @@ export async function POST(req) {
 
 
 
+// export async function GET() {
+//   try {
+//     const productsRef = collection(db, "products");
+
+//     // Get all documents directly without any query
+//     const snapshot = await getDocs(productsRef);
+
+//     const products = snapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     return NextResponse.json({ success: true, data: products });
+//   } catch (error) {
+//     return NextResponse.json(
+//       { success: false, error: error.message },
+//       { status: 500 }
+//     );
+//   }
+// }
+
 export async function GET() {
   try {
     const productsRef = collection(db, "products");
-
-    // Get all documents directly without any query
     const snapshot = await getDocs(productsRef);
 
+    // Get all products first
     const products = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    return NextResponse.json({ success: true, data: products });
+    // Fetch category names for all products
+    const productsWithCategories = await Promise.all(
+      products.map(async (product) => {
+        if (product.category) {
+          const categoryRef = doc(db, "categories", product.category);
+          const categorySnap = await getDoc(categoryRef);
+          
+          return {
+            ...product,
+            category: categorySnap.exists() ? categorySnap.data().name : ' '
+          };
+        }
+        return product;
+      })
+    );
+
+
+    return NextResponse.json({ success: true, data: productsWithCategories });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },
@@ -65,7 +102,6 @@ export async function GET() {
     );
   }
 }
-
 
 // export async function GET() {
 //   try {

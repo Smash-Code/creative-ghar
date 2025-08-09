@@ -157,7 +157,6 @@ export async function GET() {
     // Sort by createdAt date (newest first) manually
     orders.sort((a, b) => b.createdAt - a.createdAt);
 
-
     return NextResponse.json({ 
       success: true, 
       data: orders 
