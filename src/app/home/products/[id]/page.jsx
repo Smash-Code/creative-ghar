@@ -10,13 +10,14 @@ import { useCategory } from '@/hooks/useCategory';
 export default function ProductDetailPage() {
   const { id } = useParams();
   const { getProductById } = useProductApi();
-  const { getAllCategories , category } = useCategory()
+  const { getAllCategories, category } = useCategory()
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(0)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -39,13 +40,13 @@ export default function ProductDetailPage() {
     alert(`${quantity} ${product.title} added to cart!`);
   };
 
-    const handleOrderNow = (product) => {
-        setSelectedProduct(product);
-        setShowOrderModal(true);
-    };
-    const handleOrderSuccess = () => {
-        alert(`Ordering ${quantity} ${product.title} now!`);
-    }
+  const handleOrderNow = (product) => {
+    setSelectedProduct(product);
+    setShowOrderModal(true);
+  };
+  const handleOrderSuccess = () => {
+    alert(`Ordering ${quantity} ${product.title} now!`);
+  }
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -94,11 +95,11 @@ export default function ProductDetailPage() {
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100">
                 {product.images?.[0] ? (
                   <Image
-                    src={product.images[0]}
+                    src={product.images[selectedImage]}
                     alt={product.title}
                     width={800}
                     height={800}
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-contain"
                   />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center text-gray-400">
@@ -110,11 +111,12 @@ export default function ProductDetailPage() {
                 {product.images?.slice(0, 4).map((image, index) => (
                   <div key={index} className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
                     <Image
+                      onClick={() => setSelectedImage(index)}
                       src={image}
                       alt={`${product.title} thumbnail ${index + 1}`}
                       width={200}
                       height={200}
-                      className="h-full w-full object-cover object-center"
+                      className="h-full w-full object-contain"
                     />
                   </div>
                 ))}
@@ -122,20 +124,21 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Product Details */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
+                <div className="text-2xl hover:underline cursor-pointer font-semibold text-gray-900">{product.title}</div>
                 {/* <p className="text-lg text-gray-500 mt-2">{category_name.name}</p> */}
-                <p className="text-lg text-gray-500 mt-2">{product.category}</p>
+                <p className="text-sm text-gray-500">{product.category}</p>
               </div>
+              <p className="text-gray-700">{product.description}</p>
 
               <div className="flex items-center">
                 {hasDiscount && (
-                  <span className="text-2xl text-gray-500 line-through mr-3">
+                  <span className="text-xl text-gray-500 line-through mr-3">
                     ${product.orignal_price.toFixed(2)}
                   </span>
                 )}
-                <span className="text-3xl font-bold text-gray-900">
+                <span className="text-xl font-bold text-gray-900">
                   ${price.toFixed(2)}
                 </span>
                 {hasDiscount && (
@@ -158,33 +161,39 @@ export default function ProductDetailPage() {
                     </svg>
                   ))}
                 </div>
-                <span className="text-gray-600">(24 reviews)</span>
+                <span className="text-sm text-gray-600">(24 reviews)</span>
               </div>
 
-              <p className="text-gray-700">{product.description}</p>
-
               <div className="border-t border-gray-200 pt-4">
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-700">Quantity:</span>
-                  <div className="flex items-center border rounded-md">
+                <div className="text-sm mb-2 text-gray-700">Quantity :</div>
+                <div className="flex text-sm text-gray-500 items-center space-x-4">
+                  <div className="flex items-center border border-gray-500 rounded-full">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-3 py-1 text-lg border-r"
+                      className="px-2  text-lg border-r border-gray-500"
                       disabled={quantity <= 1}
                     >
                       -
                     </button>
-                    <span className="px-4 py-1">{quantity}</span>
+                    <span className="px-3">{quantity}</span>
                     <button
                       onClick={() => setQuantity(quantity + 1)}
-                      className="px-3 py-1 text-lg border-l"
+                      className="px-2  text-lg border-l border-gray-500"
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-gray-500">
+                  {/* <span className="text-gray-500">
                     {product.stock > 0 ? `${product.stock} available` : 'Out of stock'}
-                  </span>
+                  </span> */}
+                  <button
+                    onClick={() => handleOrderNow(product)}
+                    disabled={product.stock <= 0}
+                    className={`flex-1 bg-gray-900 text-white py-[6px] px-6 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                  >
+                    Order Now
+                  </button>
                 </div>
               </div>
 
@@ -192,27 +201,17 @@ export default function ProductDetailPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0}
-                  className={`flex-1 bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
-                    product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`flex-1 bg-indigo-600 text-white py-[6px] px-6 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
                   Add to Cart
-                </button>
-                <button
-                  onClick={() => handleOrderNow(product)}
-                  disabled={product.stock <= 0}
-                  className={`flex-1 bg-gray-900 text-white py-3 px-6 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${
-                    product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  Order Now
                 </button>
               </div>
 
               <div className="border-t border-gray-200 pt-4">
                 <h3 className="text-sm font-medium text-gray-900">Delivery Information</h3>
                 <p className="text-sm text-gray-500 mt-2">
-                  {product.estimated_delivery_time || '3-5 business days'}
+                  Delivered in : {product.estimated_delivery_time || '3-5 business days'}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
                   Return/Exchange: {product.return_or_exchange_time ? `${product.return_or_exchange_time} days` : '30 days'}
@@ -222,13 +221,13 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
-       {showOrderModal && selectedProduct && (
-              <OrderModal
-                product={selectedProduct}
-                onClose={() => setShowOrderModal(false)}
-                onOrderSubmit={handleOrderSuccess}
-              />
-        )}
+      {showOrderModal && selectedProduct && (
+        <OrderModal
+          product={selectedProduct}
+          onClose={() => setShowOrderModal(false)}
+          onOrderSubmit={handleOrderSuccess}
+        />
+      )}
     </div>
   );
 }

@@ -2,7 +2,8 @@
 
 
 import { useRef, useState } from 'react';
-import * as htmlToImage from 'html-to-image';
+// import * as htmlToImage from 'html-to-image';
+import * as domtoimage from 'dom-to-image';
 
 
 export default function OrderReceiptModal({ orderDetails, onClose }) {
@@ -11,21 +12,31 @@ export default function OrderReceiptModal({ orderDetails, onClose }) {
   const receiptRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownload = async () => {
-    if (!receiptRef.current) return;
 
-    setIsDownloading(true);
-    try {
-      const dataUrl = await htmlToImage.toPng(receiptRef.current, { cacheBust: true });
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `receipt-${orderDetails.id.slice(0, 8)}.png`;
-      link.click();
-    } catch (error) {
-      console.error('Error downloading receipt:', error);
-    }
-    setIsDownloading(false);
-  };
+  const handleDownload = async () => {
+  if (!receiptRef.current) return;
+
+  setIsDownloading(true);
+  try {
+    // Wait for images to load
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // const dataUrl = await htmlToImage.toPng(receiptRef.current, { 
+    //   cacheBust: true,
+    //   skipFonts: true // this might help with rendering issues
+    // });
+    const dataUrl = await domtoimage.toPng(receiptRef.current);
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `receipt-${orderDetails.id.slice(0, 8)}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error('Error downloading receipt:', error);
+  }
+  setIsDownloading(false);
+};
 
 
   return (
@@ -74,10 +85,15 @@ export default function OrderReceiptModal({ orderDetails, onClose }) {
             <div className="border-t border-b border-gray-200 py-4 mb-4">
               <h3 className="font-medium text-lg mb-2">Order Summary</h3>
               <div className="flex items-center space-x-4 mb-3">
+                // Replace your current image element with this:
                 <img
                   src={orderDetails.images?.[0] || '/no-image.png'}
                   alt={orderDetails.title}
                   className="w-16 h-16 object-cover rounded"
+                  onError={(e) => {
+                    e.target.onerror = null; // prevents infinite loop if no-image.png also fails
+                    e.target.src = '/no-image.png';
+                  }}
                 />
                 <div className="flex-1">
                   <p className="font-medium">{orderDetails.title}</p>

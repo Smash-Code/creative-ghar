@@ -4,6 +4,8 @@
 import Link from 'next/link';
 import { ShoppingCart, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
+// import Logo from '/creative-logo'
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,11 +20,11 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-4 top-0' : 'bg-white py-4'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-4 top-0' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo - Creative Ghar */}
         <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors">
-          Creative Ghar
+          <Image src="/creative-logo.png" height={50} width={50} className='object-contain' alt='Creative Ghar' />
         </Link>
 
         {/* Desktop Navigation */}
