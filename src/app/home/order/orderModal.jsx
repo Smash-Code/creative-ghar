@@ -5,10 +5,10 @@ import { useState } from 'react';
 import { useOrder } from '@/hooks/useOrder';
 import OrderReceiptModal from '@/components/modals/orderReciept';
 
-export default function OrderModal({ 
-  product, 
-  onClose, 
-  onOrderSubmit 
+export default function OrderModal({
+  product,
+  onClose,
+  onOrderSubmit
 }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -18,9 +18,9 @@ export default function OrderModal({
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-  const { createOrder, loading ,order } = useOrder();
-    const [showReceipt, setShowReceipt] = useState(false);
-const [orderDetails, setOrderDetails] = useState(null);
+  const { createOrder, loading, order } = useOrder();
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
   const colors = [
@@ -54,7 +54,7 @@ const [orderDetails, setOrderDetails] = useState(null);
         ...order,
         product // Include the full product details
       });
-  setShowReceipt(true);
+      setShowReceipt(true);
       // onClose();
     } catch (error) {
       alert(error.message || 'Failed to place order');
@@ -67,7 +67,7 @@ const [orderDetails, setOrderDetails] = useState(null);
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold text-gray-900">Order {product.title}</h3>
-            <button 
+            <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
             >
@@ -79,8 +79,8 @@ const [orderDetails, setOrderDetails] = useState(null);
 
           <div className="mb-6">
             <div className="flex items-center space-x-4 mb-4">
-              <img 
-                src={product.images?.[0] || '/no-image.png'} 
+              <img
+                src={product.images?.[0] || '/no-image.png'}
                 alt={product.title}
                 className="w-20 h-20 object-cover rounded"
               />
@@ -100,7 +100,7 @@ const [orderDetails, setOrderDetails] = useState(null);
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
                 <div className="flex items-center border rounded-md w-fit">
-                  <button 
+                  <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="px-3 py-1 text-lg border-r"
                     disabled={quantity <= 1}
@@ -108,7 +108,7 @@ const [orderDetails, setOrderDetails] = useState(null);
                     -
                   </button>
                   <span className="px-4 py-1">{quantity}</span>
-                  <button 
+                  <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="px-3 py-1 text-lg border-l"
                   >
@@ -125,11 +125,10 @@ const [orderDetails, setOrderDetails] = useState(null);
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 rounded-md border ${
-                        selectedSize === size 
-                          ? 'bg-indigo-600 text-white border-indigo-600' 
-                          : 'border-gray-300 hover:bg-gray-50'
-                      }`}
+                      className={`px-4 py-2 rounded-md border ${selectedSize === size
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'border-gray-300 hover:bg-gray-50'
+                        }`}
                     >
                       {size}
                     </button>
@@ -145,9 +144,8 @@ const [orderDetails, setOrderDetails] = useState(null);
                     <button
                       key={color.value}
                       onClick={() => setSelectedColor(color.value)}
-                      className={`w-10 h-10 rounded-full ${color.bg} flex items-center justify-center ${
-                        selectedColor === color.value ? 'ring-2 ring-offset-2 ring-indigo-500' : ''
-                      }`}
+                      className={`w-10 h-10 rounded-full ${color.bg} flex items-center justify-center ${selectedColor === color.value ? 'ring-2 ring-offset-2 ring-indigo-500' : ''
+                        }`}
                       title={color.name}
                     >
                       {selectedColor === color.value && (
@@ -164,7 +162,7 @@ const [orderDetails, setOrderDetails] = useState(null);
             {/* Customer Information */}
             <div className="pt-4 border-t space-y-4">
               <h4 className="font-medium text-gray-900">Customer Details</h4>
-              
+
               {/* Username */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
@@ -195,12 +193,12 @@ const [orderDetails, setOrderDetails] = useState(null);
                 <input
                   type="number"
                   value={phone}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 11) {
-                        setPhone(value);
-                      }
-                    }}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length <= 11) {
+                      setPhone(value);
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   required
                 />
@@ -250,7 +248,7 @@ const [orderDetails, setOrderDetails] = useState(null);
                       EasyPaisa (031234567)
                     </label>
                   </div>
-                   <div className="flex items-center">
+                  <div className="flex items-center">
                     <input
                       type="radio"
                       id="cod"
@@ -261,7 +259,7 @@ const [orderDetails, setOrderDetails] = useState(null);
                       className="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
                     />
                     <label htmlFor="cod" className="ml-2 block text-sm text-gray-700">
-                      Cash On Delivery 
+                      Cash On Delivery
                     </label>
                   </div>
                 </div>
@@ -282,11 +280,10 @@ const [orderDetails, setOrderDetails] = useState(null);
             <button
               onClick={handleSubmit}
               disabled={loading || !selectedSize || !selectedColor || !username || !email || !phone || !address}
-              className={`w-full py-3 px-4 rounded-md text-white font-medium mt-4 ${
-                loading || !selectedSize || !selectedColor || !username || !email || !phone || !address
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700'
-              }`}
+              className={`w-full py-3 px-4 rounded-md text-white font-medium mt-4 ${loading || !selectedSize || !selectedColor || !username || !email || !phone || !address
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-indigo-600 hover:bg-indigo-700'
+                }`}
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -303,10 +300,11 @@ const [orderDetails, setOrderDetails] = useState(null);
           </div>
         </div>
       </div>
-      {showReceipt  && (
-        <OrderReceiptModal 
+      {showReceipt && (
+        <OrderReceiptModal
           orderDetails={orderDetails.product}
           onClose={() => setShowReceipt(false)}
+          onModalClose={onClose}
         />
       )}
 

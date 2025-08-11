@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import * as domtoimage from 'dom-to-image';
 
 
-export default function OrderReceiptModal({ orderDetails, onClose }) {
+export default function OrderReceiptModal({ orderDetails, onClose, onModalClose }) {
 
 
   const receiptRef = useRef(null);
@@ -14,29 +14,34 @@ export default function OrderReceiptModal({ orderDetails, onClose }) {
 
 
   const handleDownload = async () => {
-  if (!receiptRef.current) return;
+    if (!receiptRef.current) return;
 
-  setIsDownloading(true);
-  try {
-    // Wait for images to load
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // const dataUrl = await htmlToImage.toPng(receiptRef.current, { 
-    //   cacheBust: true,
-    //   skipFonts: true // this might help with rendering issues
-    // });
-    const dataUrl = await domtoimage.toPng(receiptRef.current);
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `receipt-${orderDetails.id.slice(0, 8)}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (error) {
-    console.error('Error downloading receipt:', error);
+    setIsDownloading(true);
+    try {
+      // Wait for images to load
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // const dataUrl = await htmlToImage.toPng(receiptRef.current, { 
+      //   cacheBust: true,
+      //   skipFonts: true // this might help with rendering issues
+      // });
+      const dataUrl = await domtoimage.toPng(receiptRef.current);
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `receipt-${orderDetails.id.slice(0, 8)}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading receipt:', error);
+    }
+    setIsDownloading(false);
+  };
+
+  const handleClose = () => {
+    close()
+    onModalClose()
   }
-  setIsDownloading(false);
-};
 
 
   return (
@@ -46,7 +51,7 @@ export default function OrderReceiptModal({ orderDetails, onClose }) {
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold text-gray-900">Order Confirmation</h3>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="text-gray-500 hover:text-gray-700"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
