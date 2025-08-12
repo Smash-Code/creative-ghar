@@ -109,8 +109,18 @@ export default function CheckoutPage() {
         <div className="bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
                 <div className="bg-white shadow rounded-lg overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200">
+                    <div className="px-6 py-4 border-b border-gray-200 flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center">
+                        <button
+                            onClick={() => router.back()}
+                            className="flex items-center border-1 border-gray-500 hover:border-indigo-400 hover:scale-105 transition-all duration-300 rounded-[8px] px-2 py-1 cursor-pointer text-black-600 hover:text-indigo-800"
+                        >
+                            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Go Back
+                        </button>
                         <h1 className="text-2xl font-bold text-gray-800">Checkout</h1>
+                        <div className="w-10"></div> {/* Spacer for balance */}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">

@@ -218,12 +218,9 @@ import Sale from "@/components/home/Sale"
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useProductApi } from '@/hooks/useProduct';
-import Link from 'next/link';
 import { useOrder } from '@/hooks/useOrder';
-  import MarqueeDisplay from '@/components/heading/Heading';
+import MarqueeDisplay from '@/components/heading/Heading';
 import Product from "@/components/product/product"
-import Image from "next/image"
-import { Shirt, ShoppingBag, ShoppingBasketIcon, Star, Truck } from "lucide-react"
 import Footer from "@/components/Footer"
 import HighRating from "@/components/home/HighRating"
 import SpecialDeal from "@/components/home/SpecialDeal"
