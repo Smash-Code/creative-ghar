@@ -21,6 +21,10 @@ import Product from "@/components/product/product"
 import Image from "next/image"
 import { Shirt, ShoppingBag, ShoppingBasketIcon, Star, Truck } from "lucide-react"
 import Footer from "@/components/Footer"
+import HighRating from "@/components/home/HighRating"
+import SpecialDeal from "@/components/home/SpecialDeal"
+import Services from "@/components/home/Services"
+import Newsletter from "@/components/home/Newsletter"
 
 export default function ProductListPage() {
   const { getAllProducts, deleteProduct } = useProductApi();
@@ -83,13 +87,13 @@ export default function ProductListPage() {
     }
   };
 
-  const handleDetail = (product) => {
-    setSelectedProduct(product)
-    router.push(`/home/products/${product.id}`)
-  }
+  // const handleDetail = (product) => {
+  //   setSelectedProduct(product)
+  //   router.push(`/home/products/${product.id}`)
+  // }
 
   return (
-    <div>
+    <div className="overflow-hidden" >
       <MarqueeDisplay />
       <div className='relative'>
         <Navbar />
@@ -139,81 +143,21 @@ export default function ProductListPage() {
         </div>
 
       </div>
-      <div className="relative " >
-        <div>
-          <Image alt="Banner" height={300} width={1320} src='/banner-1.png' className="object-contain" />
-        </div>
-        <div className="absolute max-w-[100%] md:max-w-[60%] lg:max-w-[40%] left-[5%] top-[35%]" >
-          <div className="text-red-500 text-xl lg:text-3xl font-bold  " >
-            Top Trending Product
-          </div>
-          <div className="text-white text-lg lg:text-3xl font-semibold my-1 md:my-4" >
-            The best product of the store to buy in this sale
-          </div>
-          <div className="text-yellow-400 text-md lg:text-xl my-1 md:my-4" >
-            With 40% off , and a free shipping offer.
-          </div>
-          <div className="font-semibold text-white" >
-            Enjoy double portions of delicious mozzarella cheese Crispy paneer,onion,green capsicum.
-          </div>
 
-          <div className="bg-yellow-500 px-3 py-1 rounded-full w-fit my-2 md:my-5 cursor-pointer" > Order Now </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-12" >
-        <div className="flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-3 py-10 border-1 border-gray-200" >
-          <div className="mb-2" >
-            <Truck className="text-red-500" size={40} />
-          </div>
-          <div className="font-bold" >Fast & Free shipping</div>
-          <div className="text-gray-400 text-sm font-light" >We Provide free shipping here</div>
-        </div>
-        <div className="flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-3 py-10 border-1 border-gray-200" >
-          <div className="mb-2" >
-            <Shirt className="text-red-500" size={40} />
-          </div>
-          <div className="font-bold" >Fast & Free shipping</div>
-          <div className="text-gray-400 text-sm font-light" >We Provide free shipping here</div>
-        </div>
-        <div className="flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-3 py-10 border-1 border-gray-200" >
-          <div className="mb-2" >
-            <ShoppingBag className="text-red-500" size={40} />
-          </div>
-          <div className="font-bold" >Fast & Free shipping</div>
-          <div className="text-gray-400 text-sm font-light" >We Provide free shipping here</div>
-        </div>
-        <div className="flex flex-col items-center col-span-12 md:col-span-6 lg:col-span-3 py-10 border-1 border-gray-200" >
-          <div className="mb-2" >
-            <ShoppingBasketIcon className="text-red-500" size={40} />
-          </div>
-          <div className="font-bold" >Fast & Free shipping</div>
-          <div className="text-gray-400 text-sm font-light" >We Provide free shipping here</div>
-        </div>
-      </div>
-
-      <div className=" my-[10%]" >
-        <div className="flex items-center flex-col lg:flex-row justify-center gap-4" >
-          <Image alt="banner-2" src="/banner-2.png" height={450} width={450} className="object-contain" />
-          <Image alt="banner-3" src="/banner-3.jpg" height={450} width={450} className="object-contain" />
-        </div>
-        <div className="flex flex-col items-center justify-center mt-[5%]">
-          <div className="flex items-center gap-2" >
-            <Star className="text-yellow-500" />
-            <Star className="text-yellow-500" />
-            <Star className="text-yellow-500" />
-            <Star className="text-yellow-500" />
-            <Star className="text-yellow-500" />
-          </div>
-          <div className="mt-[2%] font-semibold md:font-bold w-[90%] md:w-[55%] lg:w-[35%] text-center" >
-            some mock test comment of a user who bought a product
-          </div>
-        </div>
-      </div>
+      <Services />
 
       <div className="my-[10%]" >
-
         <MarqueeDisplay />
+      </div>
+
+      <HighRating />
+
+      <div className="my-[10%]" >
+        <SpecialDeal />
+      </div>
+
+      <div className="mt-[10%]" >
+        <Newsletter />
       </div>
 
       <Footer />

@@ -1,0 +1,305 @@
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+export default function CheckoutPage() {
+    const router = useRouter();
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        phone: '',
+        address: '',
+        paymentOption: 'jazzcash',
+        country: 'Pakistan'
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [orderSuccess, setOrderSuccess] = useState(false);
+
+    // This would normally come from your cart state or API
+    const [cartItems] = useState([
+        {
+            id: '1',
+            title: 'Sample Product',
+            price: 49.99,
+            image: '/sample-product.jpg',
+            quantity: 2
+        }
+    ]);
+
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        // Simulate API call
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setOrderSuccess(true);
+
+            // Clear cart and redirect after success
+            setTimeout(() => {
+                // localStorage.removeItem('cart'); // Uncomment to clear cart
+                router.push('/order-success');
+            }, 2000);
+        } catch (error) {
+            console.error('Order submission failed:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    if (orderSuccess) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
+                    <p className="text-gray-600 mb-6">Thank you for your purchase. You'll receive a confirmation email shortly.</p>
+                    <div className="animate-pulse text-sm text-gray-500">Redirecting to order details...</div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="bg-gray-50 min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+                <div className="bg-white shadow rounded-lg overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200">
+                        <h1 className="text-2xl font-bold text-gray-800">Checkout</h1>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">
+                        {/* Order Summary */}
+                        <div className="md:col-span-1 order-2 md:order-1">
+                            <div className="bg-gray-50 p-6 rounded-lg">
+                                <h2 className="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
+
+                                <div className="space-y-4">
+                                    {cartItems.map((item) => (
+                                        <div key={item.id} className="flex items-center">
+                                            <div className="flex-shrink-0 w-16 h-16 border border-gray-200 rounded-md overflow-hidden">
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    width={64}
+                                                    height={64}
+                                                    className="w-full h-full object-center object-cover"
+                                                />
+                                            </div>
+                                            <div className="ml-4 flex-1">
+                                                <h3 className="text-sm font-medium text-gray-900">{item.title}</h3>
+                                                <p className="text-sm text-gray-500">${item.price.toFixed(2)} × {item.quantity}</p>
+                                            </div>
+                                            <p className="text-sm font-medium text-gray-900">
+                                                ${(item.price * item.quantity).toFixed(2)}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="border-t border-gray-200 mt-6 pt-6 space-y-3">
+                                    <div className="flex justify-between text-base font-medium text-gray-900">
+                                        <p>Subtotal</p>
+                                        <p>${calculateTotal()}</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="text-sm text-gray-600">Shipping</p>
+                                        <p className="text-sm text-gray-600">Free</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="text-sm text-gray-600">Taxes</p>
+                                        <p className="text-sm text-gray-600">$0.00</p>
+                                    </div>
+                                </div>
+
+                                <div className="border-t border-gray-200 mt-4 pt-4 flex justify-between text-lg font-bold text-gray-900">
+                                    <p>Total</p>
+                                    <p>${calculateTotal()}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Checkout Form */}
+                        <div className="md:col-span-2 order-1 md:order-2">
+                            <form onSubmit={handleSubmit}>
+                                <div className="space-y-6">
+                                    <div>
+                                        <h2 className="text-lg font-medium text-gray-900 mb-4">Customer Information</h2>
+
+                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                            <div className="sm:col-span-2">
+                                                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                                                    Username
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="username"
+                                                    name="username"
+                                                    value={formData.username}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                                                    Mobile Number
+                                                </label>
+                                                <input
+                                                    type="tel"
+                                                    id="phone"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleChange}
+                                                    required
+                                                    maxLength="11"
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                />
+                                            </div>
+
+                                            <div className="sm:col-span-2">
+                                                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                                    Address
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="address"
+                                                    name="address"
+                                                    value={formData.address}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                />
+                                            </div>
+
+                                            <div className="sm:col-span-2">
+                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                                                    Country
+                                                </label>
+                                                <select
+                                                    id="country"
+                                                    name="country"
+                                                    value={formData.country}
+                                                    onChange={handleChange}
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                >
+                                                    <option>Pakistan</option>
+                                                    <option disabled>Other countries (disabled for demo)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-6">
+                                        <h2 className="text-lg font-medium text-gray-900 mb-4">Payment Method</h2>
+
+                                        <div className="space-y-4">
+                                            <div className="flex items-center">
+                                                <input
+                                                    id="jazzcash"
+                                                    name="paymentOption"
+                                                    type="radio"
+                                                    value="jazzcash"
+                                                    checked={formData.paymentOption === 'jazzcash'}
+                                                    onChange={handleChange}
+                                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                                />
+                                                <label htmlFor="jazzcash" className="ml-3 block text-sm font-medium text-gray-700">
+                                                    JazzCash (031234567)
+                                                </label>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <input
+                                                    id="easypaisa"
+                                                    name="paymentOption"
+                                                    type="radio"
+                                                    value="easypaisa"
+                                                    checked={formData.paymentOption === 'easypaisa'}
+                                                    onChange={handleChange}
+                                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                                />
+                                                <label htmlFor="easypaisa" className="ml-3 block text-sm font-medium text-gray-700">
+                                                    EasyPaisa (031234567)
+                                                </label>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <input
+                                                    id="cod"
+                                                    name="paymentOption"
+                                                    type="radio"
+                                                    value="cod"
+                                                    checked={formData.paymentOption === 'cod'}
+                                                    onChange={handleChange}
+                                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                                />
+                                                <label htmlFor="cod" className="ml-3 block text-sm font-medium text-gray-700">
+                                                    Cash On Delivery
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-6">
+                                        <button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                                                }`}
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    Processing...
+                                                </>
+                                            ) : (
+                                                'Place Order'
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

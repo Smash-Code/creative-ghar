@@ -23,9 +23,9 @@ export default function MarqueeDisplay() {
     };
 
     fetchActiveMessages();
-    const interval = setInterval(fetchActiveMessages, 60000); // Refresh every minute
+    // const interval = setInterval(fetchActiveMessages, 60000); // Refresh every minute
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, []);
 
   if (loading) return null;

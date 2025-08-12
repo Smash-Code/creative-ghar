@@ -39,7 +39,7 @@ export default function Carousel() {
           {items.map((item, idx) => (
             <div
               key={idx}
-              className="w-1/14 flex-shrink-0 p-2"
+              className="w-1/5 md:w-1/14 flex-shrink-0 p-2"
             >
               <div className=" text-center py-10 rounded-lg">
                 <Image alt="category" width={240} height={100} src="/item-2.png" />
