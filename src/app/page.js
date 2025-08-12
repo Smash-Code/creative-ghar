@@ -300,12 +300,12 @@ export default function ProductListPage() {
         <Navbar />
       </div>
       <HeroSection />
-      <div>
+      {/* <div>
         <Carousel
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-      </div>
+      </div> */}
       <Sale />
 
       {/* Products Section */}
