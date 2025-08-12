@@ -7,19 +7,19 @@ const Services = () => {
         <div>
             <div className="relative " >
                 <div className='min-h-[300px]' >
-                    <Image alt="Banner" height={300} width={1320} src='/banner-1.png' className="min-h-[300px] min-w-[600px] object-contain" />
+                    <Image alt="Banner" height={300} width={1320} src='/banner_img.jpg' className="min-h-[300px] min-w-[600px] object-contain" />
                 </div>
                 <div className="absolute max-w-[100%] md:max-w-[60%] lg:max-w-[40%] left-[5%] top-[15%] md:top-[35%]" >
                     <div className="text-red-500 text-xl lg:text-3xl font-bold  " >
                         Top Trending Product
                     </div>
-                    <div className="text-white text-lg lg:text-3xl font-semibold my-1 md:my-4" >
+                    <div className="text-black text-lg lg:text-3xl font-semibold my-1 md:my-4" >
                         The best product of the store to buy in this sale
                     </div>
-                    <div className="text-yellow-400 text-md lg:text-xl my-1 md:my-4" >
+                    <div className="text-yellow-800 text-md lg:text-xl my-1 md:my-4" >
                         With 40% off , and a free shipping offer.
                     </div>
-                    <div className="font-semibold text-white" >
+                    <div className="font-semibold text-black" >
                         Enjoy double portions of delicious mozzarella cheese Crispy paneer,onion,green capsicum.
                     </div>
 

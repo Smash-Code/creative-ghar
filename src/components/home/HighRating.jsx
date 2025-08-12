@@ -7,10 +7,10 @@ const HighRating = () => {
         <div className=" my-[10%]" >
             <div className="flex items-center flex-col lg:flex-row justify-center gap-4" >
                 <div className="overflow-hidden relative" >
-                    <Image alt="banner-2" src="/banner-2.png" height={450} width={450} className="object-contain hover:scale-105 transition-transform duration-500 ease-in-out" />
+                    <Image alt="banner-2" src="/image_1.png" height={450} width={450} className="object-contain hover:scale-105 transition-transform duration-500 ease-in-out" />
                     <div className='absolute top-[16%] left-[5%] max-w-[50%]' >
                         <i className='text-yellow-500 text-xl font-bold' >Top Rated</i>
-                        <div className='text-white font-bold text-lg' >
+                        <div className='text-red-400 font-bold text-lg' >
                             Our Top Selling Product
                         </div>
                         <div className='text-yellow-500 text-xl font-bold' >Product Name</div>
@@ -20,10 +20,10 @@ const HighRating = () => {
                     </div>
                 </div>
                 <div className="overflow-hidden relative" >
-                    <Image alt="banner-3" src="/banner-3.jpg" height={450} width={450} className="object-contain hover:scale-105 transition-transform duration-500 ease-in-out" />
+                    <Image alt="banner-3" src="/image_2.png" height={450} width={450} className="object-contain hover:scale-105 transition-transform duration-500 ease-in-out" />
                     <div className='absolute top-[16%] left-[5%] max-w-[50%]' >
                         <i className='text-yellow-500 text-xl font-bold' >Top Rated</i>
-                        <div className='text-white font-bold text-lg' >
+                        <div className='text-red-400 font-bold text-lg' >
                             Our Top Selling Product
                         </div>
                         <div className='text-yellow-500 text-xl font-bold' >Product Name</div>

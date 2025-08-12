@@ -6,7 +6,7 @@ const Sale = () => {
     return (
         <div className="grid grid-cols-12 mx-[12%] my-[5%]" >
             <div className="col-span-12 md:col-span-6 " >
-                <Image src="/perfume.png" height={450} width={600} alt="perfume" />
+                <Image src="/image_1.png" height={450} width={600} alt="perfume" />
             </div>
             <div className="col-span-12 md:col-span-6 pt-2 md:pt-0 md:px-6" >
                 <div className='font-bold text-[20px] md:text-[36px]' >

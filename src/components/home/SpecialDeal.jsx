@@ -5,7 +5,7 @@ const SpecialDeal = () => {
     return (
         <div className='grid grid-cols-12' >
             <div className='col-span-12 md:col-span-6 overflow-hidden' >
-                <Image alt='Deal Banner' src='/image-1.png' className='object-contain hover:scale-105 transition-transform duration-500 ease-in-out' height={600} width={650} />
+                <Image alt='Deal Banner' src='/image_4.png' className='object-contain hover:scale-105 transition-transform duration-500 ease-in-out' height={600} width={650} />
             </div>
 
             <div className='col-span-12 md:col-span-6 bg-red-500 pt-[10%] pb-[10%] pr-[5%] md:pt-[20%] pl-[5%]' >

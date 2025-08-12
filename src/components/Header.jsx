@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 // import Logo from '/creative-logo'
 import Image from 'next/image';
 
-export default function Navbar() {
+export default function Navbar({ setCart }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -29,12 +29,12 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          
+
           <div className="flex items-center space-x-4">
-            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
               <ShoppingCart className="h-5 w-5 text-gray-700" />
             </button>
-            
+
             <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
               <User className="h-5 w-5 text-gray-700" />
             </button>
@@ -42,7 +42,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -60,12 +60,12 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-lg pb-4 px-4">
           <div className="flex flex-col space-y-3 pt-2">
-            
+
             <div className="flex items-center space-x-4 pt-2 border-t border-gray-100">
-              <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+              <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
                 <ShoppingCart className="h-5 w-5 text-gray-700" />
               </button>
-              
+
               <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
                 <User className="h-5 w-5 text-gray-700" />
               </button>

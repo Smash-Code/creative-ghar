@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <div className='bg-[#faf5f0] grid grid-cols-12 py-8 gap-10 px-4' >
             <div className='col-span-12 md:col-span-6 lg:col-span-3' >
-                <Image src='/creative-logo.png' height={100} width={100} className='object-contain' />
+                <Image alt='logo' src='/creative-logo.png' height={100} width={100} className='object-contain' />
             </div>
             <div className='col-span-12 md:col-span-6 lg:col-span-3 flex flex-col gap-1' >
                 <div className='font-bold' >Customer Care</div>

@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -23,11 +23,11 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div key={product.id} className="bg-white rounded-lg w-fit overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div key={product.id} className="bg-white rounded-lg w-fit hover:shadow-lg transition-shadow duration-300">
       <Link href={`/home/products/${product.id}`} >
         <div
           onClick={() => handleDetail(product)}
-          className="relative h-56 min-w-56  bg-gray-100 overflow-hidden"
+          className="relative h-56 min-w-56 bg-gray-100 "
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -49,9 +49,17 @@ const Product = ({ product }) => {
             />
           )}
 
-          <div className="absolute w-fit top-2 right-2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded">
-            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+          <div className="absolute z-10 top-[-4px] left-[-20px] rounded-full bg-red-600 text-white text-sm px-[3px] py-[9px]">
+            -{Math.round(((product.orignal_price - product.discounted_price) / product.orignal_price) * 100)}%
           </div>
+
+          <div className='absolute bg-white/70 rounded-full top-1 right-2'>
+            <div className='border-[1px] border-gray-400 rounded-full p-[7px]'>
+              <Heart className='' size={15} />
+            </div>
+
+          </div>
+
         </div>
       </Link>
 
