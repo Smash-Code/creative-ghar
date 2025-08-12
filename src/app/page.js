@@ -103,11 +103,11 @@ export default function ProductListPage() {
         <Carousel />
       </div>
       <Sale />
-      <div className="flex bg-gray-50 mt-10">
+      <div className="flex mt-10">
 
         <div className="flex-1 overflow-auto">
 
-          <div className="p-6">
+          <div className="">
 
             {loading ? (
               <div className="flex justify-center items-center h-64">
@@ -121,7 +121,7 @@ export default function ProductListPage() {
                 <h3 className="mt-2 text-lg font-medium text-gray-900">No products found</h3>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
                 {products.map((product) => (
                   <Product product={product} />
                 ))}

@@ -12,6 +12,8 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
   const receiptRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  console.log(orderDetails, "details")
+
 
   const handleDownload = async () => {
     if (!receiptRef.current) return;
@@ -90,9 +92,8 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
             <div className="border-t border-b border-gray-200 py-4 mb-4">
               <h3 className="font-medium text-lg mb-2">Order Summary</h3>
               <div className="flex items-center space-x-4 mb-3">
-                // Replace your current image element with this:
                 <img
-                  src={orderDetails.images?.[0] || '/no-image.png'}
+                  src={orderDetails.images || '/no-image.png'}
                   alt={orderDetails.title}
                   className="w-16 h-16 object-cover rounded"
                   onError={(e) => {
@@ -100,11 +101,12 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
                     e.target.src = '/no-image.png';
                   }}
                 />
-                <div className="flex-1">
+                <div className="flex-1">  
                   <p className="font-medium">{orderDetails.title}</p>
-                  <p className="text-sm text-gray-600">
-                    Size: {orderDetails.size} | Color: {orderDetails.color}
-                  </p>
+                  {/* <p className="text-sm text-gray-600">
+                    Size: {orderDetails.size} <br />
+                    Color: {orderDetails.color}
+                  </p> */}
                   <p className="text-sm text-gray-600">Qty: {orderDetails.quantity}</p>
                 </div>
                 <p className="font-medium">

@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -22,11 +23,11 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div key={product.id} className="bg-white rounded-lg w-fit overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <Link href={`/home/products/${product.id}`} >
         <div
           onClick={() => handleDetail(product)}
-          className="relative h-48 bg-gray-100 overflow-hidden"
+          className="relative h-56 min-w-56  bg-gray-100 overflow-hidden"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -57,8 +58,15 @@ const Product = ({ product }) => {
       <div className="p-4">
         <div className="flex justify-center items-start">
           <div className='text-center' >
-            <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">{product.title}</h3>
-            <p className="text-sm text-gray-500 mb-2">{product.category}</p>
+            <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">{product.title}</h3>
+            {/* <p className="text-sm text-gray-500 mb-2">{product.category}</p> */}
+            <div className='flex items-center gap-1 pb-2' >
+              <Star className='text-gray-500' size={15} />
+              <Star className='text-gray-500' size={15} />
+              <Star className='text-gray-500' size={15} />
+              <Star className='text-gray-500' size={15} />
+              <Star className='text-gray-500' size={15} />
+            </div>
           </div>
         </div>
         <div className="text-center text-[12px]">

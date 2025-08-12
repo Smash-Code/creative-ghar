@@ -18,10 +18,9 @@ export default function OrderModal({
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-  const { createOrder, loading, order } = useOrder();
   const [showReceipt, setShowReceipt] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
-
+  
   const sizes = ['XS', 'S', 'M', 'L', 'XL'];
   const colors = [
     { name: 'Red', value: 'red', bg: 'bg-red-500' },
@@ -30,7 +29,8 @@ export default function OrderModal({
     { name: 'Black', value: 'black', bg: 'bg-black' },
     { name: 'White', value: 'white', bg: 'bg-white border border-gray-300' },
   ];
-
+  
+  const { createOrder, loading, order } = useOrder();
   const handleSubmit = async () => {
     try {
       const userId = 'current-user-id'; // Replace with actual user ID
@@ -38,8 +38,6 @@ export default function OrderModal({
         productId: product.id,
         userId,
         quantity,
-        size: selectedSize,
-        color: selectedColor,
         totalPrice: (product.discounted_price || product.orignal_price) * quantity,
         username,
         email,

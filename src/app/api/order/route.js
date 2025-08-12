@@ -9,10 +9,10 @@ const orderSchema = z.object({
   productId: z.string().min(1, "Product ID is required"),
   userId: z.string().min(1, "User ID is required"),
   quantity: z.number().min(1, "Quantity must be at least 1"),
-  size: z.string().min(1, "Size is required"),
-  color: z.string().min(1, "Color is required"),
+  size: z.string().min(1, "Size is required").optional(),
+  color: z.string().min(1, "Color is required").optional(),
   totalPrice: z.number().min(0, "Price cannot be negative"),
-  role : z.string().min(1, "Role is required"),
+  role: z.string().min(1, "Role is required"),
   // Fields from both modals made optional
   username: z.string().min(1, "Username is required").optional(),
   email: z.string().email("Invalid email address").optional(),
@@ -68,9 +68,9 @@ export async function POST(req) {
       productId: validatedData.productId,
       userId: validatedData.userId,
       quantity: validatedData.quantity,
-      size: validatedData.size,
-      role : validatedData.role,
-      color: validatedData.color,
+      // size: validatedData.size,
+      role: validatedData.role,
+      // color: validatedData.color,
       totalPrice: validatedData.totalPrice,
       // Include all possible fields
       ...(validatedData.username && { username: validatedData.username }),
@@ -96,8 +96,8 @@ export async function POST(req) {
     // Save to Firestore
     const docRef = await addDoc(collection(db, 'orders'), firestoreDoc);
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       id: docRef.id,
       message: 'Order created successfully',
       data: {
@@ -111,11 +111,11 @@ export async function POST(req) {
 
   } catch (error) {
     console.error('Full error details:', error);
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Validation error',
           details: error.errors.map(e => ({
             path: e.path.join('.'),
@@ -125,10 +125,10 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: error.message || 'Failed to create order'
       },
       { status: 500 }
@@ -140,7 +140,7 @@ export async function GET() {
   try {
     // Get all documents from the 'orders' collection
     const querySnapshot = await getDocs(collection(db, 'orders'));
-    
+
     // Convert documents to array of order objects
     const orders = [];
     querySnapshot.forEach((doc) => {
@@ -157,15 +157,15 @@ export async function GET() {
     // Sort by createdAt date (newest first) manually
     orders.sort((a, b) => b.createdAt - a.createdAt);
 
-    return NextResponse.json({ 
-      success: true, 
-      data: orders 
+    return NextResponse.json({
+      success: true,
+      data: orders
     });
   } catch (error) {
     console.error('Error fetching orders:', error);
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: error.message || 'Failed to fetch orders',
         data: [] // Return empty array on error
       },

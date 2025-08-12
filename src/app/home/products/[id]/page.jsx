@@ -270,15 +270,21 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    }
+    return [];
+  });
 
   // Load cart from localStorage on component mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedCart = localStorage.getItem('cart');
+  //   if (savedCart) {
+  //     setCartItems(JSON.parse(savedCart));
+  //   }
+  // }, []);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
@@ -519,7 +525,7 @@ export default function ProductDetailPage() {
         <div className="absolute inset-0 overflow-hidden">
           {/* Background overlay */}
           <div
-            className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            className="absolute inset-0 bg-gray-500/40 bg-opacity-75 transition-opacity"
             onClick={() => setIsCartOpen(false)}
           ></div>
 

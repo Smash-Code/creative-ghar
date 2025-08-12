@@ -2,9 +2,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useOrder } from '@/hooks/useOrder';
+import OrderReceiptModal from '@/components/modals/orderReciept';
 
 export default function CheckoutPage() {
     const router = useRouter();
+    const { createOrder, loading: orderLoading } = useOrder();
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -13,19 +16,17 @@ export default function CheckoutPage() {
         paymentOption: 'jazzcash',
         country: 'Pakistan'
     });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [orderSuccess, setOrderSuccess] = useState(false);
+    const [showReceipt, setShowReceipt] = useState(false);
+    const [orderDetails, setOrderDetails] = useState(null);
 
-    // This would normally come from your cart state or API
-    const [cartItems] = useState([
-        {
-            id: '1',
-            title: 'Sample Product',
-            price: 49.99,
-            image: '/sample-product.jpg',
-            quantity: 2
+    // Load cart items from localStorage
+    const [cartItems] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const savedCart = localStorage.getItem('cart');
+            return savedCart ? JSON.parse(savedCart) : [];
         }
-    ]);
+        return [];
+    });
 
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
@@ -41,41 +42,67 @@ export default function CheckoutPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
 
-        // Simulate API call
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            setOrderSuccess(true);
+            // Create an order for each product in the cart
+            const orderPromises = cartItems.map(item =>
+                createOrder({
+                    productId: item.id,
+                    userId: 'current-user-id', // Replace with actual user ID
+                    quantity: item.quantity,
+                    totalPrice: item.price * item.quantity,
+                    username: formData.username,
+                    email: formData.email,
+                    phone: formData.phone,
+                    role: 'user',
+                    address: formData.address,
+                    paymentStatus: 'pending',
+                    country: formData.country,
+                    paymentMethod: formData.paymentOption
+                })
+            );
 
-            // Clear cart and redirect after success
-            setTimeout(() => {
-                // localStorage.removeItem('cart'); // Uncomment to clear cart
-                router.push('/order-success');
-            }, 2000);
+            const createdOrders = await Promise.all(orderPromises);
+
+            // Set order details for the receipt
+            setOrderDetails({
+                ...createdOrders[0], // Take the first order details
+                product: cartItems[0], // Take the first product for the receipt
+                size: '', // Add size if available
+                color: '', // Add color if available
+                quantity: cartItems[0].quantity,
+                orignal_price: cartItems[0].price,
+                images: cartItems[0].image,
+                discounted_price: cartItems[0].price * cartItems[0].quantity
+            });
+
+            // Clear cart after successful order
+            localStorage.removeItem('cart');
+
+            // Show receipt modal
+            setShowReceipt(true);
+
         } catch (error) {
-            console.error('Order submission failed:', error);
-        } finally {
-            setIsSubmitting(false);
+            alert(error.message || 'Failed to place order');
         }
     };
 
-    if (orderSuccess) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
-                    <p className="text-gray-600 mb-6">Thank you for your purchase. You'll receive a confirmation email shortly.</p>
-                    <div className="animate-pulse text-sm text-gray-500">Redirecting to order details...</div>
-                </div>
-            </div>
-        );
-    }
+    // if (orderSuccess) {
+    //     return (
+    //         <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    //             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+    //                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+    //                     <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    //                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+    //                     </svg>
+    //                 </div>
+    //                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
+    //                 <p className="text-gray-600 mb-6">Thank you for your purchase. You'll receive a confirmation email shortly.</p>
+    //                 <div className="animate-pulse text-sm text-gray-500">Redirecting to order details...</div>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="bg-gray-50 min-h-screen">
@@ -277,11 +304,11 @@ export default function CheckoutPage() {
                                     <div className="pt-6">
                                         <button
                                             type="submit"
-                                            disabled={isSubmitting}
-                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                                            disabled={orderLoading || cartItems.length === 0}
+                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${orderLoading || cartItems.length === 0 ? 'opacity-75 cursor-not-allowed' : ''
                                                 }`}
                                         >
-                                            {isSubmitting ? (
+                                            {orderLoading ? (
                                                 <>
                                                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -300,6 +327,18 @@ export default function CheckoutPage() {
                     </div>
                 </div>
             </div>
+
+
+            {showReceipt && orderDetails && (
+                <OrderReceiptModal
+                    orderDetails={orderDetails}
+                    onClose={() => setShowReceipt(false)}
+                    onModalClose={() => {
+                        setShowReceipt(false);
+                        // router.push('/'); // Optional: redirect after closing
+                    }}
+                />
+            )}
         </div>
     );
 }
