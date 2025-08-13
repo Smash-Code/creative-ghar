@@ -84,33 +84,6 @@ export default function ProductDetailPage() {
     fetchProduct();
   }, [id]);
 
-  // const handleAddToCart = () => {
-  //   if (!product) return;
-
-  //   const existingItemIndex = cartItems.findIndex(item => item.id === product.id);
-
-  //   if (existingItemIndex >= 0) {
-  //     // Update quantity if item already exists in cart
-  //     const updatedCart = [...cartItems];
-  //     updatedCart[existingItemIndex].quantity += quantity;
-  //     setCartItems(updatedCart);
-  //   } else {
-  //     // Add new item to cart
-  //     setCartItems([...cartItems, {
-  //       id: product.id,
-  //       title: product.title,
-  //       price: product.discounted_price || product.orignal_price,
-  //       image: product.images?.[0] || '/no-image.png',
-  //       quantity: quantity,
-  //       stock: product.stock
-  //     }]);
-  //   }
-
-  //   // Open the cart sidebar
-  //   setIsCartOpen(true);
-  // };
-
-
   const handleAddToCart = () => {
     if (!product) return;
 
