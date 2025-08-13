@@ -258,6 +258,7 @@ import { useCategory } from '@/hooks/useCategory';
 import Navbar from '@/components/Header';
 import Newsletter from '@/components/home/Newsletter';
 import Footer from '@/components/Footer';
+import { deliveryDate } from '@/utils/deliveryDates';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -277,6 +278,11 @@ export default function ProductDetailPage() {
     }
     return [];
   });
+
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+
+
 
   // Load cart from localStorage on component mount
   // useEffect(() => {
@@ -307,10 +313,53 @@ export default function ProductDetailPage() {
     fetchProduct();
   }, [id]);
 
+  // const handleAddToCart = () => {
+  //   if (!product) return;
+
+  //   const existingItemIndex = cartItems.findIndex(item => item.id === product.id);
+
+  //   if (existingItemIndex >= 0) {
+  //     // Update quantity if item already exists in cart
+  //     const updatedCart = [...cartItems];
+  //     updatedCart[existingItemIndex].quantity += quantity;
+  //     setCartItems(updatedCart);
+  //   } else {
+  //     // Add new item to cart
+  //     setCartItems([...cartItems, {
+  //       id: product.id,
+  //       title: product.title,
+  //       price: product.discounted_price || product.orignal_price,
+  //       image: product.images?.[0] || '/no-image.png',
+  //       quantity: quantity,
+  //       stock: product.stock
+  //     }]);
+  //   }
+
+  //   // Open the cart sidebar
+  //   setIsCartOpen(true);
+  // };
+
+
   const handleAddToCart = () => {
     if (!product) return;
 
-    const existingItemIndex = cartItems.findIndex(item => item.id === product.id);
+    // Validate variant selection if product has variants
+    if (product.hasVariants) {
+      if (product.sizes?.length > 0 && !selectedSize) {
+        alert('Please select a size');
+        return;
+      }
+      if (product.colors?.length > 0 && !selectedColor) {
+        alert('Please select a color');
+        return;
+      }
+    }
+
+    const existingItemIndex = cartItems.findIndex(item =>
+      item.id === product.id &&
+      item.size === selectedSize &&
+      item.color === selectedColor
+    );
 
     if (existingItemIndex >= 0) {
       // Update quantity if item already exists in cart
@@ -325,7 +374,10 @@ export default function ProductDetailPage() {
         price: product.discounted_price || product.orignal_price,
         image: product.images?.[0] || '/no-image.png',
         quantity: quantity,
-        stock: product.stock
+        stock: product.stock,
+        size: selectedSize,
+        color: selectedColor,
+        hasVariants: product.hasVariants
       }]);
     }
 
@@ -393,9 +445,10 @@ export default function ProductDetailPage() {
   const hasDiscount = product.discounted_price && product.discounted_price < product.orignal_price;
 
   return (
-    <div className='overflow-hidden'>
-      <Navbar  setCart={setIsCartOpen} />
-      <div className="bg-gray-50 min-h-screen mt-[5%] py-12 px-4 sm:px-6 lg:px-8">
+
+    <div className="overflow-hidden min-h-screen flex flex-col">
+      <Navbar setCart={setIsCartOpen} />
+      <div className="flex-grow bg-gray-50 mt-[5%] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="bg-white rounded-lg overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
@@ -456,6 +509,8 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
+                <div className={`px-3 py-1 rounded-lg w-fit text-white ${product.stock > 0 ? "bg-green-500" : "bg-red-500"}`} >{product.stock} {product.stock > 0 ? 'in stock' : 'out of stock'}</div>
+
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
@@ -471,6 +526,51 @@ export default function ProductDetailPage() {
                   </div>
                   <span className="text-sm text-gray-600">(24 reviews)</span>
                 </div>
+                {product.hasVariants && product.sizes?.length > 0 && (
+                  <div className="border-t border-gray-200 pt-4">
+                    <div className="text-sm mb-2 text-gray-700">Size:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {product.sizes.map((size, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setSelectedSize(size.name)}
+                          className={`px-3 py-1 border rounded-full text-sm ${selectedSize === size.name
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'border-gray-300 hover:bg-gray-50'
+                            }`}
+                        >
+                          {size.name} {size.stock > 0 ? '' : '(Out of stock)'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {product.hasVariants && product.colors?.length > 0 && (
+                  <div className="border-t border-gray-200 pt-4">
+                    <div className="text-sm mb-2 text-gray-700">Color:</div>
+                    <div className="flex flex-wrap gap-2">
+                      {product.colors.map((color, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setSelectedColor(color.name)}
+                          className={`px-3 py-1 border rounded-full text-sm flex items-center gap-1 ${selectedColor === color.name
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'border-gray-300 hover:bg-gray-50'
+                            }`}
+                        >
+                          <span
+                            className="w-4 h-4 rounded-full inline-block"
+                            style={{ backgroundColor: color.hex }}
+                          ></span>
+                          {color.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="text-sm mb-2 text-gray-700">Quantity :</div>
@@ -508,7 +608,7 @@ export default function ProductDetailPage() {
                 <div className="border-t border-gray-200 pt-4">
                   <h3 className="text-sm font-medium text-gray-900">Delivery Information</h3>
                   <p className="text-sm text-gray-500 mt-2">
-                    Delivered in : {product.estimated_delivery_time || '3-5 business days'}
+                    Delivered on : {deliveryDate(product.estimated_delivery_time)}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
                     Return/Exchange: {product.return_or_exchange_time ? `${product.return_or_exchange_time} days` : '30 days'}
@@ -598,6 +698,16 @@ export default function ProductDetailPage() {
                                       +
                                     </button>
                                   </div>
+                                  <div className="ml-4 flex-1">
+                                    <h3 className="text-sm font-medium text-gray-900">{item.title}</h3>
+                                    <p className="text-sm text-gray-500">${item.price.toFixed(2)} × {item.quantity}</p>
+                                    {item.hasVariants && (
+                                      <div className="text-xs text-gray-500 mt-1">
+                                        {item.size && <p>Size: {item.size}</p>}
+                                        {item.color && <p>Color: {item.color}</p>}
+                                      </div>
+                                    )}
+                                  </div>
 
                                   <button
                                     type="button"
@@ -651,11 +761,9 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      <div className="mt-[10%]">
-        <Newsletter />
+      <div className="mt-auto">
+        <Footer />
       </div>
-
-      <Footer />
     </div>
   );
 }

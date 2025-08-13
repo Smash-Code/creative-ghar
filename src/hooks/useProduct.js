@@ -5,11 +5,11 @@ export function useProductApi() {
   // Create a new product
   const createProduct = async (productData) => {
     const payload = {
-        ...productData,
-        orignal_price: Number(productData.orignal_price),
-        discounted_price: Number(productData.discounted_price),
-        stock: Number(productData.stock),
-        return_or_exchange_time: Number(productData.return_or_exchange_time),
+      ...productData,
+      orignal_price: Number(productData.orignal_price),
+      discounted_price: Number(productData.discounted_price),
+      stock: Number(productData.stock),
+      // return_or_exchange_time: Number(productData.return_or_exchange_time),
     };
 
     try {
@@ -91,13 +91,17 @@ export function useProductApi() {
   const getProductsByCategory = async (category, { page = 1, limit = 10 } = {}) => {
     try {
       const res = await fetch(
-        `${BASE_URL}?category=${encodeURIComponent(category)}&page=${page}&limit=${limit}`
+        `/api/product/category?category=${encodeURIComponent(category)}&page=${page}&limit=${limit}`
       );
 
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to fetch products by category");
       return data;
     } catch (error) {
+      console.error("Error fetching products by category:", error);
       throw error;
     }
   };

@@ -101,7 +101,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
                     e.target.src = '/no-image.png';
                   }}
                 />
-                <div className="flex-1">  
+                <div className="flex-1">
                   <p className="font-medium">{orderDetails.title}</p>
                   {/* <p className="text-sm text-gray-600">
                     Size: {orderDetails.size} <br />
@@ -113,6 +113,12 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
                   ${(orderDetails.discounted_price || orderDetails.orignal_price)}
                 </p>
               </div>
+              {orderDetails.size && (
+                <p className="text-sm text-gray-600">Size: {orderDetails.size}</p>
+              )}
+              {orderDetails.color && (
+                <p className="text-sm text-gray-600">Color: {orderDetails.color}</p>
+              )}
             </div>
 
             <div className="mb-6">

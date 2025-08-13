@@ -74,6 +74,8 @@ export async function POST(req) {
       totalPrice: validatedData.totalPrice,
       // Include all possible fields
       ...(validatedData.username && { username: validatedData.username }),
+      ...(validatedData.size && { size: validatedData.size }),
+      ...(validatedData.color && { color: validatedData.color }),
       ...(validatedData.email && { email: validatedData.email }),
       ...(validatedData.phone && { phone: validatedData.phone }),
       ...(validatedData.address && { address: validatedData.address }),

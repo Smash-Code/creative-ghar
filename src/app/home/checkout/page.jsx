@@ -51,6 +51,8 @@ export default function CheckoutPage() {
                     productId: item.id,
                     userId: 'current-user-id', // Replace with actual user ID
                     quantity: item.quantity,
+                    size: item.size,
+                    color: item.color,
                     totalPrice: item.price * item.quantity,
                     username: formData.username,
                     email: formData.email,
@@ -98,8 +100,9 @@ export default function CheckoutPage() {
                         </svg>
                     </div>
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
-                    <p className="text-gray-600 mb-6">Thank you for your purchase. You'll receive a confirmation email shortly.</p>
+                    <p className="text-gray-600 mb-6">Thank you for your purchase. And Hope you saved the reciept.</p>
                     <div className="animate-pulse text-sm text-gray-500">Redirecting to Home...</div>
+                    <div className="animate-pulse text-sm text-gray-500">Happy Shopping on Creative Ghar</div>
                 </div>
             </div>
         );
@@ -144,6 +147,14 @@ export default function CheckoutPage() {
                                             <div className="ml-4 flex-1">
                                                 <h3 className="text-sm font-medium text-gray-900">{item.title}</h3>
                                                 <p className="text-sm text-gray-500">${item.price.toFixed(2)} × {item.quantity}</p>
+                                            </div>
+                                            <div className="ml-4 flex-1">
+                                                {item.hasVariants && (
+                                                    <div className="text-xs text-gray-500 mt-1">
+                                                        {item.size && <p>Size: {item.size}</p>}
+                                                        {item.color && <p>Color: {item.color}</p>}
+                                                    </div>
+                                                )}
                                             </div>
                                             <p className="text-sm font-medium text-gray-900">
                                                 ${(item.price * item.quantity).toFixed(2)}
