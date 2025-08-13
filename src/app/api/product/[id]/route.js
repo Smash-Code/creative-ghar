@@ -60,7 +60,7 @@ export async function GET(_req, { params }) {
     if (productData.category) {
       const categoryRef = doc(db, "categories", productData.category);
       const categorySnap = await getDoc(categoryRef);
-      
+
       if (categorySnap.exists()) {
         categoryName = categorySnap.data().name; // Make sure this matches your field name
       }
@@ -85,7 +85,7 @@ export async function GET(_req, { params }) {
 
 // PUT /api/product/[id]
 export async function PUT(req, { params }) {
-    const data = await params;
+  const data = await params;
   const { id } = data
 
   if (!id) {
@@ -99,6 +99,14 @@ export async function PUT(req, { params }) {
 
     const updatedData = productSchema.partial().parse({
       ...body,
+      sizes: body.sizes?.map(size => ({
+        name: size.name,
+        stock: Number(size.stock) || 0
+      })) || [],
+      colors: body.colors?.map(color => ({
+        name: color.name,
+        hex: color.hex
+      })) || [],
       updatedAt: new Date(),
     });
 

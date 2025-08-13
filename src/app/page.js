@@ -285,12 +285,30 @@ export default function HomePage() {
           ) : (
             <div className="space-y-12 max-w-[1320px] mx-auto ">
               {Object.entries(productsByCategory).map(([categoryName, categoryProducts]) => (
-                <div key={categoryName} className="mb-12">
+                // <div key={categoryName} className="mb-12">
+                //   <div className="flex justify-between items-center mb-6">
+                //     <h2 className="text-2xl text-center mx-auto font-bold">
+                //       {categoryName}
+                //     </h2>
+
+                //   </div>
+                //   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                //     {categoryProducts.slice(0, 4).map((product) => (
+                //       <Product key={product.id} product={product} />
+                //     ))}
+                //   </div>
+                //   <Link
+                //     href={`/home/products/category/${categoryName}`}
+                //     className="bg-red-400 rounded-xl mx-auto text-center flex items-center justify-center w-fit text-white px-4 py-2 font-medium"
+                //   >
+                //     View All →
+                //   </Link>
+                // </div>
+                <div key={categoryName} className="mb-12 p-6 border-b border-gray-200 bg-white">
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold">
+                    <h2 className="text-3xl text-center mx-auto font-bold text-gray-800 tracking-wide">
                       {categoryName}
                     </h2>
-
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                     {categoryProducts.slice(0, 4).map((product) => (
@@ -299,7 +317,7 @@ export default function HomePage() {
                   </div>
                   <Link
                     href={`/home/products/category/${categoryName}`}
-                    className="bg-red-400 rounded-xl mx-auto text-center flex items-center justify-center w-fit text-white px-4 py-2 font-medium"
+                    className="bg-red-400 hover:bg-red-500 transition-colors duration-300 rounded-xl mx-auto text-center flex items-center justify-center w-fit text-white px-6 py-3 font-medium shadow-md"
                   >
                     View All →
                   </Link>

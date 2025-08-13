@@ -4,18 +4,30 @@
 import Link from 'next/link';
 import { ShoppingCart, User } from 'lucide-react';
 import { useState, useEffect } from 'react';
-// import Logo from '/creative-logo'
 import Image from 'next/image';
+import { useCategory } from '@/hooks/useCategory'; // Adjust the import path as needed
 
 export default function Navbar({ setCart }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { category: categories, getAllCategories } = useCategory();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
+
+    // Fetch categories when component mounts
+    const fetchCategories = async () => {
+      try {
+        await getAllCategories();
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+    fetchCategories();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -27,9 +39,21 @@ export default function Navbar({ setCart }) {
           <Image src="/creative-logo.png" height={50} width={50} className='object-contain' alt='Creative Ghar' />
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
+        {/* Categories in center - Desktop */}
+        <div className="hidden md:flex items-center space-x-6 mx-6 flex-1 justify-center">
+          {categories?.map((category) => (
+            <Link
+              key={category.id}
+              href={`/home/products/category/${category.name}`}
+              className="text-gray-700 hover:text-indigo-600 transition-colors whitespace-nowrap"
+            >
+              {category.name}
+            </Link>
+          ))}
+        </div>
 
+        {/* Desktop Navigation - Right side */}
+        <div className="hidden md:flex items-center space-x-6">
           <div className="flex items-center space-x-4">
             <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
               <ShoppingCart className="h-5 w-5 text-gray-700" />
@@ -59,17 +83,28 @@ export default function Navbar({ setCart }) {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-lg pb-4 px-4">
+          {/* Mobile Categories */}
           <div className="flex flex-col space-y-3 pt-2">
+            {categories?.map((category) => (
+              <Link
+                key={category._id}
+                href={`/category/${category.slug || category._id}`}
+                className="text-gray-700 hover:text-indigo-600 transition-colors py-2 px-4"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {category.name}
+              </Link>
+            ))}
+          </div>
 
-            <div className="flex items-center space-x-4 pt-2 border-t border-gray-100">
-              <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                <ShoppingCart className="h-5 w-5 text-gray-700" />
-              </button>
+          <div className="flex items-center space-x-4 pt-2 border-t border-gray-100">
+            <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+              <ShoppingCart className="h-5 w-5 text-gray-700" />
+            </button>
 
-              <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                <User className="h-5 w-5 text-gray-700" />
-              </button>
-            </div>
+            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+              <User className="h-5 w-5 text-gray-700" />
+            </button>
           </div>
         </div>
       )}
