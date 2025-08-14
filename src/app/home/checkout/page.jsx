@@ -75,10 +75,9 @@ export default function CheckoutPage() {
                 color: '', // Add color if available
                 quantity: cartItems[0].quantity,
                 orignal_price: cartItems[0].price,
-                images: cartItems.image,
+                images: cartItems[0].image,
                 discounted_price: cartItems[0].price * cartItems[0].quantity
             });
-
             // Clear cart after successful order
             localStorage.removeItem('cart');
 

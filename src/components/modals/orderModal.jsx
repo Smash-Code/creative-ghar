@@ -65,6 +65,7 @@ export default function OrderModal({
         ...order,
         product // Include the full product details
       });
+      console.log(product)
       setShowReceipt(true);
       onOrderSubmit();
     } catch (error) {

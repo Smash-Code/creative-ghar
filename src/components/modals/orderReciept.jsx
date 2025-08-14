@@ -93,7 +93,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
               <h3 className="font-medium text-lg mb-2">Order Summary</h3>
               <div className="flex items-center space-x-4 mb-3">
                 <img
-                  src={orderDetails.images[0] || '/no-image.png'}
+                  src={orderDetails.images || '/no-image.png'}
                   alt={orderDetails.title}
                   className="w-16 h-16 object-cover rounded"
                   onError={(e) => {
