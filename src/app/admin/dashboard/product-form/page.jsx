@@ -17,9 +17,9 @@ function ProductFormPage() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    orignal_price: '',
-    discounted_price: '',
-    stock: '',
+    orignal_price: 0,
+    discounted_price: 0,
+    stock: 0,
     estimated_delivery_time: '',
     category: '',
     images: [],
@@ -105,7 +105,7 @@ function ProductFormPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: name === 'stock' ? Number(value) : value }));
   };
 
 
