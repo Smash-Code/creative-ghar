@@ -182,7 +182,7 @@ export default function ProductCarousel({ products }) {
                     ref={carouselRef}
                     className="flex transition-transform duration-500 ease-in-out"
                     style={{
-                        transform: `translateX(-${currentIndex * (160 / itemsToShow)}%)`,
+                        transform: `translateX(-${currentIndex * (120 / itemsToShow)}%)`,
                         width: `${(totalItems / itemsToShow) * 100}%`
                     }}
                 >
