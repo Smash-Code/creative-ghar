@@ -5,8 +5,8 @@ import React from 'react'
 const Sale = () => {
     return (
         <div className='mt-[5%]'>
-            <div className='text-center text-3xl font-semibold' >Top Categories</div>
-            <div className="grid grid-cols-12 mx-[10%] my-[5%] gap-3" >
+            <div className='text-center text-[36px] font-semibold' >Top Categories</div>
+            <div className="grid grid-cols-12 mx-[10%] mt-[2%] mb-[5%] gap-3" >
                 <div className="col-span-12 md:col-span-6 " >
                     <Image src="/image_3.png" height={450} width={600} alt="perfume" />
                 </div>

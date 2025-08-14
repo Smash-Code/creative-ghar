@@ -32,11 +32,11 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div key={product.id} className="bg-white rounded-lg w-fit transition-shadow duration-300 group overflow-hidden">
+    <div key={product.id} className="bg-white  w-fit transition-shadow duration-300 group overflow-hidden">
       <Link href={`/home/products/${product.id}`} className=''>
         <div
           onClick={() => handleDetail(product)}
-          className="relative hover:scale-110 transition-all duration-300  h-56 min-w-70 bg-gray-100 overflow-hidden"
+          className="relative hover:scale-105 transition-all duration-300 h-70 min-w-full md:min-w-66 bg-gray-100 overflow-hidden"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -91,33 +91,27 @@ const Product = ({ product }) => {
             </div>
           )}
         </div>
-      </Link>
 
-      <div className="px-4 pt-1">
-        <div className="">
+        <div className="px-4 pt-1 flex flex-col justify-between min-h-[250px]">
           <div className=''>
-            <Link href={`/home/products/${product.id}`}>
-              <h3 className="font-semibold text-[23px] hover:underline text-gray-900 mb-1 line-clamp-1">{product.title}</h3>
-            </Link>
+            <h3 className="font-semibold text-[23px] hover:underline text-gray-900 mb-1">{product.title}</h3>
           </div>
-        </div>
-        <div className="text-start text-[20px] mt-6">
-          {product.discounted_price && product.discounted_price !== product.orignal_price ? (
-            <>
-              <div className="text-[20px] text-gray-500 line-through">${product.orignal_price}</div>
-              <div className="text-lg text-[20px] font-bold">${product.discounted_price}</div>
-            </>
-          ) : (
-            <span className="text-[12px] font-bold text-gray-900">${product.orignal_price}</span>
-          )}
-        </div>
+          <div className="text-start text-[20px] mt-6">
+            {product.discounted_price && product.discounted_price !== product.orignal_price ? (
+              <>
+                <div className="text-[20px] text-gray-500 line-through">${product.orignal_price}</div>
+                <div className="text-lg text-[20px] ">${product.discounted_price}</div>
+              </>
+            ) : (
+              <span className="text-[12px] text-gray-900">${product.orignal_price}</span>
+            )}
+          </div>
 
-        <Link href={`/home/products/${product.id}`}>
           <div className='border-2 mt-4 text-center text-red-400 cursor-pointer border-red-400 w-full rounded-full py-2 text-xl hover:bg-red-400 hover:text-white transition-colors'>
             Add to Cart
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   )
 }

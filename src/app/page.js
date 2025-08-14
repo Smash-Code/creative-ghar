@@ -310,7 +310,7 @@ export default function HomePage() {
                       {categoryName}
                     </h2>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6  mb-6">
                     {categoryProducts.slice(0, 4).map((product) => (
                       <Product key={product.id} product={product} />
                     ))}

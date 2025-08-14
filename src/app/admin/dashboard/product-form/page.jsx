@@ -423,7 +423,7 @@ function ProductFormPage() {
                   </>
                 )}
 
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                   <select
                     name="category"
@@ -431,7 +431,7 @@ function ProductFormPage() {
                     onChange={handleChange}
                     className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   >
-                    {/* Add a default option that shows the current category name */}
+                   
                     {formData.category && (
                       <option value={formData.category} className='border-2 border-gray-400'>
                         {
@@ -444,7 +444,7 @@ function ProductFormPage() {
                       </option>
                     )}
 
-                    {/* Show all other categories */}
+                  
                     {catLoading ? (
                       <option><svg className="animate-spin h-4 w-4 text-gray-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -459,6 +459,27 @@ function ProductFormPage() {
                           </option>
                         ))
                     )}
+                  </select>
+                </div> */}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+
+                    <option value="">{formData.category}</option>
+                    {
+                      catLoading ? <div>loading...</div> :
+                        categories.map((category) => (
+                          <option className='border-2 border-gray-400' key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))
+                    }
                   </select>
                 </div>
 

@@ -75,7 +75,7 @@ export default function CheckoutPage() {
                 color: '', // Add color if available
                 quantity: cartItems[0].quantity,
                 orignal_price: cartItems[0].price,
-                images: cartItems[0].image,
+                images: cartItems.image,
                 discounted_price: cartItems[0].price * cartItems[0].quantity
             });
 
