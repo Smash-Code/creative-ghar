@@ -17,9 +17,9 @@ function ProductFormPage() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    orignal_price: 0,
-    discounted_price: 0,
-    stock: 0,
+    orignal_price: '',
+    discounted_price: '',
+    stock: '',
     estimated_delivery_time: '',
     category: '',
     images: [],
@@ -422,25 +422,6 @@ function ProductFormPage() {
                     </div>
                   </>
                 )}
-
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                  >
-                    {
-                      catLoading ? <div>loading...</div> :
-                        categories.map((category) => (
-                          <option className='border-2 border-gray-400' key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))
-                    }
-                  </select>
-                </div> */}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>

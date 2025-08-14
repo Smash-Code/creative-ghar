@@ -9,8 +9,8 @@ const orderSchema = z.object({
   productId: z.string().min(1, "Product ID is required"),
   userId: z.string().min(1, "User ID is required"),
   quantity: z.number().min(1, "Quantity must be at least 1"),
-  size: z.string().min(1, "Size is required").optional(),
-  color: z.string().min(1, "Color is required").optional(),
+  size: z.string().optional().nullable(), // Make truly optional and nullable
+  color: z.string().optional().nullable(), // Make truly optional and nullable
   totalPrice: z.number().min(0, "Price cannot be negative"),
   role: z.string().min(1, "Role is required"),
   // Fields from both modals made optional
