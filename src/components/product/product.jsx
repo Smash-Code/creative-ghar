@@ -45,7 +45,7 @@ const Product = ({ product }) => {
             <img
               src={product.images[currentImageIndex] || '/no-image.png'}
               alt={product.title}
-              className="w-full h-full object-cover transition-opacity duration-500"
+              className="w-full min-w-66 h-full object-cover transition-opacity duration-500"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gray-200">

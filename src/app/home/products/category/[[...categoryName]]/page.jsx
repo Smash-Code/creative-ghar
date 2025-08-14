@@ -66,9 +66,8 @@ export default function CategoryProductsPage() {
                 </div>
 
                 {loading && products.length === 0 ? (
-                    <div className="flex flex-col justify-center items-center h-64 bg-white rounded-xl shadow-md p-8">
-                        <Loader2 className="animate-spin text-indigo-500" size={48} />
-                        <p className="mt-4 text-lg font-medium text-gray-700">Loading products...</p>
+                    <div className="flex justify-center items-center h-64">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
                     </div>
                 ) : initialLoadComplete ? (
                     <div className="flex flex-col justify-center items-center p-12 bg-white rounded-xl shadow-md text-center">
@@ -95,10 +94,9 @@ export default function CategoryProductsPage() {
                                     className="relative flex items-center justify-center gap-2 px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-indigo-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:-translate-y-1"
                                 >
                                     {loading ? (
-                                        <>
-                                            <Loader2 className="animate-spin" size={20} />
-                                            Loading...
-                                        </>
+                                        <div className="flex justify-center items-center h-64">
+                                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+                                        </div>
                                     ) : (
                                         "Load More Products"
                                     )}
