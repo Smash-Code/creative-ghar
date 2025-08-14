@@ -88,7 +88,7 @@ export default function Navbar({ setCart }) {
             {categories?.map((category) => (
               <Link
                 key={category._id}
-                href={`/home/products/category/${category.slug || category._id}`}
+                href={`/home/products/category/${category.name}`}
                 className="text-gray-700 hover:text-indigo-600 transition-colors py-2 px-4"
                 onClick={() => setIsMenuOpen(false)}
               >
