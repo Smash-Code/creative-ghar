@@ -156,7 +156,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
               {isDownloading ? 'Downloading...' : 'Download Receipt'}
             </button>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="text-indigo-600 hover:text-indigo-800 font-medium"
             >
               Continue Shopping
