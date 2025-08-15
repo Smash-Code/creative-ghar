@@ -32,11 +32,11 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div key={product.id} className="bg-white  w-fit transition-shadow duration-300 group overflow-hidden">
-      <Link href={`/home/products/${product.id}`} className=''>
+    <div key={product.id} className="bg-white transition-shadow duration-300 group overflow-hidden h-full">
+      <Link href={`/home/products/${product.id}`} className='h-full flex flex-col'>
         <div
           onClick={() => handleDetail(product)}
-          className="relative hover:scale-105 transition-all duration-300 h-70 min-w-full md:min-w-66 bg-gray-100 overflow-hidden"
+          className="relative hover:scale-105 transition-all duration-300 w-full aspect-square bg-gray-100 overflow-hidden"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -45,7 +45,7 @@ const Product = ({ product }) => {
             <img
               src={product.images[currentImageIndex] || '/no-image.png'}
               alt={product.title}
-              className="w-full min-w-66 h-full object-cover transition-opacity duration-500"
+              className="w-full h-full object-cover transition-opacity duration-500"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gray-200">
@@ -92,22 +92,22 @@ const Product = ({ product }) => {
           )}
         </div>
 
-        <div className="px-4 pt-1 flex flex-col justify-between min-h-[250px]">
-          <div className=''>
-            <h3 className="font-semibold text-[23px] hover:underline text-gray-900 mb-1">{product.title}</h3>
+        <div className="px-1 pt-4 flex flex-col justify-between flex-grow">
+          <div>
+            <h3 className="font-semibold text-lg md:text-xl lg:text-[23px] hover:underline text-gray-900 mb-1 line-clamp-2">{product.title}</h3>
           </div>
-          <div className="text-start text-[20px] mt-6">
+          <div className="text-start text-base md:text-lg lg:text-[20px] mt-4 lg:mt-6">
             {product.discounted_price && product.discounted_price !== product.orignal_price ? (
               <>
-                <div className="text-[20px] text-gray-500 line-through">${product.orignal_price}</div>
-                <div className="text-lg text-[20px] ">${product.discounted_price}</div>
+                <div className="text-gray-500 line-through">${product.orignal_price}</div>
+                <div>${product.discounted_price}</div>
               </>
             ) : (
-              <span className="text-[12px] text-gray-900">${product.orignal_price}</span>
+              <span className="text-gray-900">${product.orignal_price}</span>
             )}
           </div>
 
-          <div className='border-2 mt-4 text-center text-red-400 cursor-pointer border-red-400 w-full rounded-full py-2 text-xl hover:bg-red-400 hover:text-white transition-colors'>
+          <div className='border-2 mt-4 text-center text-red-400 cursor-pointer border-red-400 w-full rounded-full py-1 md:py-3 font-semibold text-lg hover:bg-red-400 hover:text-white transition-colors mb-2'>
             Add to Cart
           </div>
         </div>

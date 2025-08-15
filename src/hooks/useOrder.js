@@ -4,7 +4,7 @@ export const useOrder = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [orders, setOrders] = useState([]); // Initialize as empty array
-  const [order , setOrder] = useState(null)
+  const [order, setOrder] = useState(null)
 
   const getAllOrders = async () => {
     setLoading(true);
@@ -12,14 +12,14 @@ export const useOrder = () => {
     try {
       const response = await fetch('/api/order');
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to fetch orders');
       }
-      
+
       // Ensure we always set an array, even if data.data is undefined
       setOrders(Array.isArray(data?.data) ? data.data : []);
-      console.log(data.data , "data here")
+      console.log(data.data, "data here")
       return data.data || [];
     } catch (err) {
       setError(err.message);
@@ -30,30 +30,30 @@ export const useOrder = () => {
     }
   };
   const updateOrder = async (orderId, updateData) => {
-  try {
-    const response = await fetch(`/api/order/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateData),
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to update order');
+    try {
+      const response = await fetch(`/api/order/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update order');
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw error;
     }
-    
-    return await response.json();
-  } catch (error) {
-    throw error;
-  }
-};
+  };
 
   const createOrder = async (orderData) => {
     setLoading(true);
     setError(null);
     setOrder(orderData)
-    
+
     try {
       const response = await fetch('/api/order', {
         method: 'POST',
@@ -77,5 +77,5 @@ export const useOrder = () => {
     }
   };
 
-  return { updateOrder,createOrder, getAllOrders, orders, order,loading, error };
+  return { updateOrder, createOrder, getAllOrders, orders, order, loading, error };
 };

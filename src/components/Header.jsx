@@ -32,11 +32,11 @@ export default function Navbar({ setCart }) {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-4 top-0' : 'bg-transparent py-4'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-4 top-0' : 'bg-white py-4'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo - Creative Ghar */}
         <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors">
-          <Image src="/creative-logo.png" height={50} width={50} className='object-contain' alt='Creative Ghar' />
+          <Image src="/creative-logo.png" height={75} width={75} className='object-contain' alt='Creative Ghar' />
         </Link>
 
         {/* Categories in center - Desktop */}

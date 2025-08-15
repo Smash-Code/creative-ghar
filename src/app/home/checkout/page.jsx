@@ -14,6 +14,7 @@ export default function CheckoutPage() {
         username: '',
         email: '',
         phone: '',
+        city: '',
         address: '',
         paymentOption: 'jazzcash',
         country: 'Pakistan'
@@ -60,6 +61,7 @@ export default function CheckoutPage() {
                     email: formData.email,
                     phone: formData.phone,
                     role: 'user',
+                    city: formData.city,
                     address: formData.address,
                     paymentStatus: 'pending',
                     country: formData.country,
@@ -263,6 +265,20 @@ export default function CheckoutPage() {
                                                     id="address"
                                                     name="address"
                                                     value={formData.address}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-2">
+                                                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                                    City
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="city"
+                                                    name="city"
+                                                    value={formData.city}
                                                     onChange={handleChange}
                                                     required
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
