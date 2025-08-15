@@ -1,11 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useOrder } from '@/hooks/useOrder';
 import OrderReceiptModal from '@/components/modals/orderReciept';
 import Navbar from '@/components/Header';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -19,9 +20,12 @@ export default function CheckoutPage() {
         paymentOption: 'jazzcash',
         country: 'Pakistan'
     });
+    const [formErrors, setFormErrors] = useState({
+        phone: ''
+    });
     const [showReceipt, setShowReceipt] = useState(false);
     const [orderDetails, setOrderDetails] = useState(null);
-    const [orderSuccess, setOrderSuccess] = useState(false)
+    const [orderSuccess, setOrderSuccess] = useState(false);
 
     // Load cart items from localStorage
     const [cartItems] = useState(() => {
@@ -31,6 +35,18 @@ export default function CheckoutPage() {
         }
         return [];
     });
+
+    // Check if all required fields are filled
+    const isFormValid = () => {
+        return (
+            formData.username.trim() !== '' &&
+            formData.email.trim() !== '' &&
+            formData.phone.trim() !== '' &&
+            formData.city.trim() !== '' &&
+            formData.address.trim() !== '' &&
+            formData.phone.length === 11
+        );
+    };
 
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
@@ -42,66 +58,47 @@ export default function CheckoutPage() {
             ...prev,
             [name]: value
         }));
+
+        // Validate phone number specifically
+        if (name === 'phone') {
+            validatePhone(value);
+        }
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     try {
-    //         // Create an order for each product in the cart
-    //         const orderPromises = cartItems.map(item =>
-    //             createOrder({
-    //                 productId: item.id,
-    //                 userId: 'current-user-id', // Replace with actual user ID
-    //                 quantity: item.quantity,
-    //                 size: item.size,
-    //                 color: item.color,
-    //                 totalPrice: item.price * item.quantity,
-    //                 username: formData.username,
-    //                 email: formData.email,
-    //                 phone: formData.phone,
-    //                 role: 'user',
-    //                 city: formData.city,
-    //                 address: formData.address,
-    //                 paymentStatus: 'pending',
-    //                 country: formData.country,
-    //                 paymentMethod: formData.paymentOption
-    //             })
-    //         );
-
-    //         const createdOrders = await Promise.all(orderPromises);
-
-    //         // Set order details for the receipt
-    //         setOrderDetails({
-    //             ...createdOrders[0], // Take the first order details
-    //             product: cartItems[0], // Take the first product for the receipt
-    //             size: '', // Add size if available
-    //             color: '', // Add color if available
-    //             quantity: cartItems[0].quantity,
-    //             orignal_price: cartItems[0].price,
-    //             images: cartItems[0].image,
-    //             discounted_price: cartItems[0].price * cartItems[0].quantity
-    //         });
-    //         // Clear cart after successful order
-    //         localStorage.removeItem('cart');
-
-    //         // Show receipt modal
-    //         setShowReceipt(true);
-
-    //     } catch (error) {
-    //         alert(error.message || 'Failed to place order');
-    //     }
-    // };
+    const validatePhone = (phone) => {
+        if (phone.length > 0 && phone.length < 11) {
+            setFormErrors(prev => ({
+                ...prev,
+                phone: 'Phone number must be 11 digits'
+            }));
+        } else if (phone.length === 11 && !phone.startsWith('03')) {
+            setFormErrors(prev => ({
+                ...prev,
+                phone: 'Phone number should start with 03'
+            }));
+        } else {
+            setFormErrors(prev => ({
+                ...prev,
+                phone: ''
+            }));
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Final validation before submission
+        if (!isFormValid()) {
+            alert('Please fill all required fields correctly');
+            return;
+        }
 
         try {
             // Create an order for each product in the cart
             const orderPromises = cartItems.map(item =>
                 createOrder({
                     productId: item.id,
-                    userId: 'current-user-id', // Replace with actual user ID
+                    userId: 'current-user-id',
                     quantity: item.quantity,
                     size: item.size,
                     color: item.color,
@@ -122,7 +119,7 @@ export default function CheckoutPage() {
 
             // Set order details for the receipt with all products
             setOrderDetails({
-                ...createdOrders[0], // Take the first order details for customer info
+                ...createdOrders[0],
                 products: cartItems.map((item, index) => ({
                     ...item,
                     orderId: createdOrders[index]?.id || '',
@@ -151,6 +148,7 @@ export default function CheckoutPage() {
         }
     };
 
+
     if (orderSuccess) {
         return (
             <div>
@@ -164,10 +162,12 @@ export default function CheckoutPage() {
                         </div>
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
                         <p className="text-gray-600 mb-6">Thank you for your purchase. And Hope you saved the reciept.</p>
-                        <div className="animate-pulse text-sm text-gray-500">Happy Shopping on Creative Ghar</div>
+                        <Link href="/" className="inline-block bg-green-100 hover:bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
+                            Continue Shopping
+                        </Link>
+                        <div className="animate-pulse text-sm text-gray-500 mt-4">Happy Shopping on Creative Ghar</div>
                     </div>
                 </div>
-
                 <Footer />
             </div>
         );
@@ -258,6 +258,7 @@ export default function CheckoutPage() {
                                         <h2 className="text-lg font-medium text-gray-900 mb-4">Customer Information</h2>
 
                                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                            {/* Username field - remains the same */}
                                             <div className="sm:col-span-2">
                                                 <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                                                     Username
@@ -273,6 +274,7 @@ export default function CheckoutPage() {
                                                 />
                                             </div>
 
+                                            {/* Email field - remains the same */}
                                             <div>
                                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                                     Email
@@ -288,71 +290,18 @@ export default function CheckoutPage() {
                                                 />
                                             </div>
 
-                                            {/* <div>
+                                            {/* Phone field with validation */}
+                                            <div className='relative' >
                                                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                                                     Mobile Number
                                                 </label>
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     id="phone"
                                                     name="phone"
                                                     value={formData.phone}
                                                     onChange={(e) => {
                                                         const value = e.target.value.replace(/\D/g, '');
-                                                        // Limit to 11 digits
-                                                        if (value.length <= 11) {
-                                                            handleChange({
-                                                                target: {
-                                                                    name: 'phone',
-                                                                    value: value
-                                                                }
-                                                            });
-                                                        }
-                                                    }}
-                                                    required
-                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                                />
-                                            </div> */}
-                                            {/* <div>
-                                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                                    Mobile Number
-                                                </label>
-                                                <input
-                                                    type="text" // changed from number to text to preserve leading zero
-                                                    id="phone"
-                                                    name="phone"
-                                                    value={formData.phone}
-                                                    onChange={(e) => {
-                                                        const value = e.target.value
-
-                                                        // Allow only if starting with "03" and max 11 digits
-                                                        if ((value.startsWith('03') || value === '') && value.length <= 11) {
-                                                            handleChange({
-                                                                target: {
-                                                                    name: 'phone',
-                                                                    value: value
-                                                                }
-                                                            });
-                                                        }
-                                                    }}
-                                                    required
-                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                                    placeholder="03XXXXXXXXX"
-                                                />
-                                            </div> */}
-                                            <div>
-                                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                                    Mobile Number
-                                                </label>
-                                                <input
-                                                    type="text" // keep as text to preserve leading zero
-                                                    id="phone"
-                                                    name="phone"
-                                                    value={formData.phone}
-                                                    onChange={(e) => {
-                                                        const value = e.target.value.replace(/\D/g, ''); // only digits
-
-                                                        // Allow if empty, or less than 2 digits, or starts with 03
                                                         if (
                                                             value === '' ||
                                                             value.length < 2 ||
@@ -370,10 +319,15 @@ export default function CheckoutPage() {
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                                     placeholder="03XXXXXXXXX"
                                                 />
+                                                {/* {formErrors.phone && (
+                                                    <p className="mt-1 text-sm text-red-600">{formErrors.phone}</p>
+                                                )} */}
+                                                {formData.phone.length > 0 && formData.phone.length < 11 && (
+                                                    <div className="border-1 border-green-500 bg-green-400/10 px-2 py-1 rounded-[8px] absolute  mt-1 text-sm text-green-600">Phone starts with 03 and it'll be of 11 digits</div>
+                                                )}
                                             </div>
 
-
-
+                                            {/* Address field - remains the same */}
                                             <div className="sm:col-span-2">
                                                 <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                                                     Address
@@ -388,8 +342,10 @@ export default function CheckoutPage() {
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                                 />
                                             </div>
+
+                                            {/* City field - remains the same */}
                                             <div className="sm:col-span-2">
-                                                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                                <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                                                     City
                                                 </label>
                                                 <input
@@ -403,6 +359,7 @@ export default function CheckoutPage() {
                                                 />
                                             </div>
 
+                                            {/* Country field - remains the same */}
                                             <div className="sm:col-span-2">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                                                     Country
@@ -475,8 +432,10 @@ export default function CheckoutPage() {
                                     <div className="pt-6">
                                         <button
                                             type="submit"
-                                            disabled={orderLoading || cartItems.length === 0}
-                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${orderLoading || cartItems.length === 0 ? 'opacity-75 cursor-not-allowed' : ''
+                                            disabled={orderLoading || cartItems.length === 0 || !isFormValid()}
+                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${orderLoading || cartItems.length === 0 || !isFormValid()
+                                                ? 'opacity-75 cursor-not-allowed'
+                                                : ''
                                                 }`}
                                         >
                                             {orderLoading ? (
@@ -507,14 +466,6 @@ export default function CheckoutPage() {
                     onModalClose={() => {
                         setShowReceipt(false);
                         setOrderSuccess(true);
-
-                        // Set timeout to redirect after 5 seconds
-                        // const redirectTimer = setTimeout(() => {
-                        //     router.push('/');
-                        // }, 5000);
-
-                        // Clean up the timer if component unmounts
-                        // return () => clearTimeout(redirectTimer);
                     }}
                 />
             )}

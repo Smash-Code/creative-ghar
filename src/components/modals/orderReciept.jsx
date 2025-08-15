@@ -307,7 +307,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
           </div>
 
           {/* Buttons */}
-          <div className="mt-4 flex justify-center gap-4">
+          <div className="mt-4 flex items-center justify-center mx-auto">
             <button
               onClick={handleDownload}
               disabled={isDownloading}
@@ -315,12 +315,12 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
             >
               {isDownloading ? 'Downloading...' : 'Download Receipt'}
             </button>
-            <button
+            {/* <button
               onClick={handleClose}
               className="text-indigo-600 hover:text-indigo-800 font-medium"
             >
               Continue Shopping
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
