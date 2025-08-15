@@ -263,7 +263,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
                       <p className="text-sm text-gray-600">Qty: {product.quantity}</p>
                     </div>
                     <p className="font-medium">
-                      ${(product.discounted_price || product.orignal_price).toFixed(2)}
+                      RS {(product.discounted_price || product.orignal_price).toFixed(2)}
                     </p>
                   </div>
                   {product.size && (
@@ -279,7 +279,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
             <div className="mb-6">
               <div className="flex justify-between py-2">
                 <span>Subtotal:</span>
-                <span>${orderDetails.total}</span>
+                <span>RS {orderDetails.total}</span>
               </div>
               <div className="flex justify-between py-2">
                 <span>Shipping:</span>
@@ -287,7 +287,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
               </div>
               <div className="flex justify-between py-2 border-t border-gray-200 font-bold text-lg">
                 <span>Total:</span>
-                <span>${orderDetails.total}</span>
+                <span>RS {orderDetails.total}</span>
               </div>
             </div>
 
