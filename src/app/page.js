@@ -261,7 +261,7 @@ export default function HomePage() {
       <div className='relative'>
         <Navbar />
       </div>
-      <div className="mt-24" >
+      <div className="mt-10 md:mt-22" >
         <HeroSection />
       </div>
       <div className="max-w-[1320px] mx-auto " >
