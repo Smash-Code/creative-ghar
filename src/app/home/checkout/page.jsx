@@ -288,7 +288,7 @@ export default function CheckoutPage() {
                                                 />
                                             </div>
 
-                                            <div>
+                                            {/* <div>
                                                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                                                     Mobile Number
                                                 </label>
@@ -312,7 +312,67 @@ export default function CheckoutPage() {
                                                     required
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                                 />
+                                            </div> */}
+                                            {/* <div>
+                                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                                                    Mobile Number
+                                                </label>
+                                                <input
+                                                    type="text" // changed from number to text to preserve leading zero
+                                                    id="phone"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value
+
+                                                        // Allow only if starting with "03" and max 11 digits
+                                                        if ((value.startsWith('03') || value === '') && value.length <= 11) {
+                                                            handleChange({
+                                                                target: {
+                                                                    name: 'phone',
+                                                                    value: value
+                                                                }
+                                                            });
+                                                        }
+                                                    }}
+                                                    required
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                    placeholder="03XXXXXXXXX"
+                                                />
+                                            </div> */}
+                                            <div>
+                                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                                                    Mobile Number
+                                                </label>
+                                                <input
+                                                    type="text" // keep as text to preserve leading zero
+                                                    id="phone"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value.replace(/\D/g, ''); // only digits
+
+                                                        // Allow if empty, or less than 2 digits, or starts with 03
+                                                        if (
+                                                            value === '' ||
+                                                            value.length < 2 ||
+                                                            (value.startsWith('03') && value.length <= 11)
+                                                        ) {
+                                                            handleChange({
+                                                                target: {
+                                                                    name: 'phone',
+                                                                    value: value
+                                                                }
+                                                            });
+                                                        }
+                                                    }}
+                                                    required
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                    placeholder="03XXXXXXXXX"
+                                                />
                                             </div>
+
+
 
                                             <div className="sm:col-span-2">
                                                 <label htmlFor="address" className="block text-sm font-medium text-gray-700">
