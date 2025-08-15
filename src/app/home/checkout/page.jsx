@@ -209,9 +209,9 @@ export default function CheckoutPage() {
                                                     className="w-full h-full object-center object-cover"
                                                 />
                                             </div>
-                                            <div className="ml-4 flex-1">
+                                            <div className="ml-4 flex-2">
                                                 <h3 className="text-sm font-medium text-gray-900">{item.title}</h3>
-                                                <p className="text-sm text-gray-500">${item.price.toFixed(2)} × {item.quantity}</p>
+                                                <p className="text-sm text-gray-500">RS {item.price.toFixed(2)} × {item.quantity}</p>
                                             </div>
                                             <div className="ml-4 flex-1">
                                                 {item.hasVariants && (
@@ -222,7 +222,7 @@ export default function CheckoutPage() {
                                                 )}
                                             </div>
                                             <p className="text-sm font-medium text-gray-900">
-                                                ${(item.price * item.quantity).toFixed(2)}
+                                                RS {(item.price * item.quantity).toFixed(2)} PKR
                                             </p>
                                         </div>
                                     ))}
@@ -231,7 +231,7 @@ export default function CheckoutPage() {
                                 <div className="border-t border-gray-200 mt-6 pt-6 space-y-3">
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                         <p>Subtotal</p>
-                                        <p>${calculateTotal()}</p>
+                                        <p>RS {calculateTotal()} PKR</p>
                                     </div>
                                     <div className="flex justify-between">
                                         <p className="text-sm text-gray-600">Shipping</p>
@@ -239,13 +239,13 @@ export default function CheckoutPage() {
                                     </div>
                                     <div className="flex justify-between">
                                         <p className="text-sm text-gray-600">Taxes</p>
-                                        <p className="text-sm text-gray-600">$0.00</p>
+                                        <p className="text-sm text-gray-600">RS 0.00</p>
                                     </div>
                                 </div>
 
                                 <div className="border-t border-gray-200 mt-4 pt-4 flex justify-between text-lg font-bold text-gray-900">
                                     <p>Total</p>
-                                    <p>${calculateTotal()}</p>
+                                    <p>RS {calculateTotal()} PKR</p>
                                 </div>
                             </div>
                         </div>

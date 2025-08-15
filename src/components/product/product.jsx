@@ -98,14 +98,14 @@ const Product = ({ product }) => {
           <div>
             <h3 className="font-semibold text-lg md:text-xl lg:text-[23px] hover:underline text-gray-900 mb-1 line-clamp-2">{product.title}</h3>
           </div>
-          <div className="text-start text-base md:text-lg lg:text-[20px] mt-4 lg:mt-6">
+          <div className="flex flex-col justify-between md:flex-row  text-start text-base md:text-lg lg:text-[20px] mt-4 lg:mt-6">
             {product.discounted_price && product.discounted_price !== product.orignal_price ? (
               <>
-                <div className="text-gray-500 line-through">${product.orignal_price}</div>
-                <div>${product.discounted_price}</div>
+                <div className="text-gray-500 line-through">RS {product.orignal_price}.00 PKR </div>
+                <div>RS {product.discounted_price}.00 PKR</div>
               </>
             ) : (
-              <span className="text-gray-900">${product.orignal_price}</span>
+              <span className="text-gray-900">RS {product.orignal_price}.00 PKR</span>
             )}
           </div>
 

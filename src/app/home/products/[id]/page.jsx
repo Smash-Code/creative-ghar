@@ -245,15 +245,15 @@ export default function ProductDetailPage() {
                 <div className="flex items-center">
                   {hasDiscount && (
                     <span className="text-xl text-gray-500 line-through mr-3">
-                      ${product.orignal_price.toFixed(2)}
+                      RS {product.orignal_price.toFixed(2)} PKR
                     </span>
                   )}
                   <span className="text-xl font-bold text-gray-900">
-                    ${price.toFixed(2)}
+                    RS {price.toFixed(2)} PKR
                   </span>
                   {hasDiscount && (
                     <span className="ml-3 bg-red-100 text-red-800 text-sm font-medium px-2.5 py-0.5 rounded">
-                      Save ${(product.orignal_price - product.discounted_price).toFixed(2)}
+                      Save RS {(product.orignal_price - product.discounted_price).toFixed(2)}
                     </span>
                   )}
                 </div>
@@ -428,9 +428,9 @@ export default function ProductDetailPage() {
                                 <div>
                                   <div className="flex justify-between text-base font-medium text-gray-900">
                                     <h3>{item.title}</h3>
-                                    <p className="ml-4">${(item.price * item.quantity).toFixed(2)}</p>
+                                    <p className="ml-4">RS {(item.price * item.quantity).toFixed(2)} PKR</p>
                                   </div>
-                                  <p className="mt-1 text-sm text-gray-500">${item.price.toFixed(2)} each</p>
+                                  <p className="mt-1 text-sm text-gray-500">RS {item.price.toFixed(2)} each</p>
                                 </div>
                                 <div className="flex-1 flex items-end justify-between text-sm">
                                   <div className="flex items-center border border-gray-300 rounded-md">
@@ -478,7 +478,7 @@ export default function ProductDetailPage() {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>${calculateTotal()}</p>
+                      <p>RS {calculateTotal()} PKR</p>
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
