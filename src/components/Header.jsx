@@ -32,7 +32,7 @@ export default function Navbar({ setCart }) {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white py-2 shadow-md top-0' : 'bg-white py-2'}`}>
+    <nav className={`fixed w-full mx-auto z-50 transition-all duration-300 ${isScrolled ? 'bg-white py-2 shadow-md top-0' : 'bg-white py-2'}`}>
       <div className="container mx-auto px-10 md:px-6 flex justify-between items-center">
         {/* Logo - Creative Ghar */}
         <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors">
