@@ -44,6 +44,55 @@ export default function CheckoutPage() {
         }));
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     try {
+    //         // Create an order for each product in the cart
+    //         const orderPromises = cartItems.map(item =>
+    //             createOrder({
+    //                 productId: item.id,
+    //                 userId: 'current-user-id', // Replace with actual user ID
+    //                 quantity: item.quantity,
+    //                 size: item.size,
+    //                 color: item.color,
+    //                 totalPrice: item.price * item.quantity,
+    //                 username: formData.username,
+    //                 email: formData.email,
+    //                 phone: formData.phone,
+    //                 role: 'user',
+    //                 city: formData.city,
+    //                 address: formData.address,
+    //                 paymentStatus: 'pending',
+    //                 country: formData.country,
+    //                 paymentMethod: formData.paymentOption
+    //             })
+    //         );
+
+    //         const createdOrders = await Promise.all(orderPromises);
+
+    //         // Set order details for the receipt
+    //         setOrderDetails({
+    //             ...createdOrders[0], // Take the first order details
+    //             product: cartItems[0], // Take the first product for the receipt
+    //             size: '', // Add size if available
+    //             color: '', // Add color if available
+    //             quantity: cartItems[0].quantity,
+    //             orignal_price: cartItems[0].price,
+    //             images: cartItems[0].image,
+    //             discounted_price: cartItems[0].price * cartItems[0].quantity
+    //         });
+    //         // Clear cart after successful order
+    //         localStorage.removeItem('cart');
+
+    //         // Show receipt modal
+    //         setShowReceipt(true);
+
+    //     } catch (error) {
+    //         alert(error.message || 'Failed to place order');
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -71,17 +120,26 @@ export default function CheckoutPage() {
 
             const createdOrders = await Promise.all(orderPromises);
 
-            // Set order details for the receipt
+            // Set order details for the receipt with all products
             setOrderDetails({
-                ...createdOrders[0], // Take the first order details
-                product: cartItems[0], // Take the first product for the receipt
-                size: '', // Add size if available
-                color: '', // Add color if available
-                quantity: cartItems[0].quantity,
-                orignal_price: cartItems[0].price,
-                images: cartItems[0].image,
-                discounted_price: cartItems[0].price * cartItems[0].quantity
+                ...createdOrders[0], // Take the first order details for customer info
+                products: cartItems.map((item, index) => ({
+                    ...item,
+                    orderId: createdOrders[index]?.id || '',
+                    orignal_price: item.price,
+                    discounted_price: item.price * item.quantity
+                })),
+                total: calculateTotal(),
+                customerInfo: {
+                    username: formData.username,
+                    email: formData.email,
+                    phone: formData.phone,
+                    address: formData.address,
+                    city: formData.city,
+                    country: formData.country
+                }
             });
+
             // Clear cart after successful order
             localStorage.removeItem('cart');
 

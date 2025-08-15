@@ -156,7 +156,7 @@ export default function ProductCarousel({ products }) {
     if (!products || products.length === 0) return null;
 
     return (
-        <div className="relative w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="relative w-full mx-auto py-8 px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold mb-6">You may also like</h2>
 
             <div className="relative overflow-hidden">

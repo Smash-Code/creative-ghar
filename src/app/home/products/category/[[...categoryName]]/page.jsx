@@ -52,9 +52,9 @@ export default function CategoryProductsPage() {
                 <div className="flex gap-4 md:items-center flex-col md:flex-row justify-between mb-8">
                     <button
                         onClick={() => router.back()}
-                        className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-800 transition-colors duration-300 font-medium group"
+                        className="flex cursor-pointer items-center space-x-2 text-red-600 hover:text-red-800 transition-colors duration-300 font-medium group"
                     >
-                        <div className="p-2 bg-indigo-100 rounded-full group-hover:bg-indigo-200 transition-colors">
+                        <div className="p-2 bg-red-100 rounded-full group-hover:bg-red-200 transition-colors">
                             <ChevronLeft size={20} className="stroke-2" />
                         </div>
                         <span className="text-sm md:text-base">Go Back</span>

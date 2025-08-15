@@ -23,9 +23,6 @@ export default function MarqueeDisplay() {
     };
 
     fetchActiveMessages();
-    // const interval = setInterval(fetchActiveMessages, 60000); // Refresh every minute
-
-    // return () => clearInterval(interval);
   }, []);
 
   if (loading) return null;
@@ -33,7 +30,7 @@ export default function MarqueeDisplay() {
   if (activeMessages.length === 0) return null;
 
   return (
-    <div className="bg-indigo-600 text-white py-2">
+    <div className="bg-red-400 text-white py-2">
       <marquee behavior="scroll" direction="left" scrollamount="5">
         {activeMessages.map((message, index) => (
           <span key={message.id} className="mx-4">

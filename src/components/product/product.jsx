@@ -52,6 +52,7 @@ const Product = ({ product }) => {
               <span className="text-gray-500">No Image</span>
             </div>
           )}
+          <div className='absolute text-white bottom-4 left-4 bg-red-400 px-4 pt-[3px] rounded-full' >Sale</div>
 
           {/* Navigation Arrows */}
           {product.images?.length > 1 && isHovering && (
@@ -90,6 +91,7 @@ const Product = ({ product }) => {
               ))}
             </div>
           )}
+
         </div>
 
         <div className="px-1 pt-4 flex flex-col justify-between flex-grow">
