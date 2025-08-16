@@ -8,6 +8,7 @@ import Footer from "@/components/Footer"
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Loader2 } from 'lucide-react'
+import CartPanel from '@/components/home/CartPanel'
 
 export default function CategoryProductsPage() {
     const params = useParams()
@@ -15,6 +16,7 @@ export default function CategoryProductsPage() {
     const categoryName = decodeURIComponent(params.categoryName)
     const { getProductsByCategory } = useProductApi()
     const [products, setProducts] = useState([])
+    const [isCartOpen, setIsCartOpen] = useState(false);
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(false)
@@ -46,7 +48,7 @@ export default function CategoryProductsPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
-            <Navbar />
+            <Navbar setCart={setIsCartOpen} />
 
             <main className="flex-grow container mt-24 mx-auto px-4 py-8">
                 <div className="flex gap-4 md:items-center flex-col md:flex-row justify-between mb-8">
@@ -106,8 +108,10 @@ export default function CategoryProductsPage() {
                     </>
                 )}
             </main>
-
+            <CartPanel isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
             <Footer />
         </div>
     )
 }
+
+

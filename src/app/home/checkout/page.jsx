@@ -7,6 +7,7 @@ import OrderReceiptModal from '@/components/modals/orderReciept';
 import Navbar from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import CartPanel from '@/components/home/CartPanel';
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -26,6 +27,8 @@ export default function CheckoutPage() {
     const [showReceipt, setShowReceipt] = useState(false);
     const [orderDetails, setOrderDetails] = useState(null);
     const [orderSuccess, setOrderSuccess] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
 
     // Load cart items from localStorage
     const [cartItems] = useState(() => {
@@ -152,7 +155,7 @@ export default function CheckoutPage() {
     if (orderSuccess) {
         return (
             <div>
-                <Navbar />
+                <Navbar setCart={setIsCartOpen} />
                 <div className="min-h-screen flex items-center justify-center bg-gray-50">
                     <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
                         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -162,12 +165,13 @@ export default function CheckoutPage() {
                         </div>
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">Order Placed Successfully!</h2>
                         <p className="text-gray-600 mb-6">Thank you for your purchase. And Hope you saved the reciept.</p>
-                        <Link href="/" className="inline-block bg-green-100 hover:bg-green-500 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
+                        <Link href="/" className="inline-block bg-green-100 hover:bg-green-200 text-green-600 font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">
                             Continue Shopping
                         </Link>
                         <div className="animate-pulse text-sm text-gray-500 mt-4">Happy Shopping on Creative Ghar</div>
                     </div>
                 </div>
+                <CartPanel isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
                 <Footer />
             </div>
         );
@@ -328,7 +332,7 @@ export default function CheckoutPage() {
                                             </div>
 
                                             {/* Address field - remains the same */}
-                                            <div className="sm:col-span-2">
+                                            <div className="mt-10 lg:mt-2 sm:col-span-2">
                                                 <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                                                     Address
                                                 </label>

@@ -13,11 +13,14 @@ import SpecialDeal from "@/components/home/SpecialDeal"
 import Services from "@/components/home/Services"
 import Newsletter from "@/components/home/Newsletter"
 import Link from 'next/link';
+import CartPanel from "@/components/home/CartPanel";
 
 export default function HomePage() {
   const { getAllProducts } = useProductApi();
   const [productsByCategory, setProductsByCategory] = useState({});
   const [loading, setLoading] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -50,9 +53,9 @@ export default function HomePage() {
     <div className="overflow-hidden">
       <MarqueeDisplay />
       <div className='relative'>
-        <Navbar />
+        <Navbar setCart={setIsCartOpen} />
       </div>
-      <div className="mt-10 md:mt-22" >
+      <div className=" mt-5 md:mt-22" >
         <HeroSection />
       </div>
       <div className="max-w-[1320px] mx-auto " >
@@ -60,7 +63,7 @@ export default function HomePage() {
       </div>
 
       {/* Products Section */}
-      <div id="products-section" className="flex mt-10 p-6">
+      <div id="products-section" className="flex mt-10 p-4 md:p-6">
         <div className="flex-1 overflow-auto">
           {loading ? (
             <div className="flex justify-center items-center h-64">
@@ -78,13 +81,13 @@ export default function HomePage() {
           ) : (
             <div className="space-y-12 mx-auto ">
               {Object.entries(productsByCategory).map(([categoryName, categoryProducts]) => (
-                <div key={categoryName} className="mb-3 p-6 bg-white">
+                <div key={categoryName} className="mb-3 md:p-6 bg-white">
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-3xl text-center mx-auto font-bold text-gray-800 tracking-wide">
+                    <h2 className="text-3xl mt-5 md:mt-0 text-center mx-auto font-bold text-gray-800 tracking-wide">
                       {categoryName}
                     </h2>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-6">
                     {categoryProducts.slice(0, 4).map((product) => (
                       <Product key={product.id} product={product} />
                     ))}
@@ -101,15 +104,7 @@ export default function HomePage() {
           )}
         </div>
       </div>
-
-      {/* <Services />
-      <HighRating />
-      <div className="my-[10%]">
-        <SpecialDeal />
-      </div>
-      <div className="mt-[10%]">
-        <Newsletter />
-      </div> */}
+      <CartPanel isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <Footer />
     </div>
   );

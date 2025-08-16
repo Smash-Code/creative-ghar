@@ -96,9 +96,9 @@ const Product = ({ product }) => {
 
         <div className="px-1 pt-4 flex flex-col justify-between flex-grow">
           <div>
-            <h3 className="font-semibold text-lg md:text-xl lg:text-[23px] hover:underline text-gray-900 mb-1 line-clamp-2">{product.title}</h3>
+            <h3 className="font-semibold text-sm md:text-xl lg:text-[23px] hover:underline text-gray-900 mb-1 line-clamp-2">{product.title}</h3>
           </div>
-          <div className="flex flex-col justify-between md:flex-row  text-start text-base md:text-lg lg:text-[20px] mt-4 lg:mt-6">
+          <div className="flex flex-col justify-between md:flex-row  text-start text-sm md:text-lg lg:text-[20px] mt-4 lg:mt-6">
             {product.discounted_price && product.discounted_price !== product.orignal_price ? (
               <>
                 <div className="text-gray-500 line-through">RS {product.orignal_price}.00 PKR </div>
@@ -109,7 +109,7 @@ const Product = ({ product }) => {
             )}
           </div>
 
-          <div className='border-2 mt-4 text-center text-red-400 cursor-pointer border-red-400 w-full rounded-full py-1 md:py-3 font-semibold text-lg hover:bg-red-400 hover:text-white transition-colors mb-2'>
+          <div className='border-1 md:border-2 mt-4 text-center text-red-400 cursor-pointer border-red-400 w-full rounded-[8px] py-2 md:py-3 md:font-semibold text-sm md:text-lg hover:bg-red-400 hover:text-white transition-colors mb-2'>
             Add to Cart
           </div>
         </div>
