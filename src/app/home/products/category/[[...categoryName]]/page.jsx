@@ -47,7 +47,7 @@ export default function CategoryProductsPage() {
     const initialLoadComplete = !loading && products.length === 0 && page === 1;
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+        <div className="overflow-hidden min-h-screen flex flex-col bg-gray-50 text-gray-800">
             <Navbar setCart={setIsCartOpen} />
 
             <main className="flex-grow container mt-24 mx-auto px-4 py-8">
