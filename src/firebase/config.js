@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA5-57IBYqDkXEuG4tQyvMrVK7bUfO3jRg",
-  authDomain: "creative-ghar.firebaseapp.com",
-  projectId: "creative-ghar",
-  storageBucket: "creative-ghar.firebasestorage.app",
-  messagingSenderId: "717579857649",
-  appId: "1:717579857649:web:581dfb083ae4b331de0350"
+  apiKey: "AIzaSyAgnCPURojAgCikVMz8kP0dn05zG4BEvIA",
+  authDomain: "creative-dev-a9571.firebaseapp.com",
+  projectId: "creative-dev-a9571",
+  storageBucket: "creative-dev-a9571.firebasestorage.app",
+  messagingSenderId: "880616191548",
+  appId: "1:880616191548:web:5ad08ad301fe3f7c97b539"
 };
 
 // Initialize Firebase
