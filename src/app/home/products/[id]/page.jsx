@@ -203,7 +203,7 @@ export default function ProductDetailPage() {
                 </div>
                 <p className="text-gray-700">{product.description}</p>
 
-                <div className="flex items-center">
+                <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
                   {hasDiscount && (
                     <span className="text-xl text-gray-500 line-through mr-3">
                       RS {product.orignal_price.toFixed(2)} PKR
@@ -213,7 +213,7 @@ export default function ProductDetailPage() {
                     RS {price.toFixed(2)} PKR
                   </span>
                   {hasDiscount && (
-                    <span className="ml-3 bg-red-100 text-red-800 text-sm font-medium px-2.5 py-0.5 rounded">
+                    <span className="md:ml-3 w-fit bg-red-100 text-red-800 text-sm font-medium px-2.5 py-0.5 rounded">
                       Save RS {(product.orignal_price - product.discounted_price).toFixed(2)}
                     </span>
                   )}
@@ -308,7 +308,7 @@ export default function ProductDetailPage() {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock <= 0}
-                    className={`flex-1 bg-indigo-600 text-white py-[6px] px-6 rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                    className={`flex-1 bg-red-300 text-white py-[6px] px-6 rounded-full hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                   >
                     Add to Cart

@@ -53,7 +53,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                                 <p className="text-gray-500">Your cart is empty</p>
                                                 <button
                                                     onClick={onClose}
-                                                    className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                                                    className="mt-4 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500"
                                                 >
                                                     Continue Shopping
                                                 </button>
@@ -107,7 +107,7 @@ export default function CartPanel({ isOpen, onClose }) {
 
                                                                 <button
                                                                     type="button"
-                                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                    className="font-medium text-red-400 hover:text-red-500"
                                                                     onClick={() => removeFromCart(item.id)}
                                                                 >
                                                                     Remove

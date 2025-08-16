@@ -437,7 +437,7 @@ export default function CheckoutPage() {
                                         <button
                                             type="submit"
                                             disabled={orderLoading || cartItems.length === 0 || !isFormValid()}
-                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${orderLoading || cartItems.length === 0 || !isFormValid()
+                                            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${orderLoading || cartItems.length === 0 || !isFormValid()
                                                 ? 'opacity-75 cursor-not-allowed'
                                                 : ''
                                                 }`}
