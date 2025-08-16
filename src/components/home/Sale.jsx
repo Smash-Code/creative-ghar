@@ -1,51 +1,49 @@
-import { Crown } from 'lucide-react'
+'use client'
 import Image from 'next/image'
-import React from 'react'
+import Link from 'next/link'
+import React, { useEffect } from 'react'
+import { useCategory } from '@/hooks/useCategory' // adjust path if needed
 
 const Sale = () => {
-    return (
-        <div className='mt-[5%]'>
-            <div className='text-center text-[36px] font-semibold' >Top Categories</div>
-            <div className="grid grid-cols-12 mx-[10%] mt-[2%] mb-[5%] gap-3" >
-                <div className="col-span-12 md:col-span-6 " >
-                    <Image src="/image_3.png" height={450} width={600} alt="perfume" />
-                </div>
-                <div className="col-span-12 md:col-span-6" >
-                    <Image src="/image_4.png" height={450} width={600} alt="perfume" />
-                    {/* <div className='font-bold text-[20px] md:text-[36px]' >
-                    Amazing Deals in the products we offers
-                    </div>
-                    <div className='text-gray-600 my-4 text-sm' >
-                    Welcome too restaurant where culinary excellence meets hospitality in every dish we serve nestled in the heart of City Name our eatery invites you on a journey
-                </div>
-                <div className='flex flex-col gap-5 md:gap-0 md:flex-row items-center' >
-                    <div className='flex gap-4' >
-                    <Crown className='text-red-500' size={60} />
-                    <div className='font-bold text-[20px]' >
-                            Best Quality Product
-                            <div className='text-sm text-gray-600 font-light' >
-                                Our best providers provide the quality products
-                            </div>
-                        </div>
-                    </div>
-                    <div className='flex gap-4' >
-                        <Crown className='text-red-500' size={60} />
-                        <div className='font-bold text-[20px]' >
-                            Best Quality Product
-                            <div className='text-sm text-gray-600 font-light' >
-                                Our best providers provide the quality products
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    const { category, getAllCategories, loading, error } = useCategory()
 
-                <div className='my-6 pointer-cursor' >
-                    <div className='bg-red-500 font-bold text-white px-4 py-1 rounded-full w-fit' >Order Now</div>
-                </div> */}
-                </div>
+    useEffect(() => {
+        getAllCategories()
+    }, [])
+
+    if (loading) return <p className="text-center mt-5"></p>
+    if (error) return <p className="text-center mt-5 text-red-500">{error}</p>
+
+    return (
+        <div className="mt-[5%]">
+            <div className="text-center text-[6vw] md:text-[36px] font-semibold">
+                Top Categories
+            </div>
+
+            <div className="flex flex-col md:flex-row mx-[5%] md:mx-[10%] mt-[2%] mb-[5%] gap-3">
+                {category?.slice(0, 2).map((cat, index) => (
+                    <div key={cat._id || index} className="flex-1">
+                        {/* Clickable Image */}
+                        <Link href={`/home/products/category/${cat.name}`}>
+                            <div className="relative w-full aspect-[10/10] cursor-pointer group">
+                                <Image
+                                    src={cat.image || (index === 0 ? '/image_3.png' : '/image_4.png')}
+                                    alt={cat.name}
+                                    fill
+                                    className="object-cover group-hover:opacity-90 transition"
+                                    priority
+                                />
+                            </div>
+
+                            {/* Category Name */}
+                            <p className="text-center cursor-pointer hover:underline mt-3 text-lg font-medium capitalize">
+                                {cat.name}
+                            </p>
+                        </Link>
+                    </div>
+                ))}
             </div>
         </div>
-
     )
 }
 

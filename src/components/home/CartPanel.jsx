@@ -132,7 +132,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                     <div className="mt-6">
                                         <button
                                             onClick={handleCheckout}
-                                            className="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                                            className="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"
                                         >
                                             Checkout
                                         </button>
@@ -142,7 +142,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                             or{' '}
                                             <button
                                                 type="button"
-                                                className="text-indigo-600 font-medium hover:text-indigo-500"
+                                                className="text-red-500 font-medium hover:text-red-600"
                                                 onClick={onClose}
                                             >
                                                 Continue Shopping<span aria-hidden="true"> &rarr;</span>
