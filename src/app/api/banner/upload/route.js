@@ -6,9 +6,9 @@ import { db } from '@/firebase/config';
 // import { db } from '@/lib/firebase'; // Make sure this exports the initialized Firestore instance
 
 cloudinary.config({
-  cloud_name: 'dvouucusn',
-  api_key: '386218388118338',
-  api_secret: 'j4x5c0VqlHTbouTe5g58YsPt7J8'
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 export async function POST(request) {
