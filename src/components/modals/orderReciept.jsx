@@ -311,7 +311,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
             <button
               onClick={handleDownload}
               disabled={isDownloading}
-              className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:bg-gray-400"
+              className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 disabled:bg-gray-400"
             >
               {isDownloading ? 'Downloading...' : 'Download Receipt'}
             </button>
