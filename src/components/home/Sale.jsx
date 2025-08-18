@@ -27,7 +27,7 @@ const Sale = () => {
                         <Link href={`/home/products/category/${cat.name}`}>
                             <div className="relative w-full aspect-[10/10] cursor-pointer group">
                                 <Image
-                                    src={cat.image || (index === 0 ? '/image_3.png' : '/image_4.png')}
+                                    src={cat.image || (index === 0 ? '/image_4.png' : '/image_3.png')}
                                     alt={cat.name}
                                     fill
                                     className="object-cover group-hover:opacity-90 transition"
