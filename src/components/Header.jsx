@@ -32,8 +32,8 @@ export default function Navbar({ setCart }) {
   }, []);
 
   return (
-    <nav className={`fixed w-full mx-auto z-50 transition-all duration-300 ${isScrolled ? 'bg-white py-2 shadow-md top-0' : 'bg-white py-2'}`}>
-      <div className="mx-auto px-3 md:px-10 flex justify-between items-center">
+    <nav className={`fixed w-full mx-auto z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md top-0' : 'bg-white '}`}>
+      <div className="mx-auto px-3 md:px-10 py-2 flex justify-between items-center">
         {/* Logo - Creative Ghar */}
         <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors">
           <Image src="/creative-logo.png" height={80} width={80} className='object-contain hidden md:block' alt='Creative Ghar' />
