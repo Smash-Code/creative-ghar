@@ -4,8 +4,8 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <div className='max-w-[1320px] mx-auto '>
-            <div className=' border-t-1 border-gray-100 flex justify-around flex-col md:flex-row py-8 gap-10 px-4'>
+        <div className='max-w-[1320px] mx-auto pl-[2%] pr-[4%] '>
+            <div className=' border-t-1 border-gray-100 flex justify-between flex-col md:flex-row py-8 gap-10 px-4'>
                 {/* Logo column - centered on small screens, normal on larger */}
                 <div className=' flex items-center justify-center'>
                     <Image
