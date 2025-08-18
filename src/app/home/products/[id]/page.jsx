@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useProductApi } from '@/hooks/useProduct';
 import { useCategory } from '@/hooks/useCategory';
 import Navbar from '@/components/Header';
-import Newsletter from '@/components/home/Newsletter';
 import Footer from '@/components/Footer';
 import { deliveryDate } from '@/utils/deliveryDates';
 import ProductCarousel from '@/components/product/ProductCarousel';
@@ -17,7 +16,7 @@ export default function ProductDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const { addToCart } = useCart()
-  const { getProductById, getAllProducts } = useProductApi();
+  const { getProductById, getAllProducts, getProductsByCategory } = useProductApi();
   const { getAllCategories, category } = useCategory();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,13 +24,6 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedCart = localStorage.getItem('cart');
-      return savedCart ? JSON.parse(savedCart) : [];
-    }
-    return [];
-  });
 
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
@@ -40,14 +32,15 @@ export default function ProductDetailPage() {
 
   const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Add this useEffect to fetch related products
   useEffect(() => {
     const fetchRelatedProducts = async () => {
+      if (!product?.category) return;
+
       try {
-        const res = await getAllProducts();
+        const res = await getProductsByCategory(product.category, { limit: 10 });
         if (res.data) {
-          // Filter out the current product and get 10 random products
-          const filtered = res.data.filter(p => p._id !== id).slice(0, 10);
+          // Filter out the current product
+          const filtered = res.data.filter(p => p._id !== id);
           setRelatedProducts(filtered);
         }
       } catch (error) {
@@ -55,8 +48,10 @@ export default function ProductDetailPage() {
       }
     };
 
-    fetchRelatedProducts();
-  }, [id]);
+    if (product?.category) {
+      fetchRelatedProducts();
+    }
+  }, [product?.category, id]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -90,26 +85,6 @@ export default function ProductDetailPage() {
     addToCart(product, quantity, selectedSize, selectedColor);
     setIsCartOpen(true);
   };
-  // const removeFromCart = (productId) => {
-  //   setCartItems(cartItems.filter(item => item.id !== productId));
-  // };
-
-  // const updateQuantity = (productId, newQuantity) => {
-  //   if (newQuantity < 1) return;
-
-  //   setCartItems(cartItems.map(item =>
-  //     item.id === productId ? { ...item, quantity: newQuantity } : item
-  //   ));
-  // };
-
-  // const calculateTotal = () => {
-  //   return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-  // };
-
-  // const handleCheckout = () => {
-  //   router.push('/home/checkout');
-  //   setIsCartOpen(false);
-  // };
 
   if (loading) {
     return (
@@ -154,22 +129,55 @@ export default function ProductDetailPage() {
     <div className="overflow-hidden min-h-screen flex flex-col">
       <Navbar setCart={setIsCartOpen} />
       <div className="flex-grow bg-gray-50 mt-[5%] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-lg overflow-hidden">
+        <div className="max-w-7xl mx-auto ">
+          <div className="bg-white border-b border-gray-200 rounded-lg overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
               {/* Product Images */}
-
               <div className="space-y-4">
-                {/* Main Image - Fixed height container */}
-                <div className="h-96 w-full overflow-hidden rounded-lg bg-gray-100"> {/* Fixed height */}
+                {/* Main Image Container with Arrows */}
+                <div className="relative h-96 w-full overflow-hidden rounded-lg bg-gray-100">
                   {product.images?.[0] ? (
-                    <Image
-                      src={product.images[selectedImage]}
-                      alt={product.title}
-                      width={800}
-                      height={800}
-                      className="h-full w-full object-contain"
-                    />
+                    <>
+                      <Image
+                        src={product.images[selectedImage]}
+                        alt={product.title}
+                        width={800}
+                        height={800}
+                        className="h-full w-full object-contain"
+                      />
+
+                      {/* Navigation Arrows */}
+                      {product.images.length > 1 && (
+                        <>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedImage(prev =>
+                                (prev - 1 + product.images.length) % product.images.length
+                              );
+                            }}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedImage(prev =>
+                                (prev + 1) % product.images.length
+                              );
+                            }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                          </button>
+                        </>
+                      )}
+                    </>
                   ) : (
                     <div className="h-full w-full flex items-center justify-center text-gray-400">
                       No Image Available
@@ -177,17 +185,20 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
-                {/* Thumbnails - unchanged */}
+                {/* Thumbnails */}
                 <div className="grid grid-cols-4 gap-2">
                   {product.images?.slice(0, 4).map((image, index) => (
-                    <div key={index} className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
+                    <div
+                      key={index}
+                      className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100 cursor-pointer"
+                      onClick={() => setSelectedImage(index)}
+                    >
                       <Image
-                        onClick={() => setSelectedImage(index)}
                         src={image}
                         alt={`${product.title} thumbnail ${index + 1}`}
                         width={200}
                         height={200}
-                        className="h-full w-full object-contain cursor-pointer"
+                        className={`h-full w-full object-contain ${selectedImage === index ? 'ring-2 ring-indigo-500' : ''}`}
                       />
                     </div>
                   ))}
@@ -201,7 +212,6 @@ export default function ProductDetailPage() {
                   <div className="text-2xl hover:underline cursor-pointer font-semibold text-gray-900">{product.title}</div>
                   <p className="text-sm text-gray-500">{product.category}</p>
                 </div>
-                <p className="text-gray-700">{product.description}</p>
 
                 <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
                   {hasDiscount && (
@@ -282,6 +292,18 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
+                <div className="border-t border-gray-200 py-4">
+                  <div className="border-l-2 border-green-500 text-xl font-bold bg-green-100 text-green-900 py-4 pl-3 mt-2">
+                    Estimated Delivery : {deliveryDate(product.estimated_delivery_time)}
+                  </div>
+                  <div className="border-l-2 border-purple-500 text-xl font-bold bg-purple-100 text-purple-900 py-4 pl-3 mt-2">
+                    Easy Returns and exchange within {product.return_or_exchange_time ? `${product.return_or_exchange_time} days` : '30 days'}
+                  </div>
+                  <div className="border-l-2 border-amber-500 text-xl font-bold bg-amber-100 text-amber-900 py-4 pl-3 mt-2">
+                    Cash On Delivery Available
+                  </div>
+                </div>
+
                 <div className="border-t border-gray-200 pt-4">
                   <div className="text-sm mb-2 text-gray-700">Quantity :</div>
                   <div className="flex text-sm text-gray-500 items-center space-x-4">
@@ -308,22 +330,17 @@ export default function ProductDetailPage() {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock <= 0}
-                    className={`flex-1 bg-red-300 text-white py-[6px] px-6 rounded-full hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                    className={`flex-1 text-lg cursor-pointer bg-red-400 text-white py-3 md:py-2 px-6 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                   >
                     Add to Cart
                   </button>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4">
-                  <h3 className="text-sm font-medium text-gray-900">Delivery Information</h3>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Delivered on : {deliveryDate(product.estimated_delivery_time)}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Return/Exchange: {product.return_or_exchange_time ? `${product.return_or_exchange_time} days` : '30 days'}
-                  </p>
-                </div>
+                <p className="text-gray-700">{product.description}</p>
+
+
+
               </div>
             </div>
           </div>

@@ -32,11 +32,11 @@ export default function Navbar({ setCart }) {
   }, []);
 
   return (
-    <nav className={`fixed w-full mx-auto z-50 transition-all duration-300 ${isScrolled ? 'bg-white py-2 shadow-md top-0' : 'bg-white py-2'}`}>
-      <div className="mx-auto px-3 md:px-10 flex justify-between items-center">
+    <nav className={`fixed w-full mx-auto z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md top-0' : 'bg-white '}`}>
+      <div className="mx-auto px-3 md:px-10 py-4 flex justify-between items-center">
         {/* Logo - Creative Ghar */}
         <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors">
-          <Image src="/creative-logo.png" height={75} width={75} className='object-contain hidden md:block' alt='Creative Ghar' />
+          <Image src="/creative-logo.png" height={80} width={80} className='object-contain hidden md:block' alt='Creative Ghar' />
           <Image src="/creative-logo.png" height={55} width={55} className='object-contain md:hidden' alt='Creative Ghar' />
         </Link>
 
@@ -46,7 +46,7 @@ export default function Navbar({ setCart }) {
             <Link
               key={category.id}
               href={`/home/products/category/${category.name}`}
-              className="text-gray-700 hover:text-indigo-600 transition-colors whitespace-nowrap"
+              className="text-gray-700 text-xl hover:text-indigo-600 transition-colors whitespace-nowrap"
             >
               {category.name}
             </Link>
@@ -57,11 +57,11 @@ export default function Navbar({ setCart }) {
         <div className="hidden md:flex items-center space-x-6">
           <div className="flex items-center space-x-4">
             <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <ShoppingCart className="h-5 w-5 text-gray-700" />
+              <ShoppingCart className="h-7 w-7 text-gray-700" />
             </button>
 
             <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <User className="h-5 w-5 text-gray-700" />
+              <User className="h-7 w-7 text-gray-700" />
             </button>
           </div>
         </div>

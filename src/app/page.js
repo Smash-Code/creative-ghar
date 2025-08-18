@@ -58,7 +58,7 @@ export default function HomePage() {
       <div className=" mt-5 md:mt-22" >
         <HeroSection />
       </div>
-      <div className="max-w-[1320px] mx-auto " >
+      <div className="mx-auto " >
         <Sale />
       </div>
 
@@ -89,7 +89,7 @@ export default function HomePage() {
                   </div>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 mb-6">
                     {categoryProducts.slice(0, 4).map((product) => (
-                      <Product key={product.id} product={product} />
+                      <Product key={product.id} setCart={setIsCartOpen} product={product} />
                     ))}
                   </div>
                   <Link
