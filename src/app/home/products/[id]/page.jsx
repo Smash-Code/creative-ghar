@@ -32,8 +32,6 @@ export default function ProductDetailPage() {
 
   const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Add this useEffect to fetch related products
-  // Replace the existing related products useEffect with this:
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       if (!product?.category) return;
@@ -131,8 +129,8 @@ export default function ProductDetailPage() {
     <div className="overflow-hidden min-h-screen flex flex-col">
       <Navbar setCart={setIsCartOpen} />
       <div className="flex-grow bg-gray-50 mt-[5%] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-lg overflow-hidden">
+        <div className="max-w-7xl mx-auto ">
+          <div className="bg-white border-b border-gray-200 rounded-lg overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
               {/* Product Images */}
               <div className="space-y-4">
@@ -214,7 +212,6 @@ export default function ProductDetailPage() {
                   <div className="text-2xl hover:underline cursor-pointer font-semibold text-gray-900">{product.title}</div>
                   <p className="text-sm text-gray-500">{product.category}</p>
                 </div>
-                <p className="text-gray-700">{product.description}</p>
 
                 <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
                   {hasDiscount && (
@@ -295,6 +292,18 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
+                <div className="border-t border-gray-200 py-4">
+                  <div className="border-l-2 border-green-500 text-xl font-bold bg-green-100 text-green-900 py-4 pl-3 mt-2">
+                    Estimated Delivery : {deliveryDate(product.estimated_delivery_time)}
+                  </div>
+                  <div className="border-l-2 border-purple-500 text-xl font-bold bg-purple-100 text-purple-900 py-4 pl-3 mt-2">
+                    Easy Returns and exchange within {product.return_or_exchange_time ? `${product.return_or_exchange_time} days` : '30 days'}
+                  </div>
+                  <div className="border-l-2 border-amber-500 text-xl font-bold bg-amber-100 text-amber-900 py-4 pl-3 mt-2">
+                    Cash On Delivery Available
+                  </div>
+                </div>
+
                 <div className="border-t border-gray-200 pt-4">
                   <div className="text-sm mb-2 text-gray-700">Quantity :</div>
                   <div className="flex text-sm text-gray-500 items-center space-x-4">
@@ -321,25 +330,17 @@ export default function ProductDetailPage() {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock <= 0}
-                    className={`flex-1 bg-red-400 text-white py-[6px] px-6 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
+                    className={`flex-1 text-lg cursor-pointer bg-red-400 text-white py-3 md:py-2 px-6 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                   >
                     Add to Cart
                   </button>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4">
-                  {/* <h3 className="text-sm font-medium text-gray-900">Delivery Information</h3> */}
-                  <div className="border-l-2 border-green-500 text-xl font-bold bg-green-100 text-green-900 py-4 pl-3 mt-2">
-                    Estimated Delivery : {deliveryDate(product.estimated_delivery_time)}
-                  </div>
-                  <div className="border-l-2 border-purple-500 text-xl font-bold bg-purple-100 text-purple-900 py-4 pl-3 mt-2">
-                    Easy Returns and exchange within {product.return_or_exchange_time ? `${product.return_or_exchange_time} days` : '30 days'}
-                  </div>
-                  <div className="border-l-2 border-amber-500 text-xl font-bold bg-amber-100 text-amber-900 py-4 pl-3 mt-2">
-                    Cash On Delivery Available
-                  </div>
-                </div>
+                <p className="text-gray-700">{product.description}</p>
+
+
+
               </div>
             </div>
           </div>
