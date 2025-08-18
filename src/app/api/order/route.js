@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { addDoc, collection, getDocs, Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 import { db } from '@/firebase/config';
+import { Resend } from 'resend';
 
 // Define order schema validation with optional fields for both modals
 const orderSchema = z.object({
@@ -57,11 +58,9 @@ export async function POST(req) {
       updatedAt: now,
     };
 
-    console.log('Data before validation:', orderData);
 
     // Validate the input
     const validatedData = orderSchema.parse(orderData);
-    console.log('Validated data:', validatedData);
 
     // Prepare Firestore document with all fields
     const firestoreDoc = {
@@ -93,10 +92,93 @@ export async function POST(req) {
       updatedAt: Timestamp.fromDate(validatedData.updatedAt),
     };
 
-    console.log('Firestore document:', firestoreDoc);
 
     // Save to Firestore
     const docRef = await addDoc(collection(db, 'orders'), firestoreDoc);
+
+
+    if (validatedData.email) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
+      await resend.emails.send({
+        from: 'Creative Ghar <onboarding@resend.dev>',
+        to: validatedData.email,
+        subject: `Your Order #${docRef.id} is Confirmed!`,
+        html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+
+      <div style="text-align: center; background-color: #f8f8f8; padding: 30px 20px; border-radius: 8px;">
+        <h1 style="color: #333; font-size: 28px; margin-bottom: 10px;">Thank you, ${orderData.username}!</h1>
+        <p style="color: #666; font-size: 16px; margin-bottom: 20px;">
+          Your order is confirmed, and we're excited to get it to you.
+        </p>
+      </div>
+
+      <div style="padding: 20px 0;">
+        <h2 style="font-size: 22px; color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Order Summary</h2>
+        <p style="color: #555; font-size: 14px; margin-bottom: 10px;">
+          <strong>Order #:</strong> ${docRef.id}
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr style="background-color: #f2f2f2;">
+              <th style="padding: 12px; text-align: left; font-size: 14px; color: #333;">Item</th>
+              <th style="padding: 12px; text-align: left; font-size: 14px; color: #333;">Qty</th>
+              <th style="padding: 12px; text-align: right; font-size: 14px; color: #333;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #555;">Product ID: ${orderData.productId}</td>
+              <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #555;">${orderData.quantity}</td>
+              <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #555; text-align: right;">RS${(orderData.totalPrice / orderData.quantity).toFixed(2)}</td>
+            </tr>
+            </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="padding: 12px 0; text-align: right; font-weight: bold; font-size: 16px; color: #333;">Total:</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: bold; font-size: 16px; color: #333;">RS${orderData.totalPrice.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div style="padding: 20px 0; border-top: 1px dashed #ddd;">
+        <h3 style="font-size: 18px; color: #333; text-align: center; margin-bottom: 15px;">What happens next?</h3>
+        <p style="color: #666; font-size: 14px; text-align: center;">
+          We're preparing your order for shipment.
+        </p>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+        <div style="margin-top: 15px;">
+          <a href="https://www.instagram.com/creativeghar7/" target="_blank" style="margin: 0 8px;"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 24px;"></a>
+          <a href="https://www.facebook.com/profile.php?id=61576762615794" target="_blank" style="margin: 0 8px;"><img src="https://cdn-icons-png.flaticon.com/256/124/124010.png" alt="Facebook" style="width: 24px;"></a>
+        </div>
+        <p style="color: #aaa; font-size: 10px; margin-top: 15px;">
+          &copy; ${new Date().getFullYear()} Creative Ghar. All rights reserved.
+        </p>
+      </div>
+    </div>
+  `,
+        text: `
+    Thank you for your order, ${orderData.username}!
+
+    We've received your order #${orderData.orderId} and are getting it ready for shipment.
+
+    Order Summary:
+    Product ID: ${orderData.productId}
+    Quantity: ${orderData.quantity}
+    Total Price: RS${orderData.totalPrice.toFixed(2)}
+
+    We'll send you a shipping confirmation email with a tracking number as soon as your order is on its way.
+
+    Thank you for shopping with us!
+  `,
+      });
+    }
+
 
     return NextResponse.json({
       success: true,
