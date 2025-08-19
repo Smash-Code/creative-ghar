@@ -8,6 +8,9 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
   const receiptRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+
+  console.log(orderDetails, "details here")
+
   const handleDownload = async () => {
     if (!receiptRef.current) return;
 
@@ -78,7 +81,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
             <div className="border-t border-b border-gray-200 py-4 mb-4">
               <h3 className="font-medium text-lg mb-2">Order Summary</h3>
 
-              {orderDetails.products?.map((product, index) => (
+              {/* {orderDetails.products?.map((product, index) => (
                 <div key={index} className="mb-4">
                   <div className="flex items-center space-x-4">
                     <img
@@ -105,6 +108,19 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
                     <p className="text-sm text-gray-600 ml-20">Color: {product.color}</p>
                   )}
                 </div>
+              ))} */}
+
+              {/* // In your OrderReceiptModal component, update the product listing: */}
+              {orderDetails.products.map((product, index) => (
+                <div key={index} className="flex justify-between py-2">
+                  <div className="flex-1">
+                    <p className="font-medium">{product.title || `Product ID: ${product.productId}`}</p>
+                    {product.size && <p className="text-sm text-gray-600">Size: {product.size}</p>}
+                    {product.color && <p className="text-sm text-gray-600">Color: {product.color}</p>}
+                    <p className="text-sm text-gray-600">Qty: {product.quantity}</p>
+                  </div>
+                  <p className="font-medium">RS{(product.price * product.quantity).toFixed(2)}</p>
+                </div>
               ))}
             </div>
 
@@ -125,7 +141,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
 
             <div className="mt-6 text-center text-xs text-gray-500">
               <p>Thank you for shopping with us!</p>
-              <p>For any questions, contact support@example.com</p>
+              <p>For any questions, contact 03457036429</p>
             </div>
           </div>
 

@@ -6,6 +6,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import MarqueeAdmin from '../heading/page';
+import Banners from './Banners';
 
 const BannerItem = ({ banner, index, moveBanner, onDelete }) => {
   const [, ref] = useDrop({
@@ -143,23 +144,6 @@ function AdminBannerManager() {
       <div className="p-4">
         <h2 className="text-xl font-bold mb-4">Manage Banners</h2>
 
-        {/* <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2">Upload New Banners</h3>
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-            accept="image/*"
-            className="mb-2"
-          />
-          <button
-            onClick={handleUpload}
-            disabled={isUploading || files.length === 0}
-            className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-          >
-            {isUploading ? 'Uploading...' : 'Upload'}
-          </button>
-        </div> */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Banners</h3>
 
@@ -239,6 +223,7 @@ export default function page() {
   return (
     <div>
       <AdminBannerManager />
+      <Banners />
       <MarqueeAdmin />
     </div>
   )

@@ -8,6 +8,7 @@ import Navbar from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import CartPanel from '@/components/home/CartPanel';
+import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -87,48 +88,112 @@ export default function CheckoutPage() {
         }
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     // Final validation before submission
+    //     if (!isFormValid()) {
+    //         toast.error('Please fill all required fields correctly');
+    //         return;
+    //     }
+
+    //     try {
+    //         // Create an order for each product in the cart
+    //         const orderPromises = cartItems.map(item =>
+    //             createOrder({
+    //                 productId: item.id,
+    //                 userId: 'current-user-id',
+    //                 quantity: item.quantity,
+    //                 size: item.size,
+    //                 color: item.color,
+    //                 totalPrice: item.price * item.quantity,
+    //                 username: formData.username,
+    //                 email: formData.email,
+    //                 phone: formData.phone,
+    //                 role: 'user',
+    //                 city: formData.city,
+    //                 address: formData.address,
+    //                 paymentStatus: 'pending',
+    //                 country: formData.country,
+    //                 paymentMethod: formData.paymentOption
+    //             })
+    //         );
+
+    //         const createdOrders = await Promise.all(orderPromises);
+
+    //         // Set order details for the receipt with all products
+    //         setOrderDetails({
+    //             ...createdOrders[0],
+    //             products: cartItems.map((item, index) => ({
+    //                 ...item,
+    //                 orderId: createdOrders[index]?.id || '',
+    //                 orignal_price: item.price,
+    //                 discounted_price: item.price * item.quantity
+    //             })),
+    //             total: calculateTotal(),
+    //             customerInfo: {
+    //                 username: formData.username,
+    //                 email: formData.email,
+    //                 phone: formData.phone,
+    //                 address: formData.address,
+    //                 city: formData.city,
+    //                 country: formData.country
+    //             }
+    //         });
+
+    //         // Clear cart after successful order
+    //         localStorage.removeItem('cart');
+
+    //         // Show receipt modal
+    //         setShowReceipt(true);
+
+    //     } catch (error) {
+    //         toast.error(error.message || 'Failed to place order');
+    //     }
+    // };
+
+    // In your CheckoutPage component, replace the handleSubmit function:
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Final validation before submission
         if (!isFormValid()) {
-            alert('Please fill all required fields correctly');
+            toast.error('Please fill all required fields correctly');
             return;
         }
 
         try {
-            // Create an order for each product in the cart
-            const orderPromises = cartItems.map(item =>
-                createOrder({
+            // Create a single order with all products
+            const orderData = {
+                userId: 'current-user-id', // You might want to get this from authentication
+                products: cartItems.map(item => ({
                     productId: item.id,
-                    userId: 'current-user-id',
                     quantity: item.quantity,
                     size: item.size,
                     color: item.color,
-                    totalPrice: item.price * item.quantity,
-                    username: formData.username,
-                    email: formData.email,
-                    phone: formData.phone,
-                    role: 'user',
-                    city: formData.city,
-                    address: formData.address,
-                    paymentStatus: 'pending',
-                    country: formData.country,
-                    paymentMethod: formData.paymentOption
-                })
-            );
+                    price: item.price,
+                    title: item.title,
+                    image: item.image
+                })),
+                totalPrice: parseFloat(calculateTotal()),
+                username: formData.username,
+                email: formData.email,
+                phone: formData.phone,
+                role: 'user',
+                city: formData.city,
+                address: formData.address,
+                paymentStatus: 'pending',
+                country: formData.country,
+                paymentMethod: formData.paymentOption
+            };
 
-            const createdOrders = await Promise.all(orderPromises);
+            const createdOrder = await createOrder(orderData);
 
             // Set order details for the receipt with all products
             setOrderDetails({
-                ...createdOrders[0],
-                products: cartItems.map((item, index) => ({
-                    ...item,
-                    orderId: createdOrders[index]?.id || '',
-                    orignal_price: item.price,
-                    discounted_price: item.price * item.quantity
-                })),
+                ...createdOrder,
+                products: cartItems,
                 total: calculateTotal(),
                 customerInfo: {
                     username: formData.username,
@@ -147,7 +212,7 @@ export default function CheckoutPage() {
             setShowReceipt(true);
 
         } catch (error) {
-            alert(error.message || 'Failed to place order');
+            toast.error(error.message || 'Failed to place order');
         }
     };
 

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useProductApi } from '@/hooks/useProduct';
 import { useCategory } from '@/hooks/useCategory';
+import toast from 'react-hot-toast';
 
 function ProductFormPage() {
   const router = useRouter();
@@ -63,7 +64,7 @@ function ProductFormPage() {
 
     // Check total images won't exceed limit
     if (formData.images.length + files.length > MAX_IMAGES) {
-      alert(`You can only upload up to ${MAX_IMAGES} images total`);
+      toast.success(`You can only upload up to ${MAX_IMAGES} images total`);
       return;
     }
 
@@ -88,7 +89,7 @@ function ProductFormPage() {
         images: [...prev.images, ...data.images.map(img => img.url)].filter(Boolean)
       }));
     } catch (error) {
-      alert('Image upload failed: ' + error.message);
+      toast.error('Image upload failed: ' + error.message);
     } finally {
       setUploading(false);
       setUploadProgress({});
@@ -107,23 +108,6 @@ function ProductFormPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: name === 'stock' ? Number(value) : value }));
   };
-
-
-  // useEffect(() => {
-  //   if (productId) {
-  //     (async () => {
-  //       setLoading(true);
-  //       try {
-  //         const res = await getProductById(productId);
-  //         setFormData({ ...res.data });
-  //         console.log(res.data, "form data")
-  //       } catch (error) {
-  //         console.error('Failed to load product:', error);
-  //       }
-  //       setLoading(false);
-  //     })();
-  //   }
-  // }, [productId]);
 
   useEffect(() => {
     if (productId) {
@@ -160,22 +144,35 @@ function ProductFormPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate that at least one image is uploaded for new products
+    if (!isEdit && formData.images.length === 0) {
+      toast('Please upload at least one image for the product');
+      return;
+    }
+
+    // Validate discounted price (if you want to keep this validation)
+    if (priceError) {
+      toast.error('Please fix the price error before submitting');
+      return;
+    }
+
     setLoading(true);
     try {
       if (isEdit) {
         await updateProduct(productId, formData);
-        alert('Product updated!');
+        toast.success('Product updated!');
       } else {
         await createProduct({
           ...formData,
           createdAt: new Date(),
           updatedAt: new Date(),
         });
-        alert('Product created!');
+        toast.success('Product created!');
       }
       router.push('/admin/dashboard/products');
     } catch (err) {
-      alert(err.message || 'Something went wrong.');
+      toast.error(err.message || 'Something went wrong.');
     }
     setLoading(false);
   };
@@ -212,6 +209,12 @@ function ProductFormPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Product Images ({formData.images.length}/{MAX_IMAGES})
                   </label>
+
+                  {!isEdit && formData.images.length === 0 && (
+                    <p className="text-sm text-red-500 mt-1">
+                      At least one image is required
+                    </p>
+                  )}
 
                   <div className="flex flex-wrap gap-4 mb-4">
                     {formData.images.length > 0 && formData.images.map((img, index) => (
@@ -329,7 +332,7 @@ function ProductFormPage() {
                               placeholder="Size (e.g., S, M, L)"
                               className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
                             />
-                            <input
+                            {/* <input
                               type="number"
                               value={size.stock}
                               onChange={(e) => {
@@ -339,7 +342,7 @@ function ProductFormPage() {
                               }}
                               placeholder="Stock"
                               className="w-24 px-3 py-2 border border-gray-300 rounded-md"
-                            />
+                            /> */}
                             <button
                               type="button"
                               onClick={() => {
@@ -422,8 +425,8 @@ function ProductFormPage() {
                     </div>
                   </>
                 )}
-
-                {/* <div>
+                {/* 
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                   <select
                     name="category"
@@ -431,34 +434,17 @@ function ProductFormPage() {
                     onChange={handleChange}
                     className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   >
-                   
-                    {formData.category && (
-                      <option value={formData.category} className='border-2 border-gray-400'>
-                        {
-                          categories.find(c => c.name === formData.category)?.name ||
-                          <svg className="animate-spin h-4 w-4 text-gray-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                        }
-                      </option>
-                    )}
 
-                  
-                    {catLoading ? (
-                      <option><svg className="animate-spin h-4 w-4 text-gray-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg></option>
-                    ) : (
-                      categories
-                        .filter(category => category.name !== formData.category) // Exclude current category
-                        .map((category) => (
+                    <option value={formData.category}>{formData.category}</option>
+                    {
+                      catLoading ? <div>loading...</div> :
+                        categories.map((category) => (
+                          formData.category != category.name &&
                           <option className='border-2 border-gray-400' key={category.id} value={category.id}>
                             {category.name}
                           </option>
                         ))
-                    )}
+                    }
                   </select>
                 </div> */}
 
@@ -469,17 +455,17 @@ function ProductFormPage() {
                     value={formData.category}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    required
                   >
-
-                    <option value="">{formData.category}</option>
-                    {
-                      catLoading ? <div>loading...</div> :
-                        categories.map((category) => (
-                          <option className='border-2 border-gray-400' key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))
-                    }
+                    {catLoading ? (
+                      <option value={formData.category}>{formData.category}</option>
+                    ) : (
+                      categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
 
@@ -606,7 +592,7 @@ function ProductFormPage() {
           )}
         </div>
       </div>
-    </div>
+    </div >
     // </div>
   );
 }

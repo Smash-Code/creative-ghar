@@ -171,6 +171,7 @@ import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import { useOrder } from '@/hooks/useOrder';
 import OrderModal from '@/components/modals/orderModal';
+import toast from 'react-hot-toast';
 
 export default function ProductListPage() {
   const { getAllProducts, deleteProduct } = useProductApi();
@@ -206,7 +207,7 @@ export default function ProductListPage() {
       await deleteProduct(id);
       setProducts((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
-      alert(err.message || 'Failed to delete');
+      toast.error(err.message || 'Failed to delete');
     }
   };
 
@@ -224,7 +225,7 @@ export default function ProductListPage() {
 
   // Handle successful order submission
   const handleOrderSuccess = () => {
-    alert('Order placed successfully!');
+    toast.success('Order placed successfully!');
   };
 
   const handleOrder = async (productId) => {
@@ -241,9 +242,9 @@ export default function ProductListPage() {
         totalPrice: product.discounted_price || product.orignal_price
       });
 
-      alert('Order placed successfully!');
+      toast.success('Order placed successfully!');
     } catch (error) {
-      alert(error.message || 'Failed to place order');
+      toast.error(error.message || 'Failed to place order');
     } finally {
       setCurrentOrderingProduct(null);
     }
