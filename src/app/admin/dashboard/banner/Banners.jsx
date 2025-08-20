@@ -82,12 +82,12 @@ export default function TopCategoriesUpload({ setCategory }) {
                 <h1 className="text-2xl font-bold text-gray-800">
                     Upload Top Category Image
                 </h1>
-                <a
+                {/* <a
                     href="/admin/top-categories/manage"
                     className="text-blue-500 hover:text-blue-700 text-sm"
                 >
                     View All
-                </a>
+                </a> */}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
