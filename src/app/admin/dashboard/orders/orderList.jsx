@@ -532,7 +532,8 @@ export default function OrdersList() {
                 <>
                   <tr key={order.id} className="hover:bg-gray-50 cursor-pointer" >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      #{order.id.slice(0, 8)}
+                      {/* #{order.id.slice(0, 8)} */}
+                      #{order.count_id}
                     </td>
                     {/* <td className="px-6 py-4 text-sm text-gray-500">
                       {order.products && order.products.length > 0 ? (

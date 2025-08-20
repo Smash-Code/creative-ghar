@@ -304,8 +304,6 @@ export default function ProductListPage() {
                     {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
                   </div>
                 </div>
-
-
                 <div className="p-4">
                   <div className="flex-grow"> {/* This will take up all available space pushing buttons down */}
                     <div className="flex justify-between items-start">
