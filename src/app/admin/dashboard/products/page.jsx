@@ -316,11 +316,11 @@ export default function ProductListPage() {
                       <div className="text-right">
                         {product.discounted_price && product.discounted_price !== product.orignal_price ? (
                           <>
-                            <span className="text-lg font-bold text-indigo-600">${product.discounted_price}</span>
-                            <span className="ml-1 text-sm text-gray-500 line-through">${product.orignal_price}</span>
+                            <span className="text-lg font-bold text-indigo-600">RS{product.discounted_price}</span>
+                            <span className="ml-1 text-sm text-gray-500 line-through">RS{product.orignal_price}</span>
                           </>
                         ) : (
-                          <span className="text-lg font-bold text-gray-900">${product.orignal_price}</span>
+                          <span className="text-lg font-bold text-gray-900">RS{product.orignal_price}</span>
                         )}
                       </div>
                     </div>
