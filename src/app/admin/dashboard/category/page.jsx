@@ -89,6 +89,7 @@ export default function CategoriesPage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [category, setCategory] = useState(false);
+  const [limit, setLimit] = useState(false)
 
 
   useEffect(() => {
@@ -241,8 +242,10 @@ export default function CategoriesPage() {
     </div> */}
         </div>
       </Modal>
-      <ManageTopCategories hitCategory={category} />
-      <Banners setCategory={setCategory} />
+      <ManageTopCategories setLimit={setLimit} hitCategory={category} />
+      {!limit &&
+        <Banners setCategory={setCategory} />
+      }
     </div>
   );
 }

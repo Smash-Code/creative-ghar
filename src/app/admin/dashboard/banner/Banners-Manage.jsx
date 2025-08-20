@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export default function ManageTopCategories({ hitCategory }) {
+export default function ManageTopCategories({ hitCategory, setLimit }) {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deletingId, setDeletingId] = useState(null);
@@ -17,6 +17,11 @@ export default function ManageTopCategories({ hitCategory }) {
 
             if (response.ok) {
                 setCategories(data.data || []);
+                if (data.data.length >= 2) {
+                    setLimit(true)
+                } else {
+                    setLimit(false)
+                }
             } else {
                 setMessage('Failed to fetch categories');
             }
