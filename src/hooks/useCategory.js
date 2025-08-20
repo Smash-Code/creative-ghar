@@ -3,7 +3,7 @@ import { useState } from 'react';
 export function useCategory() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [category , setCategory] = useState()
+  const [category, setCategory] = useState()
 
   const getAllCategories = async () => {
     setLoading(true);
@@ -64,6 +64,13 @@ export function useCategory() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getCategoryNameById = (id) => {
+    if (!id || !category || category.length === 0) return null;
+
+    const foundCategory = category.find(cat => cat.id === id);
+    return foundCategory ? foundCategory.name : null;
   };
 
   const deleteCategory = async (id) => {

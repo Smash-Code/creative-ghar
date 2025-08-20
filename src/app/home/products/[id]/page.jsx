@@ -11,6 +11,7 @@ import { deliveryDate } from '@/utils/deliveryDates';
 import ProductCarousel from '@/components/product/ProductCarousel';
 import CartPanel from '@/components/home/CartPanel';
 import { useCart } from '@/hooks/useCart';
+import toast from 'react-hot-toast';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -74,11 +75,11 @@ export default function ProductDetailPage() {
 
     if (product.hasVariants) {
       if (product.sizes?.length > 0 && !selectedSize) {
-        alert('Please select a size');
+        toast.error('Please select a size');
         return;
       }
       if (product.colors?.length > 0 && !selectedColor) {
-        alert('Please select a color');
+        toast.error('Please select a color');
         return;
       }
     }
