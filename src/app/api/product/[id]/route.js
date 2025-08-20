@@ -4,30 +4,7 @@ import { db } from "@/firebase/config";
 import { productSchema } from "@/firebase/schemas/productSchema";
 // import { productSchema } from "@/schemas/productSchema";
 
-// GET /api/product/[id]
-// export async function GET(_req, { params }) {
-//     const data = await params;
-//   const { id } = data
 
-
-
-//   if (!id) {
-//     return NextResponse.json({ success: false, error: "Product ID is required" }, { status: 400 });
-//   }
-
-//   try {
-//     const docRef = doc(db, "products", id);
-//     const docSnap = await getDoc(docRef);
-
-//     if (!docSnap.exists()) {
-//       return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
-//     }
-
-//     return NextResponse.json({ success: true, data: { id: docSnap.id, ...docSnap.data() } });
-//   } catch (error) {
-//     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-//   }
-// }
 
 
 export async function GET(_req, { params }) {
@@ -84,43 +61,6 @@ export async function GET(_req, { params }) {
 }
 
 // PUT /api/product/[id]
-// export async function PUT(req, { params }) {
-//   const data = await params;
-//   const { id } = data
-
-//   if (!id) {
-//     return NextResponse.json({ success: false, error: "Product ID is required" }, { status: 400 });
-//   }
-
-//   try {
-//     const body = await req.json();
-//     delete body.createdAt;
-
-
-//     const updatedData = productSchema.partial().parse({
-//       ...body,
-//       sizes: body.sizes?.map(size => ({
-//         name: size.name,
-//         stock: Number(size.stock) || 0
-//       })) || [],
-//       colors: body.colors?.map(color => ({
-//         name: color.name,
-//         hex: color.hex
-//       })) || [],
-//       updatedAt: new Date(),
-//     });
-
-//     const docRef = doc(db, "products", id);
-
-//     console.log(updatedData, "category data", updatedData.category)
-
-//     await updateDoc(docRef, updatedData);
-
-//     return NextResponse.json({ success: true, id });
-//   } catch (error) {
-//     return NextResponse.json({ success: false, error: error.errors || error.message }, { status: 400 });
-//   }
-// }
 
 export async function PUT(req, { params }) {
   const data = await params;
