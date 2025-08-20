@@ -2,194 +2,171 @@
 
 import { useState, useEffect } from 'react';
 import { useCategory } from '@/hooks/useCategory';
-import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-export default function Banners() {
-    const [selectedFiles, setSelectedFiles] = useState([null, null]);
-    const [previewUrls, setPreviewUrls] = useState(['', '']);
+export default function TopCategoriesUpload({ setCategory }) {
+    const { category: categories, loading: categoriesLoading, getAllCategories } = useCategory();
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [image, setImage] = useState(null);
+    const [preview, setPreview] = useState('');
     const [uploading, setUploading] = useState(false);
-    const { category, getAllCategories, loading } = useCategory();
+    const [message, setMessage] = useState('');
+    const router = useRouter();
 
+    // Load categories on component mount
     useEffect(() => {
         getAllCategories();
     }, []);
 
-    const handleFileChange = (index, event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file type and size
+            if (!file.type.startsWith('image/')) {
+                setMessage('Please select an image file');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                setMessage('Image size must be less than 5MB');
+                return;
+            }
 
-        if (!file.type.startsWith('image/')) {
-            toast.error('Please select an image file');
-            return;
+            setImage(file);
+            setPreview(URL.createObjectURL(file));
+            setMessage('');
         }
-
-        // Update selected files
-        const newFiles = [...selectedFiles];
-        newFiles[index] = file;
-        setSelectedFiles(newFiles);
-
-        // Create preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            const newPreviews = [...previewUrls];
-            newPreviews[index] = reader.result;
-            setPreviewUrls(newPreviews);
-        };
-        reader.readAsDataURL(file);
     };
 
-    const handleUpload = async () => {
-        if (!selectedCategory) {
-            toast.error('Please select a category');
-            return;
-        }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        if (selectedFiles.every(file => file === null)) {
-            toast.error('Please select at least one image');
+        if (!selectedCategory || !image) {
+            setMessage('Please select a category and upload an image');
             return;
         }
 
         setUploading(true);
+        setMessage('');
 
         try {
             const formData = new FormData();
+            formData.append('image', image);
             formData.append('category', selectedCategory);
 
-            // Add both images if they exist
-            selectedFiles.forEach((file, index) => {
-                if (file) {
-                    formData.append(`images`, file);
-                }
-            });
-
-            const response = await fetch('/api/top-category/upload', {
+            const response = await fetch('/api/top-category', {
                 method: 'POST',
                 body: formData,
             });
 
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to upload images');
+            if (response.ok) {
+                setMessage('Image uploaded successfully!');
+                setCategory(true)
+                setTimeout(() => {
+                    // router.push('/admin/top-categories/manage');
+                }, 1500);
+            } else {
+                setMessage(data.error || 'Upload failed');
             }
-
-            toast.success('Images uploaded successfully!');
-
-            // Reset form
-            setSelectedFiles([null, null]);
-            setPreviewUrls(['', '']);
-            setSelectedCategory('');
-
-            // Clear file inputs
-            document.querySelectorAll('input[type="file"]').forEach(input => {
-                input.value = '';
-            });
-
         } catch (error) {
-            toast.error(error.message);
+            setMessage('Upload failed. Please try again.');
         } finally {
             setUploading(false);
         }
     };
 
-    const removeImage = (index) => {
-        const newFiles = [...selectedFiles];
-        newFiles[index] = null;
-        setSelectedFiles(newFiles);
-
-        const newPreviews = [...previewUrls];
-        newPreviews[index] = '';
-        setPreviewUrls(newPreviews);
-    };
-
     return (
-        <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-8">Upload Category Banner Images</h1>
+        <div className="max-w-md p-6 bg-white rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold text-gray-800">
+                    Upload Top Category Image
+                </h1>
+                <a
+                    href="/admin/top-categories/manage"
+                    className="text-blue-500 hover:text-blue-700 text-sm"
+                >
+                    View All
+                </a>
+            </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-                {/* Category Selection */}
-                <div className="mb-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Category Dropdown */}
+                <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         Select Category
                     </label>
                     <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        disabled={loading}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                        disabled={categoriesLoading}
                     >
                         <option value="">Select a category</option>
-                        {category?.map((cat) => (
-                            <option key={cat._id || cat.id} value={cat.name}>
+                        {categories?.map((cat) => (
+                            <option key={cat.id} value={cat.name}>
                                 {cat.name}
                             </option>
                         ))}
                     </select>
+                    {categoriesLoading && (
+                        <p className="text-sm text-gray-500 mt-1">Loading categories...</p>
+                    )}
                 </div>
 
-                {/* Image Upload Sections */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    {[0, 1].map((index) => (
-                        <div key={index} className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                            <div className="text-center">
-                                {previewUrls[index] ? (
-                                    <div className="relative">
-                                        <img
-                                            src={previewUrls[index]}
-                                            alt={`Preview ${index + 1}`}
-                                            className="mx-auto h-40 object-cover rounded"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeImage(index)}
-                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                                        >
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center justify-center h-40">
-                                        <div className="text-center">
-                                            <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                            <p className="mt-1 text-sm text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                                        </div>
-                                    </div>
-                                )}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleFileChange(index, e)}
-                                    className="hidden"
-                                    id={`file-upload-${index}`}
-                                />
-                                <label
-                                    htmlFor={`file-upload-${index}`}
-                                    className="mt-2 inline-block px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 cursor-pointer"
-                                >
-                                    {previewUrls[index] ? 'Change Image' : 'Select Image'}
-                                </label>
-                            </div>
+                {/* Image Upload */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Upload Image
+                    </label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        required
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                        Supported formats: JPG, PNG, WEBP. Max size: 5MB
+                    </p>
+                </div>
+
+                {/* Image Preview */}
+                {preview && (
+                    <div className="mt-4">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+                        <div className="relative w-full h-48 border rounded-md overflow-hidden">
+                            <img
+                                src={preview}
+                                alt="Preview"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
-                    ))}
-                </div>
+                    </div>
+                )}
 
-                {/* Upload Button */}
+                {/* Submit Button */}
                 <button
-                    onClick={handleUpload}
-                    disabled={uploading || !selectedCategory || selectedFiles.every(file => file === null)}
-                    className={`w-full py-3 px-4 rounded-md text-white font-medium ${uploading || !selectedCategory || selectedFiles.every(file => file === null)
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-indigo-600 hover:bg-indigo-700'
-                        }`}
+                    type="submit"
+                    disabled={uploading || categoriesLoading}
+                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                 >
-                    {uploading ? 'Uploading...' : 'Upload Images'}
+                    {uploading ? 'Uploading...' : 'Upload Image'}
                 </button>
-            </div>
+
+                {/* Message */}
+                {message && (
+                    <p
+                        className={`text-sm mt-4 p-2 rounded-md ${message.includes('success')
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
+                    >
+                        {message}
+                    </p>
+                )}
+            </form>
         </div>
     );
 }

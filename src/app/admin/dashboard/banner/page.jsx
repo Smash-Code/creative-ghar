@@ -6,7 +6,6 @@ import { useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import MarqueeAdmin from '../heading/page';
-import Banners from './Banners';
 
 const BannerItem = ({ banner, index, moveBanner, onDelete }) => {
   const [, ref] = useDrop({
@@ -220,10 +219,10 @@ function AdminBannerManager() {
 
 
 export default function page() {
+
   return (
     <div>
       <AdminBannerManager />
-      <Banners />
       <MarqueeAdmin />
     </div>
   )
