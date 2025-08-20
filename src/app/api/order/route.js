@@ -576,7 +576,7 @@ export async function POST(req) {
       `).join('');
 
       await resend.emails.send({
-        from: 'Creative Ghar <onboarding@resend.dev>',
+        from: 'Creative Ghar <noreply@creativeghar.com>',
         to: validatedData.email,
         subject: `Your Order #${count_id} is Confirmed!`,
         html: `

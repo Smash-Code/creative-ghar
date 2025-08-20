@@ -88,7 +88,7 @@ export async function PUT(req, { params }) {
 async function sendShippingConfirmationEmail(toEmail, orderId, fulfillmentInfo, customerName) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Creative Ghar <onboarding@resend.dev>', // Replace with your verified domain
+      from: 'Creative Ghar <noreply@creativeghar.com>', // Replace with your verified domain
       to: toEmail,
       subject: `Your Order #${orderId} is on its way!`,
       html: `
