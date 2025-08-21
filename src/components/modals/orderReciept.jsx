@@ -62,10 +62,10 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
             </div>
 
             <div className="mb-6">
-              <div className="flex justify-between items-center mb-2">
+              {/* <div className="flex justify-between items-center mb-2">
                 <span className="font-medium">Order ID:</span>
                 <span className="font-semibold">#{orderDetails.id?.slice(0, 8).toUpperCase() || 'N/A'}</span>
-              </div>
+              </div> */}
               <div className="flex justify-between items-center mb-2">
                 <span className="font-medium">Date:</span>
                 <span>{new Date().toLocaleString()}</span>
