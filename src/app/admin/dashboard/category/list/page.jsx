@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCategory } from '@/hooks/useCategory';
 import Link from 'next/link';
+import Loader from '@/components/Loader';
 
 export default function CategoriesPage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function CategoriesPage() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
-    
+
     setDeleteLoading(true);
     try {
       await deleteCategory(id);
@@ -43,7 +44,7 @@ export default function CategoriesPage() {
         <Link
           href="/admin/dashboard/category"
           className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-        > 
+        >
           Add New Category
         </Link>
       </div>
@@ -55,9 +56,10 @@ export default function CategoriesPage() {
       )}
 
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-        </div>
+        // <div className="flex justify-center items-center h-64">
+        //   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        // </div>
+        <Loader />
       ) : (
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">

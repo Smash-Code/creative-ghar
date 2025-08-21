@@ -1,6 +1,7 @@
 // components/MarqueeAdmin.js
 'use client';
 
+import Loader from '@/components/Loader';
 import { useState, useEffect } from 'react';
 
 export default function MarqueeAdmin() {
@@ -79,7 +80,7 @@ export default function MarqueeAdmin() {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-bold mb-4">Marquee Messages</h2>
-      
+
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="flex gap-2">
           <input
@@ -100,9 +101,10 @@ export default function MarqueeAdmin() {
       </form>
 
       {loading ? (
-        <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
-        </div>
+        // <div className="flex justify-center">
+        //   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+        // </div>
+        <Loader />
       ) : (
         <div className="space-y-3">
           {messages.map((message) => (
@@ -111,11 +113,10 @@ export default function MarqueeAdmin() {
               <div className="flex gap-2">
                 <button
                   onClick={() => toggleActive(message.id, message.isActive)}
-                  className={`px-3 py-1 rounded-md text-sm ${
-                    message.isActive
-                      ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                      : 'bg-green-100 text-green-800 hover:bg-green-200'
-                  }`}
+                  className={`px-3 py-1 rounded-md text-sm ${message.isActive
+                    ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                    : 'bg-green-100 text-green-800 hover:bg-green-200'
+                    }`}
                 >
                   {message.isActive ? 'Deactivate' : 'Activate'}
                 </button>

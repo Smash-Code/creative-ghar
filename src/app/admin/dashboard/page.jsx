@@ -2,6 +2,7 @@
 
 "use client"
 import { useAuth } from '@/app/context/authContext';
+import Loader from '@/components/Loader';
 import Sidebar from '@/components/Sidebar';
 import { useProductApi } from '@/hooks/useProduct';
 import Link from 'next/link';
@@ -55,9 +56,10 @@ export default function Dashboard() {
 
   if (loading || !user) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
+      // <div className="flex justify-center items-center h-screen">
+      //   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      // </div>
+      <Loader />
     );
   }
 
@@ -105,9 +107,10 @@ export default function Dashboard() {
 
           {/* Products Table */}
           {loadingProduct ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
+            // <div className="flex justify-center items-center h-64">
+            //   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+            // </div>
+            <Loader />
           ) : (
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <div className="overflow-x-auto">

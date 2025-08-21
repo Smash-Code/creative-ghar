@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Loader2 } from 'lucide-react'
 import CartPanel from '@/components/home/CartPanel'
+import Loader from '@/components/Loader'
 
 export default function CategoryProductsPage() {
     const params = useParams()
@@ -68,9 +69,10 @@ export default function CategoryProductsPage() {
                 </div>
 
                 {loading && products.length === 0 ? (
-                    <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-                    </div>
+                    // <div className="flex justify-center items-center h-64">
+                    //     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+                    // </div>
+                    <Loader />
                 ) : initialLoadComplete ? (
                     <div className="flex flex-col justify-center items-center p-12 bg-white rounded-xl shadow-md text-center">
                         <h3 className="text-2xl font-bold text-gray-900">
@@ -96,9 +98,10 @@ export default function CategoryProductsPage() {
                                     className="relative flex items-center justify-center gap-2 px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-indigo-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:-translate-y-1"
                                 >
                                     {loading ? (
-                                        <div className="flex justify-center items-center h-64">
-                                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-                                        </div>
+                                        // <div className="flex justify-center items-center h-64">
+                                        //     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+                                        // </div>
+                                        <Loader />
                                     ) : (
                                         "Load More Products"
                                     )}

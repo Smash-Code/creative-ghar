@@ -12,6 +12,7 @@ import ProductCarousel from '@/components/product/ProductCarousel';
 import CartPanel from '@/components/home/CartPanel';
 import { useCart } from '@/hooks/useCart';
 import toast from 'react-hot-toast';
+import Loader from '@/components/Loader';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -89,9 +90,10 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
+      // <div className="flex justify-center items-center min-h-screen">
+      //   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      // </div>
+      <Loader />
     );
   }
 

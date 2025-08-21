@@ -11,82 +11,148 @@ import CartPanel from '@/components/home/CartPanel';
 import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
-    const router = useRouter();
-    const { createOrder, loading: orderLoading } = useOrder();
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        phone: '',
-        city: '',
-        address: '',
-        paymentOption: 'jazzcash',
-        country: 'Pakistan'
-    });
-    const [formErrors, setFormErrors] = useState({
-        phone: ''
-    });
-    const [showReceipt, setShowReceipt] = useState(false);
-    const [orderDetails, setOrderDetails] = useState(null);
-    const [orderSuccess, setOrderSuccess] = useState(false);
-    const [isCartOpen, setIsCartOpen] = useState(false);
+    // const router = useRouter();
+    // const { createOrder, loading: orderLoading } = useOrder();
+    // const [formData, setFormData] = useState({
+    //     username: '',
+    //     email: '',
+    //     phone: '',
+    //     city: '',
+    //     address: '',
+    //     paymentOption: 'jazzcash',
+    //     country: 'Pakistan'
+    // });
+    // const [formErrors, setFormErrors] = useState({
+    //     phone: ''
+    // });
+    // const [showReceipt, setShowReceipt] = useState(false);
+    // const [orderDetails, setOrderDetails] = useState(null);
+    // const [orderSuccess, setOrderSuccess] = useState(false);
+    // const [isCartOpen, setIsCartOpen] = useState(false);
 
 
-    // Load cart items from localStorage
-    const [cartItems] = useState(() => {
-        if (typeof window !== 'undefined') {
-            const savedCart = localStorage.getItem('cart');
-            return savedCart ? JSON.parse(savedCart) : [];
-        }
-        return [];
-    });
+    // // Load cart items from localStorage
+    // const [cartItems] = useState(() => {
+    //     if (typeof window !== 'undefined') {
+    //         const savedCart = localStorage.getItem('cart');
+    //         return savedCart ? JSON.parse(savedCart) : [];
+    //     }
+    //     return [];
+    // });
 
-    // Check if all required fields are filled
-    const isFormValid = () => {
-        return (
-            formData.username.trim() !== '' &&
-            formData.email.trim() !== '' &&
-            formData.phone.trim() !== '' &&
-            formData.city.trim() !== '' &&
-            formData.address.trim() !== '' &&
-            formData.phone.length === 11
-        );
-    };
+    // // Check if all required fields are filled
+    // const isFormValid = () => {
+    //     return (
+    //         formData.username.trim() !== '' &&
+    //         formData.email.trim() !== '' &&
+    //         formData.phone.trim() !== '' &&
+    //         formData.city.trim() !== '' &&
+    //         formData.address.trim() !== '' &&
+    //         formData.phone.length === 11
+    //     );
+    // };
 
-    const calculateTotal = () => {
-        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-    };
+    // const calculateTotal = () => {
+    //     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    // };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData(prev => ({
+    //         ...prev,
+    //         [name]: value
+    //     }));
 
-        // Validate phone number specifically
-        if (name === 'phone') {
-            validatePhone(value);
-        }
-    };
+    //     // Validate phone number specifically
+    //     if (name === 'phone') {
+    //         validatePhone(value);
+    //     }
+    // };
 
-    const validatePhone = (phone) => {
-        if (phone.length > 0 && phone.length < 11) {
-            setFormErrors(prev => ({
-                ...prev,
-                phone: 'Phone number must be 11 digits'
-            }));
-        } else if (phone.length === 11 && !phone.startsWith('03')) {
-            setFormErrors(prev => ({
-                ...prev,
-                phone: 'Phone number should start with 03'
-            }));
-        } else {
-            setFormErrors(prev => ({
-                ...prev,
-                phone: ''
-            }));
-        }
-    };
+    // const validatePhone = (phone) => {
+    //     if (phone.length > 0 && phone.length < 11) {
+    //         setFormErrors(prev => ({
+    //             ...prev,
+    //             phone: 'Phone number must be 11 digits'
+    //         }));
+    //     } else if (phone.length === 11 && !phone.startsWith('03')) {
+    //         setFormErrors(prev => ({
+    //             ...prev,
+    //             phone: 'Phone number should start with 03'
+    //         }));
+    //     } else {
+    //         setFormErrors(prev => ({
+    //             ...prev,
+    //             phone: ''
+    //         }));
+    //     }
+    // };
+
+    // // const handleSubmit = async (e) => {
+    // //     e.preventDefault();
+
+    // //     // Final validation before submission
+    // //     if (!isFormValid()) {
+    // //         toast.error('Please fill all required fields correctly');
+    // //         return;
+    // //     }
+
+    // //     try {
+    // //         // Create an order for each product in the cart
+    // //         const orderPromises = cartItems.map(item =>
+    // //             createOrder({
+    // //                 productId: item.id,
+    // //                 userId: 'current-user-id',
+    // //                 quantity: item.quantity,
+    // //                 size: item.size,
+    // //                 color: item.color,
+    // //                 totalPrice: item.price * item.quantity,
+    // //                 username: formData.username,
+    // //                 email: formData.email,
+    // //                 phone: formData.phone,
+    // //                 role: 'user',
+    // //                 city: formData.city,
+    // //                 address: formData.address,
+    // //                 paymentStatus: 'pending',
+    // //                 country: formData.country,
+    // //                 paymentMethod: formData.paymentOption
+    // //             })
+    // //         );
+
+    // //         const createdOrders = await Promise.all(orderPromises);
+
+    // //         // Set order details for the receipt with all products
+    // //         setOrderDetails({
+    // //             ...createdOrders[0],
+    // //             products: cartItems.map((item, index) => ({
+    // //                 ...item,
+    // //                 orderId: createdOrders[index]?.id || '',
+    // //                 orignal_price: item.price,
+    // //                 discounted_price: item.price * item.quantity
+    // //             })),
+    // //             total: calculateTotal(),
+    // //             customerInfo: {
+    // //                 username: formData.username,
+    // //                 email: formData.email,
+    // //                 phone: formData.phone,
+    // //                 address: formData.address,
+    // //                 city: formData.city,
+    // //                 country: formData.country
+    // //             }
+    // //         });
+
+    // //         // Clear cart after successful order
+    // //         localStorage.removeItem('cart');
+
+    // //         // Show receipt modal
+    // //         setShowReceipt(true);
+
+    // //     } catch (error) {
+    // //         toast.error(error.message || 'Failed to place order');
+    // //     }
+    // // };
+
+    // // In your CheckoutPage component, replace the handleSubmit function:
 
     // const handleSubmit = async (e) => {
     //     e.preventDefault();
@@ -98,38 +164,36 @@ export default function CheckoutPage() {
     //     }
 
     //     try {
-    //         // Create an order for each product in the cart
-    //         const orderPromises = cartItems.map(item =>
-    //             createOrder({
+    //         // Create a single order with all products
+    //         const orderData = {
+    //             userId: 'current-user-id', // You might want to get this from authentication
+    //             products: cartItems.map(item => ({
     //                 productId: item.id,
-    //                 userId: 'current-user-id',
     //                 quantity: item.quantity,
     //                 size: item.size,
     //                 color: item.color,
-    //                 totalPrice: item.price * item.quantity,
-    //                 username: formData.username,
-    //                 email: formData.email,
-    //                 phone: formData.phone,
-    //                 role: 'user',
-    //                 city: formData.city,
-    //                 address: formData.address,
-    //                 paymentStatus: 'pending',
-    //                 country: formData.country,
-    //                 paymentMethod: formData.paymentOption
-    //             })
-    //         );
+    //                 price: item.price,
+    //                 title: item.title,
+    //                 image: item.image
+    //             })),
+    //             totalPrice: parseFloat(calculateTotal()),
+    //             username: formData.username,
+    //             email: formData.email,
+    //             phone: formData.phone,
+    //             role: 'user',
+    //             city: formData.city,
+    //             address: formData.address,
+    //             paymentStatus: 'pending',
+    //             country: formData.country,
+    //             paymentMethod: formData.paymentOption
+    //         };
 
-    //         const createdOrders = await Promise.all(orderPromises);
+    //         const createdOrder = await createOrder(orderData);
 
     //         // Set order details for the receipt with all products
     //         setOrderDetails({
-    //             ...createdOrders[0],
-    //             products: cartItems.map((item, index) => ({
-    //                 ...item,
-    //                 orderId: createdOrders[index]?.id || '',
-    //                 orignal_price: item.price,
-    //                 discounted_price: item.price * item.quantity
-    //             })),
+    //             ...createdOrder,
+    //             products: cartItems,
     //             total: calculateTotal(),
     //             customerInfo: {
     //                 username: formData.username,
@@ -152,7 +216,109 @@ export default function CheckoutPage() {
     //     }
     // };
 
-    // In your CheckoutPage component, replace the handleSubmit function:
+    const router = useRouter();
+    const { createOrder, loading: orderLoading } = useOrder();
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        phone: '',
+        city: '',
+        address: '',
+        paymentOption: 'jazzcash',
+        country: 'Pakistan'
+    });
+    const [formErrors, setFormErrors] = useState({
+        phone: '',
+        email: ''
+    });
+    const [showReceipt, setShowReceipt] = useState(false);
+    const [orderDetails, setOrderDetails] = useState(null);
+    const [orderSuccess, setOrderSuccess] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
+    // Load cart items from localStorage
+    const [cartItems] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const savedCart = localStorage.getItem('cart');
+            return savedCart ? JSON.parse(savedCart) : [];
+        }
+        return [];
+    });
+
+    // Check if all required fields are filled
+    const isFormValid = () => {
+        return (
+            formData.username.trim() !== '' &&
+            formData.email.trim() !== '' &&
+            formData.phone.trim() !== '' &&
+            formData.city.trim() !== '' &&
+            formData.address.trim() !== '' &&
+            formData.phone.length === 11 &&
+            formErrors.email === '' // Add email validation check
+        );
+    };
+
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    };
+
+    // Email validation function
+    const validateEmail = (email) => {
+        if (!email.includes('@') || !email.endsWith('.com')) {
+            setFormErrors(prev => ({
+                ...prev,
+                email: 'Email must include @ and end with .com'
+            }));
+        } else {
+            setFormErrors(prev => ({
+                ...prev,
+                email: ''
+            }));
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // Validate phone number specifically
+        if (name === 'phone') {
+            validatePhone(value);
+        }
+
+        // Validate email on change
+        if (name === 'email') {
+            validateEmail(value);
+        }
+    };
+
+    // Handle email blur for additional validation
+    const handleEmailBlur = (e) => {
+        const { value } = e.target;
+        validateEmail(value);
+    };
+
+    const validatePhone = (phone) => {
+        if (phone.length > 0 && phone.length < 11) {
+            setFormErrors(prev => ({
+                ...prev,
+                phone: 'Phone number must be 11 digits'
+            }));
+        } else if (phone.length === 11 && !phone.startsWith('03')) {
+            setFormErrors(prev => ({
+                ...prev,
+                phone: 'Phone number should start with 03'
+            }));
+        } else {
+            setFormErrors(prev => ({
+                ...prev,
+                phone: ''
+            }));
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -216,7 +382,6 @@ export default function CheckoutPage() {
         }
     };
 
-
     if (orderSuccess) {
         return (
             <div>
@@ -266,7 +431,7 @@ export default function CheckoutPage() {
                             <div className="bg-gray-50 p-6 rounded-lg">
                                 <h2 className="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
 
-                                <div className="space-y-4">
+                                {/* <div className="space-y-4">
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="flex items-center">
                                             <div className="flex-shrink-0 w-16 h-16 border border-gray-200 rounded-md overflow-hidden">
@@ -293,6 +458,44 @@ export default function CheckoutPage() {
                                             <p className="text-sm font-medium text-gray-900">
                                                 RS {(item.price * item.quantity).toFixed(2)} PKR
                                             </p>
+                                        </div>
+                                    ))}
+                                </div> */}
+                                <div className="space-y-6">
+                                    {cartItems.map((item) => (
+                                        <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg bg-gray-50 hover:bg-white transition-colors duration-200">
+                                            <div className="flex-shrink-0 w-20 h-20 overflow-hidden border border-gray-200 rounded-md">
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    width={80}
+                                                    height={80}
+                                                    className="w-full h-full object-cover object-center"
+                                                />
+                                            </div>
+                                            <div className="flex-1 flex flex-col justify-between">
+                                                <div className="flex justify-between items-start">
+                                                    <div className="flex-1 min-w-0 pr-4">
+                                                        <h3 className="text-base font-semibold text-gray-900 leading-tight line-clamp-2">
+                                                            {item.title}
+                                                        </h3>
+                                                        {item.hasVariants && (
+                                                            <div className="mt-1 text-xs text-gray-500">
+                                                                {item.size && <p className="mt-0.5">Size: {item.size}</p>}
+                                                                {item.color && <p className="mt-0.5">Color: {item.color}</p>}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-base font-semibold text-gray-900 text-right">
+                                                        RS {(item.price * item.quantity).toFixed(2)} PKR
+                                                    </p>
+                                                </div>
+                                                <div className="flex justify-between items-center mt-2">
+                                                    <p className="text-sm text-gray-500">
+                                                        RS {item.price.toFixed(2)} x {item.quantity}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -344,7 +547,7 @@ export default function CheckoutPage() {
                                             </div>
 
                                             {/* Email field - remains the same */}
-                                            <div>
+                                            {/* <div>
                                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                                     Email
                                                 </label>
@@ -357,6 +560,25 @@ export default function CheckoutPage() {
                                                     required
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                                 />
+                                            </div> */}
+
+                                            <div className="relative">
+                                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    onBlur={handleEmailBlur}
+                                                    required
+                                                    className={`mt-1 block w-full border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
+                                                />
+                                                {formErrors.email && (
+                                                    <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
+                                                )}
                                             </div>
 
                                             {/* Phone field with validation */}
@@ -462,7 +684,7 @@ export default function CheckoutPage() {
                                                     className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                                                 />
                                                 <label htmlFor="jazzcash" className="ml-3 block text-sm font-medium text-gray-700">
-                                                    JazzCash (031234567)
+                                                    JazzCash (03071991737)
                                                 </label>
                                             </div>
 
@@ -477,7 +699,7 @@ export default function CheckoutPage() {
                                                     className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                                                 />
                                                 <label htmlFor="easypaisa" className="ml-3 block text-sm font-medium text-gray-700">
-                                                    EasyPaisa (031234567)
+                                                    EasyPaisa (03478196414)
                                                 </label>
                                             </div>
 

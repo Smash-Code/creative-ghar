@@ -46,7 +46,7 @@ export default function Navbar({ setCart }) {
             <Link
               key={category.id}
               href={`/home/products/category/${category.name}`}
-              className="text-gray-700 text-xl hover:text-indigo-600 transition-colors whitespace-nowrap"
+              className="text-gray-700 text-xl hover:text-red-500 transition-colors whitespace-nowrap"
             >
               {category.name}
             </Link>

@@ -3,6 +3,7 @@
 
 import { useEffect } from 'react';
 import { useOrder } from '@/hooks/useOrder';
+import Loader from '@/components/Loader';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -14,17 +15,18 @@ const statusColors = {
 
 export default function OrdersList() {
   const { orders, getAllOrders, loading, error } = useOrder();
- useEffect(() => {
+  useEffect(() => {
     getAllOrders();
   }, []);
 
   if (loading) return (
-    <div className="flex justify-center items-center h-64">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-    </div>
+    // <div className="flex justify-center items-center h-64">
+    //   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+    // </div>
+    <Loader />
   );
 
-  
+
 
   if (error) return (
     <div className="bg-red-50 border-l-4 border-red-400 p-4">
@@ -54,7 +56,7 @@ export default function OrdersList() {
     );
   }
 
-  console.log(orders , "orders")
+  console.log(orders, "orders")
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -96,7 +98,7 @@ export default function OrdersList() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {orders.map((order) => (
-                order.role == "user" &&
+              order.role == "user" &&
               <tr key={order.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   #{order.id.slice(0, 8)}
@@ -123,7 +125,7 @@ export default function OrdersList() {
                   {order.size}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span 
+                  <span
                     className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                     style={{ backgroundColor: order.color, color: getContrastColor(order.color) }}
                   >
@@ -141,7 +143,7 @@ export default function OrdersList() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(order.createdAt).toLocaleDateString()}
                 </td>
-               <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap">
                   {order?.orderFulfillment?.trackingNumber ? (
                     <div className="flex flex-col space-y-1">
                       <div className="flex items-center">
@@ -156,9 +158,9 @@ export default function OrdersList() {
                         </span>
                       </div>
                       {order?.orderFulfillment?.trackingLink && (
-                        <a 
-                          href={order.orderFulfillment.trackingLink} 
-                          target="_blank" 
+                        <a
+                          href={order.orderFulfillment.trackingLink}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-900 hover:underline"
                         >
@@ -194,7 +196,7 @@ export default function OrdersList() {
 function getContrastColor(hexColor) {
   // If color is a name (like 'red'), return white or black based on brightness
   if (!hexColor || hexColor.startsWith('#')) return '#fff';
-  
+
   // Simple contrast for named colors
   const darkColors = ['black', 'navy', 'blue', 'darkgreen', 'maroon'];
   return darkColors.includes(hexColor.toLowerCase()) ? '#fff' : '#000';
