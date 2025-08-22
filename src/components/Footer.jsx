@@ -38,8 +38,12 @@ const Footer = () => {
 
                 <div className=' flex flex-col gap-1'>
                     <div className='font-bold'>Collections</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Fashion & Beauty</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Customize Products</div>
+                    <Link href={`/home/products/category/Fashion & Beauty`} >
+                        <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Fashion & Beauty</div>
+                    </Link>
+                    <Link href={`/home/products/category/Customize Products`} >
+                        <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Customize Products</div>
+                    </Link>
                 </div>
 
                 <div className=' flex flex-col gap-1'>
