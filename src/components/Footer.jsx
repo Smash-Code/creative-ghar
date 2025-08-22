@@ -9,26 +9,35 @@ const Footer = () => {
             <div className=' border-t-1 border-gray-100 flex justify-between flex-col md:flex-row py-8 gap-10 px-4'>
                 {/* Logo column - centered on small screens, normal on larger */}
                 <div className=' flex items-center justify-center'>
-                    <Image
-                        alt='logo'
-                        src='/creative-logo.png'
-                        height={100}
-                        width={100}
-                        className='object-contain'
-                    />
+                    <Link href="/" >
+                        <Image
+                            alt='logo'
+                            src='/creative-logo.png'
+                            height={100}
+                            width={100}
+                            className='object-contain'
+                        />
+                    </Link>
                 </div>
 
                 <div className=' flex flex-col gap-1'>
                     <div className='font-bold'>Customer Care</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Privacy Policy</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Refund Policy</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Shipping Policy</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Terms of Service</div>
+                    <Link href="/home/privacy-policy" >
+                        <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Privacy Policy</div>
+                    </Link>
+                    <Link href="/home/refund-policy" >
+                        <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Refund Policy</div>
+                    </Link>
+                    <Link href="/home/shipping-policy" >
+                        <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Shipping Policy</div>
+                    </Link>
+                    <Link href="/home/terms" >
+                        <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Terms of Service</div>
+                    </Link>
                 </div>
 
                 <div className=' flex flex-col gap-1'>
                     <div className='font-bold'>Collections</div>
-                    <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Home</div>
                     <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Fashion & Beauty</div>
                     <div className='text-sm text-gray-500 cursor-pointer hover:text-black'>Customize Products</div>
                 </div>

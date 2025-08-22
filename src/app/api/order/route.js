@@ -42,33 +42,38 @@ const orderSchema = z.object({
 // Helper function to get the next count_id
 async function getNextCountId() {
   try {
-    // Query to get the highest count_id
     const ordersRef = collection(db, 'orders');
     const q = query(ordersRef, orderBy('count_id', 'desc'), limit(1));
     const snapshot = await getDocs(q);
 
+    let nextId;
     if (snapshot.empty) {
-      // No orders yet, start from 1
-      return 1;
+      nextId = 1;
+    } else {
+      const lastOrder = snapshot.docs[0].data();
+      nextId = (parseInt(lastOrder.count_id, 10) || 0) + 1;
     }
 
-    // Get the highest count_id and increment by 1
-    const lastOrder = snapshot.docs[0].data();
-    return (lastOrder.count_id || 0) + 1;
+    // Format with leading zeros (e.g., 001, 002, 010, 100)
+    return formatCountId(nextId);
   } catch (error) {
     console.error('Error getting next count_id:', error);
-    // Fallback: Get total count of documents
+
     try {
       const ordersRef = collection(db, 'orders');
       const countSnapshot = await getCountFromServer(ordersRef);
-      return countSnapshot.data().count + 1;
+      return formatCountId(countSnapshot.data().count + 1);
     } catch (countError) {
       console.error('Error getting document count:', countError);
-      // Final fallback: use timestamp
-      return Date.now();
+      return Date.now().toString(); // fallback as string
     }
   }
 }
+
+function formatCountId(num, length = 4) {
+  return String(num).padStart(length, '0');
+}
+
 
 export async function POST(req) {
   try {
