@@ -83,7 +83,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                                             <div className="flex-1 flex items-end justify-between text-sm">
 
 
-                                                                <div className="inline-flex items-center rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+                                                                {/* <div className="inline-flex items-center rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
                                                                     <button
                                                                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                                         className="p-2 bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors duration-200 disabled:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
@@ -99,6 +99,29 @@ export default function CartPanel({ isOpen, onClose }) {
                                                                     <button
                                                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                                                         className="p-2 bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors duration-200"
+                                                                    >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                                            <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v7.5h7.5a.75.75 0 0 1 0 1.5h-7.5v7.5a.75.75 0 0 1-1.5 0v-7.5h-7.5a.75.75 0 0 1 0-1.5h7.5v-7.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </div> */}
+
+                                                                <div className="inline-flex items-center rounded-lg bg-white shadow-sm overflow-hidden">
+                                                                    <button
+                                                                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                                        className="p-2 bg-red-500 text-white hover:bg-red-600 transition-colors duration-200 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                                                        disabled={item.quantity <= 1}
+                                                                    >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                                            <path fillRule="evenodd" d="M3.75 12a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <span className="w-10 text-center text-sm font-medium text-gray-700 select-none">
+                                                                        {item.quantity}
+                                                                    </span>
+                                                                    <button
+                                                                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                                        className="p-2 bg-red-500 text-white hover:bg-red-600 transition-colors duration-200"
                                                                     >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                                                                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v7.5h7.5a.75.75 0 0 1 0 1.5h-7.5v7.5a.75.75 0 0 1-1.5 0v-7.5h-7.5a.75.75 0 0 1 0-1.5h7.5v-7.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
