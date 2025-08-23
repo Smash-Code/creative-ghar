@@ -522,7 +522,7 @@
 
 import { useEffect, useState } from 'react';
 import { useOrder } from '@/hooks/useOrder';
-import { ChevronDownIcon, FilterIcon, X, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronDownIcon, FilterIcon, X, Trash2, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -738,7 +738,7 @@ export default function OrdersList() {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       {/* Filter Header */}
-      <div className="p-4 border-b border-gray-200">
+      {/* <div className="p-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-medium text-gray-900">Orders</h2>
           <div className="flex items-center space-x-2">
@@ -766,7 +766,6 @@ export default function OrdersList() {
           </div>
         </div>
 
-        {/* Filter Dropdown */}
         {showFilters && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-md">
             <div>
@@ -804,6 +803,57 @@ export default function OrdersList() {
             </div>
           </div>
         )}
+      </div> */}
+      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+        <h2 className="text-lg font-semibold text-gray-900">Orders</h2>
+
+        <div className="flex items-center space-x-3">
+          {/* Payment Status Dropdown */}
+          <div className="relative ">
+            <select
+              value={paymentStatusFilter}
+              onChange={(e) => setPaymentStatusFilter(e.target.value)}
+              className="appearance-none cursor-pointer pl-4 pr-10 py-1.5 text-sm border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+              <option value="all">All Payments</option>
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+              <option value="failed">Failed</option>
+            </select>
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+              <ArrowDown />
+            </span>
+          </div>
+
+          {/* Order Status Dropdown */}
+          <div className="relative">
+            <select
+              value={orderStatusFilter}
+              onChange={(e) => setOrderStatusFilter(e.target.value)}
+              className="appearance-none cursor-pointer pl-4 pr-10 py-1.5 text-sm border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+            >
+              <option value="all">All Orders</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+              <ArrowDown />
+            </span>
+          </div>
+
+          {/* Clear Filters Button (only show if filters active) */}
+          {(paymentStatusFilter !== "all" || orderStatusFilter !== "all") && (
+            <button
+              onClick={resetFilters}
+              className="flex bg-red-500 rounded-lg cursor-pointer px-4 py-[10px] text-white hover:bg-red-600 items-center text-xs font-medium transition"
+            >
+              ✕ Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Orders Count and Pagination Info */}
