@@ -24,13 +24,39 @@ export default function HomePage() {
 
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const res = await getAllProducts({ page: 1, limit: 20 });
+
+  //       // Group products by category
+  //       const grouped = res.data.reduce((acc, product) => {
+  //         const category = product.category || 'Uncategorized';
+  //         if (!acc[category]) {
+  //           acc[category] = [];
+  //         }
+  //         acc[category].push(product);
+  //         return acc;
+  //       }, {});
+
+  //       setProductsByCategory(grouped);
+  //     } catch (error) {
+  //       console.error('Error fetching products:', error);
+  //     }
+  //     setLoading(false);
+  //   };
+
+  //   fetchProducts();
+  // }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const res = await getAllProducts({ page: 1, limit: 20 });
 
-        // Group products by category
+        // Group products by category and sort by priority
         const grouped = res.data.reduce((acc, product) => {
           const category = product.category || 'Uncategorized';
           if (!acc[category]) {
@@ -39,6 +65,18 @@ export default function HomePage() {
           acc[category].push(product);
           return acc;
         }, {});
+
+        // Sort products within each category by priority (highest first), then by other criteria
+        Object.keys(grouped).forEach(category => {
+          grouped[category].sort((a, b) => {
+            // Sort by priority (higher numbers first)
+            if (b.priority !== a.priority) {
+              return (b.priority || 0) - (a.priority || 0);
+            }
+            // If same priority, you can add additional sorting criteria
+            return a.title.localeCompare(b.title);
+          });
+        });
 
         setProductsByCategory(grouped);
       } catch (error) {

@@ -1,40 +1,5 @@
-// // app/api/orders/[id]/route.js
-// import { NextResponse } from 'next/server';
-// import { doc, updateDoc, getFirestore } from 'firebase/firestore';
-// import { db } from '@/firebase/config';
-
-// export async function PUT(req, { params }) {
-//   try {
-//     const { id } = await params;
-//     const body = await req.json();
-
-//     const orderRef = doc(db, 'orders', id);
-//     await updateDoc(orderRef, {
-//       ...body,
-//       updatedAt: new Date()
-//     });
-
-//     return NextResponse.json({
-//       success: true,
-//       message: 'Order updated successfully'
-//     });
-
-//   } catch (error) {
-//     console.error('Error updating order:', error);
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         error: error.message || 'Failed to update order'
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-
-
 import { NextResponse } from 'next/server';
-import { doc, updateDoc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, getFirestore, deleteDoc } from 'firebase/firestore';
 import { db } from '@/firebase/config';
 import { Resend } from 'resend';
 
@@ -149,5 +114,48 @@ If you have any questions, contact us at 03457036429
   } catch (error) {
     console.error('Error sending shipping confirmation email:', error);
     // Don't fail the request if email fails
+  }
+}
+
+
+
+
+
+
+
+export async function DELETE(req, { params }) {
+  try {
+    const { id } = await params;
+    const orderRef = doc(db, 'orders', id);
+
+    // Check if order exists
+    const orderSnapshot = await getDoc(orderRef);
+    if (!orderSnapshot.exists()) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Order not found'
+        },
+        { status: 404 }
+      );
+    }
+
+    // Delete the order
+    await deleteDoc(orderRef);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Order deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: error.message || 'Failed to delete order'
+      },
+      { status: 500 }
+    );
   }
 }

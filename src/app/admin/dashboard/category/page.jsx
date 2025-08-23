@@ -5,6 +5,7 @@ import CategoryForm from '@/components/products/categoryForm';
 import Modal from '@/components/ui/Modal';
 import ManageTopCategories from '../banner/Banners-Manage';
 import Banners from '../banner/Banners'
+import TopCategoriesUpload from '../banner/Banners';
 
 export default function CategoriesPage() {
   const { loading, error, getAllCategories, deleteCategory, createCategory, updateCategory } = useCategory();
@@ -150,7 +151,7 @@ export default function CategoriesPage() {
         </div>
       </Modal>
       <ManageTopCategories hitCategory={category} />
-      <Banners setCategory={setCategory} />
+      <TopCategoriesUpload setCategory={setCategory} categories={categories} />
     </div>
   );
 }

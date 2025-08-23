@@ -5,6 +5,7 @@ export function useCategory() {
   const [error, setError] = useState(null);
   const [category, setCategory] = useState()
 
+
   const getAllCategories = async () => {
     setLoading(true);
     setError(null);

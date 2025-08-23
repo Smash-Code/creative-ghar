@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { doc, getDoc, updateDoc, deleteDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { productSchema } from "@/firebase/schemas/productSchema";
-// import { productSchema } from "@/schemas/productSchema";
-
 
 
 
@@ -80,6 +78,7 @@ export async function PUT(req, { params }) {
     // First parse the basic data without category resolution
     const parsedData = productSchema.partial().parse({
       ...body,
+      priority: Number(body.priority) || 0,
       sizes: body.sizes?.map((size) => ({
         name: size.name,
         stock: Number(size.stock) || 0,

@@ -54,6 +54,9 @@ export default function ManageTopCategories({ hitCategory }) {
             } else {
                 setMessage(data.error || 'Failed to delete category');
             }
+            setTimeout(() => {
+                setMessage("")
+            }, 2500);
         } catch (error) {
             setMessage('Error deleting category');
         } finally {

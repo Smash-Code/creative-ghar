@@ -55,6 +55,7 @@ export async function POST(req) {
       return_or_exchange_time: 7,
       createdAt: new Date(),
       updatedAt: new Date(),
+      priority: Number(body.priority) || 0,
       // Handle variants
       hasVariants: body.hasVariants || false,
       sizes: body.sizes?.map(size => ({
