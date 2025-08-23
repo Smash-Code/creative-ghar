@@ -471,24 +471,6 @@ function ProductFormPage() {
 
 
                 </div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Priority (1-4)
-                </label>
-                <select
-                  name="priority"
-                  value={formData.priority || 0}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="0">No Priority</option>
-                  <option value="1">Priority 1 (Highest)</option>
-                  <option value="2">Priority 2</option>
-                  <option value="3">Priority 3</option>
-                  <option value="4">Priority 4</option>
-                </select>
-                <p className="text-xs text-gray-500 mt-1">
-                  Only 4 products per category can have priority. Higher numbers show first.
-                </p>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Original Price</label>
