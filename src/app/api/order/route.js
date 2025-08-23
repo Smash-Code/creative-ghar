@@ -332,10 +332,11 @@ export async function POST(req) {
 `).join('');
 
       // Send email to customer
+      // for development
+      // from: 'Creative Ghar <onboarding@resend.dev>',
+
       await resend.emails.send({
-        // for development
-        from: 'Creative Ghar <onboarding@resend.dev>',
-        // from: 'Creative Ghar <noreply@creativeghar.com>',
+        from: 'Creative Ghar <noreply@creativeghar.com>',
         to: validatedData.email,
         subject: `Your Order #${count_id} is Confirmed!`,
         html: `
@@ -343,24 +344,31 @@ export async function POST(req) {
       <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         
         <!-- Header with brand name -->
-        <div style="background-color: #306eff; color: #ffffff; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
-          <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: 0 auto;">
-            <tr>
-              <td style="padding-right: 10px; vertical-align: middle;">
-                <img 
-                  src="https://www.creativeghar.com/_next/image?url=%2Fcreative-logo.png&w=256&q=75" 
-                  alt="Creative Ghar" 
-                  style="width: 50px; height: auto; display: block;"
-                >
-              </td>
-              <td style="vertical-align: middle;">
-                <h1 style="font-size: 24px; margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #ffffff;">
-                  Order Confirmation
-                </h1>
-              </td>
-            </tr>
-          </table>
-        </div>
+          <div style="background-color: #306eff; color: #ffffff; padding: 20px; border-radius: 10px 10px 0 0;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tr>
+                <!-- Logo on the left -->
+                <td align="left" style="width: 50px; vertical-align: middle;">
+                  <img 
+                    src="https://www.creativeghar.com/_next/image?url=%2Fcreative-logo.png&w=256&q=75" 
+                    alt="Creative Ghar" 
+                    style="width: 70px; height: auto; display: block;"
+                  >
+                </td>
+
+                <!-- Heading centered -->
+                <td align="center" style="vertical-align: middle;">
+                  <h1 style="font-size: 24px; margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #ffffff;">
+                    Order Confirmation
+                  </h1>
+                </td>
+
+                <!-- Empty cell to balance layout -->
+                <td style="width: 50px;"></td>
+              </tr>
+            </table>
+          </div>
+
 
 
 
@@ -456,12 +464,13 @@ export async function POST(req) {
   </tr>
 `).join('');
 
+    // for development
+    // from: 'Creative Ghar <onboarding@resend.dev>',
+    // to: "ashfaqahmadfullstack@gmail.com",
+
     await resend.emails.send({
-      // from: 'Creative Ghar <noreply@creativeghar.com>',
-      // to: "creativeghar7@gmail.com",
-      // for development
-      from: 'Creative Ghar <onboarding@resend.dev>',
-      to: "ashfaqahmadfullstack@gmail.com",
+      from: 'Creative Ghar <noreply@creativeghar.com>',
+      to: "creativeghar7@gmail.com",
       subject: `New Order Received - #${count_id}`,
       html: `
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f4f4; padding: 20px; text-align: center;">
