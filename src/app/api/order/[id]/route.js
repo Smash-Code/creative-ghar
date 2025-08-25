@@ -26,7 +26,8 @@ export async function PUT(req, { params }) {
     if (body.orderFulfillment && currentOrder.email) {
       await sendShippingConfirmationEmail(
         currentOrder.email,
-        id,
+        currentOrder.count_id,
+        // id,
         body.orderFulfillment,
         currentOrder.username || 'Customer'
       );
@@ -53,7 +54,8 @@ export async function PUT(req, { params }) {
 async function sendShippingConfirmationEmail(toEmail, orderId, fulfillmentInfo, customerName) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Creative Ghar <noreply@creativeghar.com>', // Replace with your verified domain
+      // from: "Creative Ghar <onboarding@resend.dev>",
+      from: 'Creative Ghar <noreply@creativeghar.com>',
       to: toEmail,
       subject: `Your Order #${orderId} is on its way!`,
       html: `
@@ -63,21 +65,25 @@ async function sendShippingConfirmationEmail(toEmail, orderId, fulfillmentInfo, 
     <p style="font-size: 16px; color: #666;">Order #${orderId}</p>
   </div>
 
-  <div style="border: 1px solid #e5e5e5; border-radius: 8px; padding: 25px; margin-bottom: 25px;">
-    <h2 style="font-size: 18px; font-weight: 500; margin-top: 0; margin-bottom: 20px;">Tracking Information</h2>
-    
-    <div style="margin-bottom: 15px;">
-      <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Tracking number</div>
-      <div style="font-size: 16px; font-weight: 500;">${fulfillmentInfo.trackingNumber}</div>
-    </div>
-    
-    <a href="${fulfillmentInfo.trackingLink}" 
-       style="display: inline-block; background-color: #000; color: #fff; 
-              text-decoration: none; padding: 12px 20px; border-radius: 4px; 
-              font-size: 14px; font-weight: 500; margin-top: 10px;">
-      Track your package
-    </a>
+     <div style="border: 1px solid #e5e5e5; border-radius: 8px; padding: 25px; margin-bottom: 25px; text-align: center;">
+  <h2 style="font-size: 18px; font-weight: 500; margin-top: 0; margin-bottom: 20px;">
+    Tracking Information
+  </h2>
+  
+  <div style="margin-bottom: 15px;">
+    <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Tracking number</div>
+    <div style="font-size: 16px; font-weight: 500;">${fulfillmentInfo.trackingNumber}</div>
   </div>
+  
+  <a href="${fulfillmentInfo.trackingLink}" 
+     style="display: inline-block; background-color: #000; color: #fff; 
+            text-decoration: none; padding: 12px 20px; border-radius: 4px; 
+            font-size: 14px; font-weight: 500; margin-top: 10px;">
+    Track your package
+  </a>
+</div>
+
+
 
   <div style="text-align: center; font-size: 14px; color: #999; line-height: 1.5;">
     <p>We've shipped your order. You can track its progress using the link above.</p>
@@ -88,20 +94,20 @@ async function sendShippingConfirmationEmail(toEmail, orderId, fulfillmentInfo, 
       text: `
       Hi ${customerName},
 
-Your order #${orderId} has been shipped!
+      Your order #${orderId} has been shipped!
 
-TRACKING INFORMATION
-Tracking Number: ${fulfillmentInfo.trackingNumber}
-Track Your Package: ${fulfillmentInfo.trackingLink}
+      TRACKING INFORMATION
+      Tracking Number: ${fulfillmentInfo.trackingNumber}
+      Track Your Package: ${fulfillmentInfo.trackingLink}
 
-We've shipped your order. You can track its progress using the link above.
+      We've shipped your order. You can track its progress using the link above.
 
-Thank you for shopping with us!
+      Thank you for shopping with us!
 
-Creative Ghar
-------------------
-If you have any questions, contact us at 03457036429
-`
+      Creative Ghar
+      ------------------
+      If you have any questions, contact us at 03457036429
+      `
     });
 
     if (error) {

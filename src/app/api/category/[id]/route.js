@@ -12,7 +12,7 @@ export async function GET(request) {
     try {
       const docRef = doc(db, 'categories', id);
       const docSnap = await getDoc(docRef);
-      
+
       if (!docSnap.exists()) {
         return NextResponse.json(
           { success: false, error: 'Category not found' },
@@ -36,12 +36,12 @@ export async function GET(request) {
       );
     }
   }
-  
+
   // Otherwise return all categories (existing GET implementation)
   try {
     const querySnapshot = await getDocs(collection(db, 'categories'));
     const categories = [];
-    
+
     querySnapshot.forEach((doc) => {
       categories.push({
         id: doc.id,

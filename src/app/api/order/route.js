@@ -324,10 +324,10 @@ export async function POST(req) {
     if (validatedData.email) {
       const productsHtml = validatedData.products.map(product => `
   <tr>
-    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #333; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">${product.title || `Product ID: ${product.productId}`}</td>
-    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #333; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">${product.quantity}</td>
-    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #333; text-align: right; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">RS ${(product.price).toFixed(2)}</td>
-    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 14px; color: #333; text-align: right; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">RS  ${(product.price * product.quantity).toFixed(2)}</td>
+    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 9px; color: #333; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">${product.title || `Product ID: ${product.productId}`}</td>
+    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 9px; color: #333; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">${product.quantity}</td>
+    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 9px; color: #333; text-align: right; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">RS ${(product.price).toFixed(2)}</td>
+    <td style="padding: 12px; border-bottom: 1px solid #ddd; font-size: 9px; color: #333; text-align: right; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">RS  ${(product.price * product.quantity).toFixed(2)}</td>
   </tr>
 `).join('');
 

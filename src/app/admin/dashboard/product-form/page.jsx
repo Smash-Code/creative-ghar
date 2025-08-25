@@ -26,7 +26,9 @@ function ProductFormPage() {
     estimated_delivery_time: '',
     category: '',
     images: [],
-    hasVariants: false,
+    // hasVariants: false,
+    hasColors: false,
+    hasSizes: false,
     sizes: [],
     colors: []
   });
@@ -164,6 +166,8 @@ function ProductFormPage() {
           console.log(res.data, "to add category");
           setFormData({
             ...res.data,
+            hasSizes: res.data.sizes.length > 0 || false,
+            hasColors: res.data.colors.length > 0 || false,
             sizes: res.data.sizes || [],
             colors: res.data.colors || []
           });
@@ -339,7 +343,7 @@ function ProductFormPage() {
                 </div>
 
                 {/* Variant Toggle */}
-                <div className="md:col-span-2">
+                {/* <div className="md:col-span-2">
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -358,7 +362,6 @@ function ProductFormPage() {
 
                 {formData.hasVariants && (
                   <>
-                    {/* Sizes Section */}
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Sizes
@@ -403,7 +406,6 @@ function ProductFormPage() {
                       </div>
                     </div>
 
-                    {/* Colors Section */}
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Colors
@@ -458,7 +460,155 @@ function ProductFormPage() {
                       </div>
                     </div>
                   </>
+                )} */}
+
+                {/* Checkboxes Section */}
+                <div className="md:col-span-2 space-y-2">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={formData.hasSizes ? true : false}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          hasSizes: !prev.hasSizes,
+                        }))
+                      }
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <span className="text-sm font-medium text-gray-700">
+                      This product has different sizes
+                    </span>
+                  </label>
+
+                  {/* Sizes Section */}
+                  {formData.hasSizes && (
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Sizes
+                      </label>
+                      <div className="space-y-2">
+                        {formData.sizes?.map((size, index) => (
+                          <div key={index} className="flex items-center space-x-2">
+                            <input
+                              type="text"
+                              value={size.name}
+                              onChange={(e) => {
+                                const newSizes = [...formData.sizes];
+                                newSizes[index].name = e.target.value;
+                                setFormData({ ...formData, sizes: newSizes });
+                              }}
+                              placeholder="Size (e.g., S, M, L)"
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newSizes = [...formData.sizes];
+                                newSizes.splice(index, 1);
+                                setFormData({ ...formData, sizes: newSizes });
+                              }}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              sizes: [...prev.sizes, { name: "", stock: "" }],
+                            }))
+                          }
+                          className="mt-2 text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          + Add Size
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={formData.hasColors}
+                      onChange={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          hasColors: !prev.hasColors,
+                        }))
+                      }
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <span className="text-sm font-medium text-gray-700">
+                      This product has different colors
+                    </span>
+                  </label>
+                </div>
+
+
+
+                {/* Colors Section */}
+                {formData.hasColors && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Colors
+                    </label>
+                    <div className="space-y-2">
+                      {formData.colors?.map((color, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                          <input
+                            type="text"
+                            value={color.name}
+                            onChange={(e) => {
+                              const newColors = [...formData.colors];
+                              newColors[index].name = e.target.value;
+                              setFormData({ ...formData, colors: newColors });
+                            }}
+                            placeholder="Color name (e.g., Red, Blue)"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                          />
+                          <input
+                            type="color"
+                            value={color.hex || "#ffffff"}
+                            onChange={(e) => {
+                              const newColors = [...formData.colors];
+                              newColors[index].hex = e.target.value;
+                              setFormData({ ...formData, colors: newColors });
+                            }}
+                            className="w-10 h-10 border border-gray-300 rounded-md cursor-pointer"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newColors = [...formData.colors];
+                              newColors.splice(index, 1);
+                              setFormData({ ...formData, colors: newColors });
+                            }}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            colors: [...prev.colors, { name: "", hex: "#ffffff" }],
+                          }))
+                        }
+                        className="mt-2 text-sm text-indigo-600 hover:text-indigo-500"
+                      >
+                        + Add Color
+                      </button>
+                    </div>
+                  </div>
                 )}
+
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
@@ -468,8 +618,6 @@ function ProductFormPage() {
                     formData={formData}
                     handleChange={handleChange}
                   />
-
-
                 </div>
 
                 <div>

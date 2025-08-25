@@ -6,6 +6,7 @@ import Modal from '@/components/ui/Modal';
 import ManageTopCategories from '../banner/Banners-Manage';
 import Banners from '../banner/Banners'
 import TopCategoriesUpload from '../banner/Banners';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function CategoriesPage() {
   const { loading, error, getAllCategories, deleteCategory, createCategory, updateCategory } = useCategory();
@@ -29,14 +30,31 @@ export default function CategoriesPage() {
     fetchCategories();
   }, []);
 
+  // const handleDelete = async (id) => {
+  //   if (!window.confirm('Are you sure you want to delete this category?')) return;
+
+  //   // setDeleteLoading(true);
+  //   try {
+  //     await deleteCategory(id);
+  //     setCategories(categories.filter(cat => cat.id !== id));
+  //   } catch (err) {
+  //     console.error('Failed to delete category:', err);
+  //   } finally {
+  //     setDeleteLoading(false);
+  //   }
+  // };
+
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
 
-    // setDeleteLoading(true);
+    setDeleteLoading(true);
     try {
       await deleteCategory(id);
       setCategories(categories.filter(cat => cat.id !== id));
+      // Optionally show success message
     } catch (err) {
+      // Show the specific error message from the API
+      toast.error(err.message);
       console.error('Failed to delete category:', err);
     } finally {
       setDeleteLoading(false);
@@ -74,6 +92,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="p-6">
+      <Toaster />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Categories</h1>
         <button

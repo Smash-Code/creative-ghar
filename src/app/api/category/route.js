@@ -1,5 +1,16 @@
 import { NextResponse } from 'next/server';
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, Timestamp, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  Timestamp,
+  getDoc,
+  query,
+  where
+} from 'firebase/firestore';
 import { db } from '@/firebase/config';
 import { z } from 'zod';
 
@@ -13,7 +24,7 @@ export async function GET() {
   try {
     const querySnapshot = await getDocs(collection(db, 'categories'));
     const categories = [];
-    
+
     querySnapshot.forEach((doc) => {
       categories.push({
         id: doc.id,
@@ -45,8 +56,8 @@ export async function POST(req) {
       updatedAt: Timestamp.fromDate(validatedData.updatedAt),
     });
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       id: docRef.id,
       message: 'Category created successfully'
     });
@@ -69,7 +80,7 @@ export async function PUT(req) {
       updatedAt: Timestamp.fromDate(new Date()),
     });
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
       message: 'Category updated successfully'
     });
@@ -85,9 +96,60 @@ export async function PUT(req) {
 export async function DELETE(req) {
   try {
     const { id } = await req.json();
+
+    console.log(id, "id here")
+    // First get the category to get its name
+    const categoryRef = await doc(db, 'categories', id);
+    const categoryDoc = await getDoc(categoryRef)
+    if (!categoryDoc.exists()) {
+      return NextResponse.json(
+        { success: false, error: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    const categoryData = categoryDoc.data();
+    const categoryName = categoryData.name;
+
+    // Check if category exists in top-categories collection (by name)
+    const topCategoriesQuery = query(
+      collection(db, 'top-categories'),
+      where('category', '==', categoryName)
+    );
+    const topCategoriesSnapshot = await getDocs(topCategoriesQuery);
+
+    if (!topCategoriesSnapshot.empty) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Cannot delete category. It is assigned to top categories. Please remove it from top categories first.'
+        },
+        { status: 400 }
+      );
+    }
+
+    // Check if category exists in products collection (by ID)
+    const productsQuery = query(
+      collection(db, 'products'),
+      where('category', '==', id)
+    );
+    const productsSnapshot = await getDocs(productsQuery);
+
+    if (!productsSnapshot.empty) {
+      const productCount = productsSnapshot.size;
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Cannot delete category. It is assigned to ${productCount} product(s). Please update or remove these products first.`
+        },
+        { status: 400 }
+      );
+    }
+
+    // If no dependencies found, delete the category
     await deleteDoc(doc(db, 'categories', id));
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
       message: 'Category deleted successfully'
     });
@@ -99,3 +161,21 @@ export async function DELETE(req) {
     );
   }
 }
+
+// export async function DELETE(req) {
+//   try {
+//     const { id } = await req.json();
+//     await deleteDoc(doc(db, 'categories', id));
+
+//     return NextResponse.json({
+//       success: true,
+//       message: 'Category deleted successfully'
+//     });
+//   } catch (error) {
+//     console.error('Error deleting category:', error);
+//     return NextResponse.json(
+//       { success: false, error: error.message },
+//       { status: 400 }
+//     );
+//   }
+// }

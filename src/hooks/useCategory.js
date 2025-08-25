@@ -74,6 +74,28 @@ export function useCategory() {
     return foundCategory ? foundCategory.name : null;
   };
 
+  // const deleteCategory = async (id) => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const res = await fetch('/api/category', {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ id }),
+  //     });
+  //     const data = await res.json();
+  //     if (!res.ok) throw new Error(data.error || 'Failed to delete category');
+  //     return data;
+  //   } catch (err) {
+  //     setError(err.message);
+  //     throw err;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const deleteCategory = async (id) => {
     setLoading(true);
     setError(null);
@@ -86,16 +108,23 @@ export function useCategory() {
         body: JSON.stringify({ id }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to delete category');
+      if (!res.ok) {
+        // Throw the specific error message from the API
+        throw new Error(data.error || 'Failed to delete category');
+      }
       return data;
     } catch (err) {
       setError(err.message);
+
+      setTimeout(() => {
+        setError(null);
+      }, 8000);
+
       throw err;
     } finally {
       setLoading(false);
     }
   };
-
   return {
     loading,
     error,
