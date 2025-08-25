@@ -1190,6 +1190,7 @@
 import { useEffect, useState } from 'react';
 import { useOrder } from '@/hooks/useOrder';
 import { ChevronDownIcon, FilterIcon, X, Trash2, ChevronLeft, ChevronRight, ArrowDown, Search } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -1288,6 +1289,14 @@ export default function OrdersList() {
 
   const handleUpdateFulfillment = async (orderId) => {
     try {
+      if (trackingInfo.trackingNumber.trim().length <= 0) {
+        toast.error('Please fill the tracking number!')
+        return;
+      }
+      if (trackingInfo.trackingLink.trim().length <= 0) {
+        toast.error('Please fill the tracking link!')
+        return;
+      }
       await updateOrder(orderId, {
         orderFulfillment: {
           trackingNumber: trackingInfo.trackingNumber,
@@ -1384,6 +1393,7 @@ export default function OrdersList() {
 
   if (error) return (
     <div className="bg-red-50 border-l-4 border-red-400 p-4">
+
       <div className="flex">
         <div className="flex-shrink-0">
           <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -1411,6 +1421,7 @@ export default function OrdersList() {
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
+      <Toaster />
       {/* Filter Header */}
       <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <h2 className="text-lg font-semibold text-gray-900">Orders</h2>
@@ -1709,6 +1720,7 @@ export default function OrdersList() {
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Number</label>
                                   <input
+                                    required={true}
                                     type="text"
                                     name="trackingNumber"
                                     value={trackingInfo.trackingNumber}
@@ -1720,6 +1732,7 @@ export default function OrdersList() {
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Link</label>
                                   <input
+                                    required={true}
                                     type="url"
                                     name="trackingLink"
                                     value={trackingInfo.trackingLink}
