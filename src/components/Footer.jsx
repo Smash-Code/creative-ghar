@@ -1,3 +1,4 @@
+"use client"
 import { useCategory } from '@/hooks/useCategory'
 import { Facebook, Instagram } from 'lucide-react'
 import Image from 'next/image'
