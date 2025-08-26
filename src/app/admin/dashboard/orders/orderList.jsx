@@ -3,8 +3,10 @@
 
 import { useEffect, useState } from 'react';
 import { useOrder } from '@/hooks/useOrder';
-import { Trash2, ChevronLeft, ChevronRight, ArrowDown, Search } from 'lucide-react';
+import { Trash2, ChevronLeft, ChevronRight, ArrowDown, Search, Eye, EyeOff } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import ConfirmationModal from '@/components/modals/DeleteModal';
+import Loader from '@/components/Loader';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -40,6 +42,9 @@ export default function OrdersList() {
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orderToDeleteId, setOrderToDeleteId] = useState(null);
 
   useEffect(() => {
     getAllOrders();
@@ -143,16 +148,20 @@ export default function OrdersList() {
       console.error('Failed to update payment status:', err);
     }
   };
+  const handleInitiateDelete = (orderId) => {
+    setOrderToDeleteId(orderId);
+    setIsModalOpen(true);
+  };
 
   // Handle order deletion
-  const handleDeleteOrder = async (orderId) => {
-    if (!confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
-      return;
-    }
+  const handleDeleteOrder = async () => {
+    if (!orderToDeleteId) return;
 
-    setDeletingOrderId(orderId);
+    setIsModalOpen(false);
+    setDeletingOrderId(orderToDeleteId);
+    setDeletingOrderId(orderToDeleteId);
     try {
-      const response = await fetch(`/api/order/${orderId}`, {
+      const response = await fetch(`/api/order/${orderToDeleteId}`, {
         method: 'DELETE',
       });
 
@@ -197,11 +206,14 @@ export default function OrdersList() {
     return { sizes, colors };
   };
 
+  const handleCancelDelete = () => {
+    setIsModalOpen(false);
+    setOrderToDeleteId(null);
+  };
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
+      <Loader />
     )
   }
 
@@ -238,11 +250,27 @@ export default function OrdersList() {
       <Toaster />
       {/* Filter Header */}
       <div className="p-4 border-b border-gray-200 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <h2 className="text-lg font-semibold text-gray-900">Orders</h2>
-
+        <div></div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
           {/* Search Bar */}
-          <div className="relative w-full sm:w-48">
+          <div className="bg-indigo-50 rounded-[6px] py-1 relative max-w-[50%]">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Search products by Order ID"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="pl-8  pr-4 py-2 text-sm rounded-md w-full focus:outline-none focus:ring-0"
+            />
+          </div>
+          {/* <div className="relative w-full sm:w-48">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search size={16} className="text-gray-400" />
             </div>
@@ -256,18 +284,18 @@ export default function OrdersList() {
               }}
               className="pl-10 pr-4 py-1.5 w-full text-sm border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
-          </div>
+          </div> */}
 
           <div className="flex items-center space-x-3 w-full sm:w-auto">
             {/* Payment Status Dropdown */}
-            <div className="relative w-full sm:w-auto">
+            <div className="relative w-full sm:w-auto bg-indigo-50 px-2 rounded-md">
               <select
                 value={paymentStatusFilter}
                 onChange={(e) => {
                   setPaymentStatusFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="appearance-none cursor-pointer pl-4 pr-10 py-1.5 w-full text-sm border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="appearance-none cursor-pointer pl-4 pr-10 py-3 w-full text-sm border-0 rounded-lg bg-transparent focus:outline-none focus:ring-0 transition"
               >
                 <option value="all">All Payments</option>
                 <option value="pending">Pending</option>
@@ -287,7 +315,7 @@ export default function OrdersList() {
                   setOrderStatusFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="appearance-none cursor-pointer pl-4 pr-10 py-1.5 w-full text-sm border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="appearance-none cursor-pointer pl-4 pr-10 py-3 w-full text-sm border-0 rounded-lg bg-indigo-50 focus:outline-none focus:ring-0 transition"
               >
                 <option value="all">All Orders</option>
                 <option value="pending">Pending</option>
@@ -315,7 +343,7 @@ export default function OrdersList() {
       </div>
 
       {/* Orders Count and Pagination Info */}
-      <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+      {/* <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
         <div className="text-sm text-gray-600">
           Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredOrders.length)} of {filteredOrders.length} orders
         </div>
@@ -342,32 +370,32 @@ export default function OrdersList() {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Orders Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto p-[20px] bg-white">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+          <thead className="bg-indigo-50 rounded-xl font-semibold">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Order ID
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Total Price
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Status
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Payment Status
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Tracking ID
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Date
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -490,21 +518,22 @@ export default function OrdersList() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
-                          className="text-indigo-600 hover:text-indigo-900 mr-3"
+                          className="bg-indigo-100 hover:bg-indigo-200 p-2 rounded-[4px] cursor-pointer text-indigo-600 mr-3"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleExpandOrder(order);
                           }}
                         >
-                          {expandedOrderId === order.id ? 'Collapse' : 'View'}
+                          {expandedOrderId === order.id ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                         <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteOrder(order.id);
-                          }}
+                          // onClick={(e) => {
+                          //   e.stopPropagation();
+                          //   handleDeleteOrder(order.id);
+                          // }}
+                          onClick={() => handleInitiateDelete(order.id)}
                           disabled={deletingOrderId === order.id}
-                          className="text-red-600 hover:text-red-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="p-2 cursor-pointer rounded bg-red-100 hover:bg-red-200 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Delete order"
                         >
                           {deletingOrderId === order.id ? (
@@ -641,6 +670,13 @@ export default function OrdersList() {
             </button>
           </div>
         </div>
+      )}
+      {isModalOpen && (
+        <ConfirmationModal
+          message="Are you sure you want to delete this order? This action cannot be undone."
+          onConfirm={handleDeleteOrder}
+          onCancel={handleCancelDelete}
+        />
       )}
     </div>
   );

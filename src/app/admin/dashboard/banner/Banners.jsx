@@ -170,6 +170,7 @@
 //         </div>
 //     );
 // }
+
 'use client';
 
 import { useState } from 'react';
@@ -256,11 +257,11 @@ export default function TopCategoriesUpload({ setCategory, categories }) {
     };
 
     return (
-        <div className="max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div className="max-w-full p-6 bg-white rounded-lg ">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">
+                {/* <h1 className="text-2xl font-bold text-gray-800">
                     Upload Top Category Image
-                </h1>
+                </h1> */}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
