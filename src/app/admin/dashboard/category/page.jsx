@@ -30,20 +30,6 @@ export default function CategoriesPage() {
     fetchCategories();
   }, []);
 
-  // const handleDelete = async (id) => {
-  //   if (!window.confirm('Are you sure you want to delete this category?')) return;
-
-  //   // setDeleteLoading(true);
-  //   try {
-  //     await deleteCategory(id);
-  //     setCategories(categories.filter(cat => cat.id !== id));
-  //   } catch (err) {
-  //     console.error('Failed to delete category:', err);
-  //   } finally {
-  //     setDeleteLoading(false);
-  //   }
-  // };
-
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
 
