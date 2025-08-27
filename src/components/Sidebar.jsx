@@ -7,10 +7,18 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   // Helper function to determine if a link is active
+  // const isActive = (href) => {
+  //   return pathname === href ||
+  //     (href !== '/' && pathname.startsWith(href));
+  // };
+
   const isActive = (href) => {
-    return pathname === href ||
-      (href !== '/' && pathname.startsWith(href));
+    if (href === '/admin/dashboard') {
+      return pathname === href; // only exact match
+    }
+    return pathname === href || pathname.startsWith(href + '/');
   };
+
 
   return (
     <div className="w-44 md:w-64 h-screen  bg-white text-gray-800 shadow-md">
@@ -19,10 +27,10 @@ const Sidebar = () => {
       </div>
       <nav className="p-4">
         <ul className="space-y-2">
-          {/* <li>
+          <li>
             <Link
               href="/admin/dashboard"
-              className={`flex items-center p-2 rounded transition-colors ${isActive('/dashboard'.trim())
+              className={`flex items-center p-2 rounded transition-colors ${isActive('/admin/dashboard'.trim())
                 ? 'bg-indigo-100 text-indigo-500'
                 : 'hover:bg-indigo-100'
                 }`}
@@ -32,7 +40,7 @@ const Sidebar = () => {
               </svg>
               Dashboard
             </Link>
-          </li> */}
+          </li>
 
           <li>
             <Link
