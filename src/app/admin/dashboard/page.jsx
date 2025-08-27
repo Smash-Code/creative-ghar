@@ -542,6 +542,7 @@
 import Loader from '@/components/Loader';
 import { useOrder } from '@/hooks/useOrder';
 import { useProductApi } from '@/hooks/useProduct';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import {
@@ -761,7 +762,7 @@ const DashboardHome = () => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'PKR',
     }).format(amount);
   };
 
@@ -857,59 +858,66 @@ const DashboardHome = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white p-6 shadow-xl rounded-xl mt-8">
-        <h2 className="text-2xl font-bold mb-4">Orders Delivery Status</h2>
-        <ResponsiveContainer width="100%" height={250}>
-          <PieChart>
-            <Pie
-              data={[
-                { name: "Pending", value: stats.totalPending },
-                { name: "Shipped", value: stats.totalShipped },
-                { name: "Paid", value: stats.totalPaid },
-              ]}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={90}
-              fill="#8884d8"
-              label
-            >
-              <Cell fill="#facc15" /> {/* yellow */}
-              <Cell fill="#3b82f6" /> {/* blue */}
-              <Cell fill="#22c55e" /> {/* green */}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="bg-white p-6 shadow-xl rounded-xl mt-8">
-        <h2 className="text-2xl font-bold mb-4">Orders Payment Status</h2>
-        <ResponsiveContainer width="100%" height={250}>
-          <PieChart>
-            <Pie
-              data={[
-                { name: "Pending", value: stats.paymentPending },
-                { name: "Failed", value: stats.paymentFailed },
-                { name: "Paid", value: stats.totalPaid },
-              ]}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={90}
-              fill="#8884d8"
-              label
-            >
-              <Cell fill="#facc15" /> {/* yellow */}
-              <Cell fill="#FF0000" /> {/* blue */}
-              <Cell fill="#22c55e" /> {/* green */}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+      <div className='grid grid-cols-12 gap-6' >
+        <div className='col-span-12 md:col-span-6' >
+          <div className="bg-white p-6 shadow-xl rounded-xl mt-8">
+            <h2 className="text-2xl font-bold mb-4">Orders Delivery Status</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={[
+                    { name: "Pending", value: stats.totalPending },
+                    { name: "Shipped", value: stats.totalShipped },
+                    { name: "Paid", value: stats.totalPaid },
+                  ]}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  fill="#8884d8"
+                  label
+                >
+                  <Cell fill="#facc15" /> {/* yellow */}
+                  <Cell fill="#3b82f6" /> {/* blue */}
+                  <Cell fill="#22c55e" /> {/* green */}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className='col-span-12 md:col-span-6' >
+          <div className="bg-white p-6 shadow-xl rounded-xl mt-8">
+            <h2 className="text-2xl font-bold mb-4">Orders Payment Status</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={[
+                    { name: "Pending", value: stats.paymentPending },
+                    { name: "Failed", value: stats.paymentFailed },
+                    { name: "Paid", value: stats.totalPaid },
+                  ]}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  fill="#8884d8"
+                  label
+                >
+                  <Cell fill="#facc15" /> {/* yellow */}
+                  <Cell fill="#FF0000" /> {/* blue */}
+                  <Cell fill="#22c55e" /> {/* green */}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
       </div>
 
 
@@ -956,7 +964,7 @@ const DashboardHome = () => {
               <h2 className="text-2xl font-bold">Latest Orders</h2>
               <div className="relative">
                 <button
-                  className="flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex cursor-pointer items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   <span>{getFilterDisplayText(dateFilter)}</span>
@@ -969,31 +977,31 @@ const DashboardHome = () => {
                   <div className="absolute right-0 z-10 w-48 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
                     <div className="py-1">
                       <button
-                        className={`block w-full text-left px-4 py-2 text-sm ${dateFilter === 'today' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
+                        className={`block cursor-pointer w-full text-left px-4 py-2 text-sm ${dateFilter === 'today' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
                         onClick={() => handleDateFilterChange('today')}
                       >
                         Today
                       </button>
                       <button
-                        className={`block w-full text-left px-4 py-2 text-sm ${dateFilter === 'yesterday' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
+                        className={`block cursor-pointer w-full text-left px-4 py-2 text-sm ${dateFilter === 'yesterday' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
                         onClick={() => handleDateFilterChange('yesterday')}
                       >
                         Yesterday
                       </button>
                       <button
-                        className={`block w-full text-left px-4 py-2 text-sm ${dateFilter === 'week' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
+                        className={`block cursor-pointer w-full text-left px-4 py-2 text-sm ${dateFilter === 'week' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
                         onClick={() => handleDateFilterChange('week')}
                       >
                         This Week
                       </button>
                       <button
-                        className={`block w-full text-left px-4 py-2 text-sm ${dateFilter === 'month' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
+                        className={`block cursor-pointer w-full text-left px-4 py-2 text-sm ${dateFilter === 'month' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
                         onClick={() => handleDateFilterChange('month')}
                       >
                         This Month
                       </button>
                       <button
-                        className={`block w-full text-left px-4 py-2 text-sm ${dateFilter === 'all' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
+                        className={`block cursor-pointer w-full text-left px-4 py-2 text-sm ${dateFilter === 'all' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}`}
                         onClick={() => handleDateFilterChange('all')}
                       >
                         All Orders
@@ -1007,22 +1015,24 @@ const DashboardHome = () => {
             {latestOrders.length > 0 ? (
               <div className="space-y-4 bg-white p-4">
                 {latestOrders.map((order) => (
-                  <div key={order.id} className="flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50">
-                    <div className="flex-1">
-                      <div className="font-medium">Order #{order.id.slice(0, 8)}</div>
-                      <div className="text-sm text-gray-500">{formatDate(order.createdAt)}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold">{formatCurrency(order.total_price || 0)}</div>
-                      <div className={`text-xs px-2 py-1 rounded-full inline-block ${order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                          order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                            'bg-blue-100 text-blue-800'
-                        }`}>
-                        {order.status}
+                  <Link href="/admin/dashboard/orders">
+                    <div key={order.count_id} className="flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50">
+                      <div className="flex-1">
+                        <div className="font-medium">Order #{order.count_id}</div>
+                        <div className="text-sm text-gray-500">{formatDate(order.createdAt)}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold">{formatCurrency(order.totalPrice || 0)}</div>
+                        <div className={`text-xs px-2 py-1 rounded-full inline-block ${order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                              'bg-blue-100 text-blue-800'
+                          }`}>
+                          {order.status}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
