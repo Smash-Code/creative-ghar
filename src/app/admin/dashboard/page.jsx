@@ -539,10 +539,13 @@
 // export default DashboardHome;
 
 "use client"
+import { useAuth } from '@/app/context/authContext';
 import Loader from '@/components/Loader';
 import { useOrder } from '@/hooks/useOrder';
 import { useProductApi } from '@/hooks/useProduct';
+import { LogOutIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import {
@@ -564,6 +567,7 @@ import {
 const DashboardHome = () => {
   const { getAllOrders, orders } = useOrder();
   const { getAllProducts } = useProductApi();
+  const { user, loading: authLoading, logout } = useAuth();
 
   const [products, setProducts] = useState([]);
   const [stats, setStats] = useState({
@@ -579,6 +583,14 @@ const DashboardHome = () => {
   const [dateFilter, setDateFilter] = useState('today'); // 'today', 'yesterday', 'week', 'month', 'all'
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter()
+
+
+  useEffect(() => {
+    if (!authLoading && !user && user?.role !== 'admin') {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -775,17 +787,21 @@ const DashboardHome = () => {
     });
   };
 
-  if (loading) {
-    return (
-      <Loader />
-    );
+  if (authLoading || !user || loading) {
+    return <Loader />;
   }
 
   return (
     <div className="h-full bg-gray-100 px-[40px] pt-[20px] pb-10">
-      <div>
-        <div className='text-[44px] font-bold'>Dashboard Home</div>
-        <div className='text-gray-400 py-2'>Let's customize store to get more sales.</div>
+      <div className='flex justify-between' >
+        <div>
+          <div className='text-[44px] font-bold'>Dashboard Home</div>
+          <div className='text-gray-400 py-2'>Let's customize store to get more sales.</div>
+        </div>
+
+        <div onClick={() => logout()} className='bg-red-200 text-red-600 cursor-pointer h-fit w-fit px-12 py-3 rounded-lg hover:bg-red-300 transition-all duration-300 hover:scale-105' >
+          <LogOutIcon />
+        </div>
       </div>
 
       {/* Stats Cards */}
