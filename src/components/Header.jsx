@@ -88,7 +88,7 @@ export default function Navbar({ setCart }) {
           <div className="flex flex-col space-y-3 pt-2">
             {categories?.map((category) => (
               <Link
-                key={category._id}
+                key={category.id}
                 href={`/home/products/category/${category.name}`}
                 className="text-gray-700 hover:text-indigo-600 transition-colors py-2 px-4"
                 onClick={() => setIsMenuOpen(false)}

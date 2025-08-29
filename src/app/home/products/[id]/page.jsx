@@ -47,7 +47,8 @@ export default function ProductDetailPage() {
         const res = await getProductsByCategory(product.category, { limit: 10 });
         if (res.data) {
           // Filter out the current product
-          const filtered = res.data.filter(p => p._id !== product._id && p.slug !== product.slug);
+          const filtered = res.data.filter(p => p.id !== product.id || p.slug !== product.slug);
+
           setRelatedProducts(filtered);
         }
       } catch (error) {
