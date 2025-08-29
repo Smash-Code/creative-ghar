@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./context/authContext";
 import { Toaster } from "react-hot-toast";
+import { DEFAULT_SEO } from "@/constants/seo";
+import { generateOrganizationStructuredData } from "@/utils/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,14 +16,66 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Creative Ghar",
-  description: "creativeghar.com",
+  title: DEFAULT_SEO.title,
+  description: DEFAULT_SEO.description,
+  keywords: DEFAULT_SEO.keywords,
+  authors: [{ name: "Creative Ghar" }],
+  creator: "Creative Ghar",
+  publisher: "Creative Ghar",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL(DEFAULT_SEO.url),
+  alternates: {
+    canonical: DEFAULT_SEO.url,
+  },
+  openGraph: {
+    title: DEFAULT_SEO.title,
+    description: DEFAULT_SEO.description,
+    url: DEFAULT_SEO.url,
+    siteName: DEFAULT_SEO.siteName,
+    images: [
+      {
+        url: DEFAULT_SEO.image,
+        width: 1200,
+        height: 630,
+        alt: "Creative Ghar - Unique Products & Creative Shopping",
+      },
+    ],
+    locale: DEFAULT_SEO.locale,
+    type: "website",
+  },
+  twitter: {
+    card: DEFAULT_SEO.twitterCard,
+    title: DEFAULT_SEO.title,
+    description: DEFAULT_SEO.description,
+    images: [DEFAULT_SEO.image],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code", // Replace with actual verification code
+  },
 };
 
 export default function RootLayout({ children }) {
+  const organizationData = generateOrganizationStructuredData();
+
   return (
     <html lang="en">
       <head>
+        {/* Facebook Pixel */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -47,6 +101,14 @@ export default function RootLayout({ children }) {
             alt="Facebook Pixel"
           />
         </noscript>
+
+        {/* Organization Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationData)
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}

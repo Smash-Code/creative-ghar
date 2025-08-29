@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { doc, getDoc, updateDoc, deleteDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { productSchema } from "@/firebase/schemas/productSchema";
+import { generateSlug, generateUniqueSlug } from "@/utils/slug";
 
 
 
@@ -9,39 +10,61 @@ export async function GET(_req, { params }) {
   const data = await params;
   const { id } = data;
 
+  console.log(params)
+
   if (!id) {
     return NextResponse.json(
-      { success: false, error: "Product ID is required" },
+      { success: false, error: "Product identifier is required" },
       { status: 400 }
     );
   }
 
   try {
-    // 1. Fetch the product
-    const productRef = doc(db, "products", id);
-    const productSnap = await getDoc(productRef);
+    let productData = null;
+    let categoryName = null;
 
-    if (!productSnap.exists()) {
+    // 1. First try to find by slug
+    try {
+      const productsRef = collection(db, "products");
+      const slugQuery = query(productsRef, where("slug", "==", id));
+      const querySnapshot = await getDocs(slugQuery);
+
+      if (!querySnapshot.empty) {
+        const productDoc = querySnapshot.docs[0];
+        productData = { id: productDoc.id, ...productDoc.data() };
+      }
+    } catch (slugError) {
+      console.log('Slug lookup failed, trying ID lookup');
+    }
+
+    // 2. If not found by slug, try ID lookup (for backward compatibility)
+    if (!productData) {
+      const productRef = doc(db, "products", id);
+      const productSnap = await getDoc(productRef);
+
+      if (productSnap.exists()) {
+        productData = { id: productSnap.id, ...productSnap.data() };
+      }
+    }
+
+    if (!productData) {
       return NextResponse.json(
         { success: false, error: "Product not found" },
         { status: 404 }
       );
     }
 
-    const productData = { id: productSnap.id, ...productSnap.data() };
-
-    // 2. If product has a categoryId, fetch the category
-    let categoryName = null;
+    // 3. If product has a categoryId, fetch the category
     if (productData.category) {
       const categoryRef = doc(db, "categories", productData.category);
       const categorySnap = await getDoc(categoryRef);
 
       if (categorySnap.exists()) {
-        categoryName = categorySnap.data().name; // Make sure this matches your field name
+        categoryName = categorySnap.data().name;
       }
     }
 
-    // 3. Return combined data
+    // 4. Return combined data
     return NextResponse.json({
       success: true,
       data: {
@@ -75,9 +98,32 @@ export async function PUT(req, { params }) {
     const body = await req.json();
     delete body.createdAt;
 
+    // Handle slug generation if title is being updated and no slug is provided
+    let slugToUpdate = body.slug;
+    if (!slugToUpdate && body.title) {
+      const baseSlug = generateSlug(body.title);
+
+      // Check if slug already exists (excluding current product)
+      const productsRef = collection(db, 'products');
+      const slugQuery = query(productsRef, where('slug', '==', baseSlug));
+      const slugSnapshot = await getDocs(slugQuery);
+
+      // Filter out the current product
+      const existingSlugs = slugSnapshot.docs
+        .filter(doc => doc.id !== id)
+        .map(doc => doc.data().slug);
+
+      if (existingSlugs.includes(baseSlug)) {
+        slugToUpdate = generateUniqueSlug(baseSlug, existingSlugs);
+      } else {
+        slugToUpdate = baseSlug;
+      }
+    }
+
     // First parse the basic data without category resolution
     const parsedData = productSchema.partial().parse({
       ...body,
+      ...(slugToUpdate ? { slug: slugToUpdate } : {}),
       priority: Number(body.priority) || 0,
       sizes: body.sizes?.map((size) => ({
         name: size.name,
@@ -123,7 +169,11 @@ export async function PUT(req, { params }) {
     const docRef = doc(db, "products", id);
     await updateDoc(docRef, updatedData);
 
-    return NextResponse.json({ success: true, id });
+    return NextResponse.json({
+      success: true,
+      id,
+      ...(slugToUpdate ? { slug: slugToUpdate } : {})
+    });
   } catch (error) {
     console.error("Error updating product:", error);
     return NextResponse.json(

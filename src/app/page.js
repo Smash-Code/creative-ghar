@@ -15,6 +15,9 @@ import Newsletter from "@/components/home/Newsletter"
 import Link from 'next/link';
 import CartPanel from "@/components/home/CartPanel";
 import Loader from "@/components/Loader";
+import SEO from "@/components/seo/Head";
+import { PAGE_SEO } from "@/constants/seo";
+import { generateOrganizationStructuredData } from "@/utils/seo";
 
 export default function HomePage() {
   const { getAllProducts } = useProductApi();
@@ -88,8 +91,18 @@ export default function HomePage() {
     fetchProducts();
   }, []);
 
+  const homeSEO = PAGE_SEO.home;
+  const organizationData = generateOrganizationStructuredData();
+
   return (
     <>
+      <SEO
+        title={homeSEO.title}
+        description={homeSEO.description}
+        keywords={homeSEO.keywords}
+        url="https://creativeghar.com"
+        structuredData={organizationData}
+      />
       <head>
         <script
           dangerouslySetInnerHTML={{

@@ -169,7 +169,7 @@ const Product = ({ product, setCart }) => {
 
   return (
     <div key={product.id} className="bg-white transition-shadow duration-300 group overflow-hidden h-full">
-      <Link href={`/home/products/${product.id}`} className='h-full flex flex-col'>
+      <Link href={`/home/products/${product.slug || product.id}`} className='h-full flex flex-col'>
         <div
           onClick={() => handleDetail(product)}
           className="relative hover:scale-105 transition-all duration-300 w-full aspect-square bg-gray-100 overflow-hidden"

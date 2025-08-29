@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation'
 import { ChevronLeft, Loader2 } from 'lucide-react'
 import CartPanel from '@/components/home/CartPanel'
 import Loader from '@/components/Loader'
+import SEO from '@/components/seo/Head'
+import { generateCategorySEO, generateBreadcrumbStructuredData } from '@/utils/seo'
 
 export default function CategoryProductsPage() {
     const params = useParams()
@@ -47,8 +49,29 @@ export default function CategoryProductsPage() {
     }, [categoryName, page])
     const initialLoadComplete = !loading && products.length === 0 && page === 1;
 
+    // Generate SEO data for the category
+    const categorySEO = generateCategorySEO(categoryName);
+    const breadcrumbData = generateBreadcrumbStructuredData([
+        { name: 'Home', url: '/' },
+        { name: 'Products', url: '/home/products' },
+        { name: categoryName, url: `/home/products/category/${encodeURIComponent(categoryName)}` }
+    ]);
+
     return (
         <>
+            <SEO
+                title={categorySEO.title}
+                description={categorySEO.description}
+                keywords={categorySEO.keywords}
+                url={categorySEO.url}
+            />
+            {/* Breadcrumb structured data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(breadcrumbData)
+                }}
+            />
             <head>
                 <script
                     dangerouslySetInnerHTML={{

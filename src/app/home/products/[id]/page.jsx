@@ -13,13 +13,18 @@ import CartPanel from '@/components/home/CartPanel';
 import { useCart } from '@/hooks/useCart';
 import toast from 'react-hot-toast';
 import Loader from '@/components/Loader';
+import SEO from '@/components/seo/Head';
+import { generateProductSEO, generateProductStructuredData, generateBreadcrumbStructuredData } from '@/utils/seo';
 
 export default function ProductDetailPage() {
-  const { id } = useParams();
+  const params = useParams();
   const router = useRouter();
   const { addToCart } = useCart()
   const { getProductById, getAllProducts, getProductsByCategory } = useProductApi();
   const { getAllCategories, category } = useCategory();
+
+  // Extract identifier from params (could be ID or slug)
+  const identifier = params.id;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,7 +47,7 @@ export default function ProductDetailPage() {
         const res = await getProductsByCategory(product.category, { limit: 10 });
         if (res.data) {
           // Filter out the current product
-          const filtered = res.data.filter(p => p._id !== id);
+          const filtered = res.data.filter(p => p._id !== product._id && p.slug !== product.slug);
           setRelatedProducts(filtered);
         }
       } catch (error) {
@@ -53,23 +58,65 @@ export default function ProductDetailPage() {
     if (product?.category) {
       fetchRelatedProducts();
     }
-  }, [product?.category, id]);
+  }, [product?.category]);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
+
+        // First try to fetch by slug
+        let productData = null;
+        try {
+          const response = await fetch(`/api/product/slug/${identifier}`);
+          if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+              productData = result.data;
+            }
+          }
+        } catch (slugError) {
+          console.log('Product not found by slug, trying ID fallback');
+        }
+
+        // If not found by slug, try ID fallback (for backward compatibility)
+        if (!productData) {
+          try {
+            const response = await fetch(`/api/product/${identifier}`);
+            if (response.ok) {
+              const result = await response.json();
+              if (result.success) {
+                productData = result.data;
+                // Redirect to slug URL if accessed by ID and slug exists
+                if (productData.slug && productData.slug !== identifier) {
+                  router.replace(`/home/products/${productData.slug}`, { scroll: false });
+                  return;
+                }
+              }
+            }
+          } catch (idError) {
+            console.log('Product not found by ID either');
+          }
+        }
+
+        if (!productData) {
+          setError('Product not found');
+          return;
+        }
+
         await getAllCategories();
-        const res = await getProductById(id);
-        setProduct(res.data);
+        setProduct(productData);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchProduct();
-  }, [id]);
+
+    if (identifier) {
+      fetchProduct();
+    }
+  }, [identifier]);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -127,35 +174,62 @@ export default function ProductDetailPage() {
   const price = product.discounted_price || product.orignal_price;
   const hasDiscount = product.discounted_price && product.discounted_price < product.orignal_price;
 
+  // Generate SEO data for the product
+  const productSEO = generateProductSEO(product);
+  const productStructuredData = generateProductStructuredData(product);
+  const breadcrumbData = generateBreadcrumbStructuredData([
+    { name: 'Home', url: '/' },
+    { name: product?.category || 'Products', url: `/home/products/category/${product?.category}` },
+    { name: product?.title || 'Product', url: `/home/products/${product?.slug || product?._id || product?.id}` }
+  ]);
+
   return (
     <>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1694571487917100');
-              fbq('track', 'PageView');
-            `,
-          }}
+      <SEO
+        title={productSEO.title}
+        description={productSEO.description}
+        keywords={productSEO.keywords}
+        image={productSEO.image}
+        url={productSEO.url}
+        type="product"
+        price={productSEO.price}
+        currency={productSEO.currency}
+        availability={productSEO.availability}
+        structuredData={productStructuredData}
+      />
+      {/* Additional structured data for breadcrumbs */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbData)
+        }}
+      />
+      {/* Facebook Pixel */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '1694571487917100');
+            fbq('track', 'PageView');
+          `,
+        }}
+      />
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: 'none' }}
+          src="https://www.facebook.com/tr?id=1694571487917100&ev=PageView&noscript=1"
+          alt="Facebook Pixel"
         />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1694571487917100&ev=PageView&noscript=1"
-            alt="Facebook Pixel"
-          />
-        </noscript>
-      </head>
+      </noscript>
       <div className="overflow-hidden min-h-screen flex flex-col">
         <Navbar setCart={setIsCartOpen} />
         <div className="flex-grow bg-gray-50 mt-[5%] py-12 px-4 sm:px-6 lg:px-8">

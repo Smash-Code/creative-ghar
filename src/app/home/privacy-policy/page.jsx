@@ -1,7 +1,8 @@
 "use client"
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Header';
-import Head from 'next/head';
+import SEO from '@/components/seo/Head';
+import { PAGE_SEO } from '@/constants/seo';
 import { useState, useEffect } from 'react';
 
 export default function PrivacyPolicy() {
@@ -11,8 +12,16 @@ export default function PrivacyPolicy() {
         setLastUpdated('August 16, 2025');
     }, []);
 
+    const privacySEO = PAGE_SEO['privacy-policy'];
+
     return (
         <>
+            <SEO
+                title={privacySEO.title}
+                description={privacySEO.description}
+                keywords={privacySEO.keywords}
+                url="https://creativeghar.com/home/privacy-policy"
+            />
             <head>
                 <script
                     dangerouslySetInnerHTML={{

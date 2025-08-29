@@ -45,7 +45,7 @@ const Sidebar = () => {
           <li>
             <Link
               href="/admin/dashboard/products"
-              className={`flex items-center p-2 rounded transition-colors ${isActive('/admin/dashboard/products')
+              className={`flex items-center p-2 rounded transition-colors ${isActive('/admin/dashboard/products') || isActive('/admin/dashboard/product-form')
                 ? 'bg-indigo-100 text-indigo-500'
                 : 'hover:bg-indigo-100'
                 }`}

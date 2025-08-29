@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { collection, addDoc, doc, updateDoc, deleteDoc, Timestamp, getDocs, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, deleteDoc, Timestamp, getDocs, getDoc, query, where } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { productSchema } from "@/firebase/schemas/productSchema";
+import { generateSlug, generateUniqueSlug } from "@/utils/slug";
 // import { getPaginatedQuery } from "@/lib/getPaginatedQuery";
 
 // POST: Add a new product
@@ -46,9 +47,29 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
+    // Generate slug from title if not provided
+    let slug = body.slug;
+    if (!slug && body.title) {
+      const baseSlug = generateSlug(body.title);
+
+      // Check if slug already exists
+      const productsRef = collection(db, 'products');
+      const slugQuery = query(productsRef, where('slug', '==', baseSlug));
+      const slugSnapshot = await getDocs(slugQuery);
+
+      if (!slugSnapshot.empty) {
+        // Get all existing slugs to generate unique one
+        const existingSlugs = slugSnapshot.docs.map(doc => doc.data().slug);
+        slug = generateUniqueSlug(baseSlug, existingSlugs);
+      } else {
+        slug = baseSlug;
+      }
+    }
+
     // Convert numeric fields from string to number
     const parsedBody = {
       ...body,
+      slug,
       orignal_price: Number(body.orignal_price),
       discounted_price: Number(body.discounted_price),
       stock: Number(body.stock),
@@ -78,7 +99,7 @@ export async function POST(req) {
       updatedAt: Timestamp.fromDate(validatedData.updatedAt),
     });
 
-    return NextResponse.json({ success: true, id: docRef.id });
+    return NextResponse.json({ success: true, id: docRef.id, slug });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
