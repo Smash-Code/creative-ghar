@@ -99,7 +99,7 @@ const Sale = () => {
                             <div className="relative w-full aspect-[10/10] cursor-pointer group">
                                 <Image
                                     src={cat.imgURL || (index === 0 ? '/image_4.png' : '/image_3.png')}
-                                    alt={cat.category}
+                                    alt="category image"
                                     fill
                                     className="object-cover group-hover:opacity-90 transition"
                                     priority

@@ -63,13 +63,14 @@ const Footer = () => {
                 <div className=' flex flex-col gap-1'>
                     <div className='font-bold'>Social Links</div>
                     <div className='flex items-center mt-4 gap-4 justify-center md:justify-start'>
-                        <Link href="https://www.facebook.com/profile.php?id=61576762615794" target='_blank' >
+                        <Link href="https://www.facebook.com/profile.php?id=61576762615794" target='_blank' aria-label="Visit our Facebook page" >
                             <Facebook className='text-[9px] cursor-pointer' />
                         </Link>
-                        <Link href="https://www.instagram.com/creativeghar7/" target='_blank' >
+                        <Link href="https://www.instagram.com/creativeghar7/" aria-label="Visit our Instagram page" target='_blank' >
                             <Instagram className='text-[8px] cursor-pointer' />
                         </Link>
                     </div>
+
                 </div>
             </div>
         </div>
