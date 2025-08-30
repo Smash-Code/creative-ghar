@@ -90,7 +90,7 @@ export default function HomePage() {
           <HeroSection />
         </div>
         <div className="mx-auto " >
-          <h1 className="text-white" >hello</h1>
+          <h1 className="text-white" >Creative ghar</h1>
           <Sale />
         </div>
 
