@@ -67,10 +67,8 @@ export default function CategoryProductsPage() {
                 url={categorySEO.url}
             />
             {/* Breadcrumb structured data */}
-            <Script
-                id="breadcrumb-schema"
+            <script
                 type="application/ld+json"
-                strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify(breadcrumbData),
                 }}

@@ -199,10 +199,8 @@ export default function ProductDetailPage() {
         structuredData={productStructuredData}
       />
       {/* Additional structured data for breadcrumbs */}
-      <Script
-        id="breadcrumb-schema"
+      <script
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbData),
         }}
