@@ -5,7 +5,10 @@ import Head from 'next/head';
 export default function RefundPolicy() {
     return (
         <>
+            <h1 className='text-white absolute top-0' >Creative ghar store</h1>
+
             <Navbar />
+
             <div className="min-h-screen pt-[10%] bg-gray-50 py-12">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white shadow-lg rounded-lg p-8">

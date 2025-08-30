@@ -22,6 +22,8 @@ export default function PrivacyPolicy() {
                 keywords={privacySEO.keywords}
                 url="https://creativeghar.com/home/privacy-policy"
             />
+            <h1 className="text-white absolute top-0" >Creative ghar store</h1>
+
 
             <Navbar />
 

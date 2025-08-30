@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 export default function ShippingPolicy() {
     return (
         <>
+            <h1 className='text-white absolute top-0' >Creative ghar store</h1>
+
             <Navbar />
 
             <div className="min-h-screen pt-[10%] bg-gray-50 py-12">

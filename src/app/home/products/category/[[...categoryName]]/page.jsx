@@ -72,6 +72,7 @@ export default function CategoryProductsPage() {
                     __html: JSON.stringify(breadcrumbData)
                 }}
             />
+            <h1 className='text-white absolute top-0' >Creative ghar store</h1>
             <div className="overflow-hidden min-h-screen flex flex-col bg-gray-50 text-gray-800">
                 <Navbar setCart={setIsCartOpen} />
 

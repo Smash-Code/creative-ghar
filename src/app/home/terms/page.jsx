@@ -6,6 +6,8 @@ export default function TermsOfService() {
     return (
         // Use a light gray background for a modern, soft feel
         <>
+            <h1 className='text-white absolute top-0' >Creative ghar store</h1>
+
             <div className="bg-gray-50 min-h-screen flex flex-col">
                 <Navbar />
 

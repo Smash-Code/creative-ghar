@@ -182,6 +182,8 @@ export default function CheckoutPage() {
     if (orderSuccess) {
         return (
             <div>
+                <h1 className="text-white absolute top-0" >Creative ghar store</h1>
+
                 <Navbar setCart={setIsCartOpen} />
                 <div className="min-h-screen flex items-center justify-center bg-gray-50">
                     <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">

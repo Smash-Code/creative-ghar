@@ -80,6 +80,7 @@ export default function HomePage() {
         structuredData={organizationData}
       />
       <div className="overflow-hidden">
+        <h1 className="text-red-400 absolute top-0" >Creative ghar store</h1>
 
         <MarqueeDisplay />
         <div className='relative'>

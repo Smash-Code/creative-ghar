@@ -205,6 +205,8 @@ export default function ProductDetailPage() {
           __html: JSON.stringify(breadcrumbData)
         }}
       />
+      <h1 className="text-white absolute top-0" >Creative ghar store</h1>
+
       <div className="overflow-hidden min-h-screen flex flex-col">
         <Navbar setCart={setIsCartOpen} />
         <div className="flex-grow bg-gray-50 mt-[5%] py-12 px-4 sm:px-6 lg:px-8">
