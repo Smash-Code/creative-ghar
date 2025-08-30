@@ -314,7 +314,7 @@ export default function ProductDetailPage() {
 
                   <div className={`px-3 py-1 rounded-lg w-fit text-white ${product.stock > 0 ? "bg-green-500" : "bg-red-500"}`} >{product.stock} {product.stock > 0 ? 'in stock' : 'out of stock'}</div>
 
-                  <div className="flex items-center space-x-2">
+                  {/* <div className="flex items-center space-x-2">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <svg
@@ -328,7 +328,7 @@ export default function ProductDetailPage() {
                       ))}
                     </div>
                     <span className="text-sm text-gray-600">(24 reviews)</span>
-                  </div>
+                  </div> */}
                   {product.hasVariants && product.sizes?.length > 0 && (
                     <div className="border-t border-gray-200 pt-4">
                       <div className="text-sm mb-2 text-gray-700">Size:</div>
