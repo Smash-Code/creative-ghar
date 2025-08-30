@@ -27,31 +27,7 @@ export default function HomePage() {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const res = await getAllProducts({ page: 1, limit: 20 });
-
-  //       // Group products by category
-  //       const grouped = res.data.reduce((acc, product) => {
-  //         const category = product.category || 'Uncategorized';
-  //         if (!acc[category]) {
-  //           acc[category] = [];
-  //         }
-  //         acc[category].push(product);
-  //         return acc;
-  //       }, {});
-
-  //       setProductsByCategory(grouped);
-  //     } catch (error) {
-  //       console.error('Error fetching products:', error);
-  //     }
-  //     setLoading(false);
-  //   };
-
-  //   fetchProducts();
-  // }, []);
+ 
 
   useEffect(() => {
     const fetchProducts = async () => {

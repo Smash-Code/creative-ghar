@@ -23,7 +23,7 @@ export default function CartPanel({ isOpen, onClose }) {
             <div className="absolute inset-0 overflow-hidden">
                 {/* Background overlay */}
                 <div
-                    className="absolute inset-0 bg-gray-500/40 bg-opacity-75 transition-opacity"
+                    className="absolute  inset-0 bg-gray-500/40 bg-opacity-75 transition-opacity"
                     onClick={onClose}
                 ></div>
 
@@ -40,7 +40,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                         onClick={onClose}
                                     >
                                         <span className="sr-only">Close panel</span>
-                                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg className=" cursor-pointer h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
@@ -53,7 +53,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                                 <p className="text-gray-500">Your cart is empty</p>
                                                 <button
                                                     onClick={onClose}
-                                                    className="mt-4 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500"
+                                                    className="cursor-pointer mt-4 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500"
                                                 >
                                                     Continue Shopping
                                                 </button>
@@ -109,7 +109,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                                                 <div className="inline-flex items-center rounded-lg bg-white shadow-sm overflow-hidden">
                                                                     <button
                                                                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                                        className="p-2 bg-red-500 text-white hover:bg-red-600 transition-colors duration-200 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                                                        className="p-2 cursor-pointer bg-red-500 text-white hover:bg-red-600 transition-colors duration-200 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
                                                                         disabled={item.quantity <= 1}
                                                                     >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
@@ -121,7 +121,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                                                     </span>
                                                                     <button
                                                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                                        className="p-2 bg-red-500 text-white hover:bg-red-600 transition-colors duration-200"
+                                                                        className="p-2 cursor-pointer bg-red-500 text-white hover:bg-red-600 transition-colors duration-200"
                                                                     >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                                                                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v7.5h7.5a.75.75 0 0 1 0 1.5h-7.5v7.5a.75.75 0 0 1-1.5 0v-7.5h-7.5a.75.75 0 0 1 0-1.5h7.5v-7.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
@@ -139,7 +139,7 @@ export default function CartPanel({ isOpen, onClose }) {
 
                                                                 <button
                                                                     type="button"
-                                                                    className="font-medium text-red-400 hover:text-red-500"
+                                                                    className=" cursor-pointer font-medium text-red-400 hover:text-red-500"
                                                                     onClick={() => removeFromCart(item.id)}
                                                                 >
                                                                     Remove
@@ -164,7 +164,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                     <div className="mt-6">
                                         <button
                                             onClick={handleCheckout}
-                                            className="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"
+                                            className="cursor-pointer w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-500 hover:bg-red-600"
                                         >
                                             Checkout
                                         </button>
@@ -174,7 +174,7 @@ export default function CartPanel({ isOpen, onClose }) {
                                             or{' '}
                                             <button
                                                 type="button"
-                                                className="text-red-500 font-medium hover:text-red-600"
+                                                className="text-red-500 cursor-pointer font-medium hover:text-red-600"
                                                 onClick={onClose}
                                             >
                                                 Continue Shopping<span aria-hidden="true"> &rarr;</span>

@@ -87,9 +87,9 @@ const Sale = () => {
 
     return (
         <div className="mt-[5%]">
-            <div className="text-center text-[6vw] md:text-[36px] font-semibold">
+            <h1 className="text-center text-[6vw] md:text-[36px] font-semibold">
                 Top Categories
-            </div>
+            </h1>
 
             <div className="flex flex-col md:flex-row mx-[5%] md:mx-[10%] mt-[2%] mb-[5%] gap-3">
                 {topCategories.slice(0, 2).map((cat, index) => (

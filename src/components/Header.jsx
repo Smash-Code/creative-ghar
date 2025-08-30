@@ -56,11 +56,11 @@ export default function Navbar({ setCart }) {
         {/* Desktop Navigation - Right side */}
         <div className="hidden md:flex items-center space-x-6">
           <div className="flex items-center space-x-4">
-            <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <button onClick={() => setCart(true)} className=" cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors">
               <ShoppingCart className="h-7 w-7 text-gray-700" />
             </button>
 
-            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <button className="p-2 rounded-full cursor-pointer hover:bg-gray-100 transition-colors">
               <User className="h-7 w-7 text-gray-700" />
             </button>
           </div>
@@ -99,8 +99,8 @@ export default function Navbar({ setCart }) {
           </div>
 
           <div className="flex items-center space-x-4 pt-2 border-t border-gray-100">
-            <button onClick={() => setCart(true)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <ShoppingCart className="h-5 w-5 text-gray-700" />
+            <button onClick={() => setCart(true)} className=" p-2 rounded-full hover:bg-gray-100 transition-colors">
+              <ShoppingCart className="h-5 w-5 text-gray-700 " />
             </button>
 
             <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">

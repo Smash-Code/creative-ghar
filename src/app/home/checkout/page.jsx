@@ -10,6 +10,7 @@ import Link from 'next/link';
 import CartPanel from '@/components/home/CartPanel';
 import toast from 'react-hot-toast';
 import Head from 'next/head';
+import { ChevronLeft, Loader2 } from 'lucide-react'
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -238,12 +239,12 @@ export default function CheckoutPage() {
                         <div className="px-6 py-4 border-b border-gray-200 flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center">
                             <button
                                 onClick={() => router.back()}
-                                className="flex items-center border-1 border-gray-500 hover:border-red-500 hover:scale-105 transition-all duration-300 rounded-[8px] px-2 py-1 cursor-pointer text-black-600 hover:text-red-500"
+                                className=" flex cursor-pointer items-center space-x-2 text-red-600 hover:text-red-800 transition-all duration-300 hover:scale-105 font-medium group"
                             >
-                                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                </svg>
-                                Go Back
+                                <div className="p-2 bg-red-100 rounded-full group-hover:bg-red-200 transition-all duration-300">
+                                    <ChevronLeft size={20} className="stroke-2" />
+                                </div>
+                                <span className="text-sm md:text-base">Go Back</span>
                             </button>
                             <h1 className="text-2xl font-bold text-gray-800">Checkout</h1>
                             <div className="w-10"></div> {/* Spacer for balance */}
