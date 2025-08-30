@@ -8,10 +8,6 @@ import { useProductApi } from '@/hooks/useProduct';
 import MarqueeDisplay from '@/components/heading/Heading';
 import Product from "@/components/product/product"
 import Footer from "@/components/Footer"
-import HighRating from "@/components/home/HighRating"
-import SpecialDeal from "@/components/home/SpecialDeal"
-import Services from "@/components/home/Services"
-import Newsletter from "@/components/home/Newsletter"
 import Link from 'next/link';
 import CartPanel from "@/components/home/CartPanel";
 import Loader from "@/components/Loader";
