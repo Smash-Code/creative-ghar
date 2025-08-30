@@ -70,7 +70,6 @@ const Footer = () => {
                             <Instagram className='text-[8px] cursor-pointer' />
                         </Link>
                     </div>
-
                 </div>
             </div>
         </div>

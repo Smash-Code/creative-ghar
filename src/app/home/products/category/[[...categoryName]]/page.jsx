@@ -12,6 +12,7 @@ import CartPanel from '@/components/home/CartPanel'
 import Loader from '@/components/Loader'
 import SEO from '@/components/seo/Head'
 import { generateCategorySEO, generateBreadcrumbStructuredData } from '@/utils/seo'
+import Script from 'next/script'
 
 export default function CategoryProductsPage() {
     const params = useParams()
@@ -66,10 +67,12 @@ export default function CategoryProductsPage() {
                 url={categorySEO.url}
             />
             {/* Breadcrumb structured data */}
-            <script
+            <Script
+                id="breadcrumb-schema"
                 type="application/ld+json"
+                strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbData)
+                    __html: JSON.stringify(breadcrumbData),
                 }}
             />
             <h1 className='text-white absolute top-0' >Creative ghar store</h1>

@@ -38,11 +38,11 @@ export default function HeroSection() {
   if (banners.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[50vh] md:h-[115vh] overflow-hidden">
+    <div className="relative w-full h-[50vh] md:h-[115vh] aspect-[11/10] overflow-hidden">
       {banners.map((banner, index) => (
         <div
           key={banner.id}
-          className={`absolute top-0 inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+          className={`absolute w-full top-0 inset-0 transition-opacity duration-1000 ${index === currentIndex ? 'opacity-100' : 'opacity-0'
             }`}
         >
           <Image
