@@ -319,6 +319,7 @@ export default function TopCategoriesUpload({ setCategory, categories }) {
                 {/* Submit Button */}
                 <button
                     type="submit"
+                    aria-label='Stat'
                     disabled={uploading}
                     className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                 >

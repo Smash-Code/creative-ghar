@@ -15,7 +15,7 @@ export default function ShippingPolicy() {
                     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                         {/* Header */}
                         <div className="bg-indigo-600 px-6 py-8 text-white">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-2">Shipping Policy</h1>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-2">Shipping Policy</h2>
                             <p className="text-indigo-100">
                                 Thank you for shopping with Creative Ghar! We're committed to delivering your products quickly, safely, and affordably.
                             </p>

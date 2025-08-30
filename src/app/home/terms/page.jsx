@@ -16,9 +16,9 @@ export default function TermsOfService() {
                     <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg p-8 sm:p-12">
                         {/* Main Title Section */}
                         <div className="text-center">
-                            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
+                            <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
                                 Terms of Service
-                            </h1>
+                            </h2>
                             <p className="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">
                                 Welcome to Creative Ghar. Please read these terms carefully.
                             </p>

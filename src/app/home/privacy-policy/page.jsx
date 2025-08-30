@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-white shadow-lg rounded-lg p-8">
                         <div className="text-center mb-8">
-                            <h1 className="text-3xl font-bold text-gray-900">Privacy Policy</h1>
+                            <h2 className="text-3xl font-bold text-gray-900">Privacy Policy</h2>
                             <p className="text-gray-600 mt-2">Last updated: {lastUpdated}</p>
                         </div>
 

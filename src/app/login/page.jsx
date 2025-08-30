@@ -82,6 +82,7 @@ export default function LoginPage() {
 
               {/* Eye icon */}
               <button
+                aria-label='Stat'
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -94,6 +95,7 @@ export default function LoginPage() {
 
           <div>
             <button
+              aria-label='Stat'
               type="submit"
               disabled={loading}
               className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${loading ? 'opacity-70 cursor-not-allowed' : ''

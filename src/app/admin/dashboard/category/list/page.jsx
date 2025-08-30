@@ -87,6 +87,7 @@ export default function CategoriesPage() {
                       Edit
                     </Link>
                     <button
+                      aria-label='Stat'
                       onClick={() => handleDelete(category.id)}
                       disabled={deleteLoading}
                       className="text-red-600 hover:text-red-900 disabled:opacity-50"

@@ -277,6 +277,7 @@ export default function ManageTopCategories({ hitCategory }) {
                                 </div>
 
                                 <button
+                                    aria-label='Stat'
                                     // 4. Update the onClick handler to use the new function
                                     onClick={() => handleInitiateDelete(category)}
                                     disabled={deletingId === category.id}

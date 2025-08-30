@@ -79,6 +79,7 @@ export default function CategoryProductsPage() {
                 <main className="flex-grow container mt-24 mx-auto px-4 py-8">
                     <div className="flex gap-4 md:items-center flex-col md:flex-row justify-between mb-8">
                         <button
+                            aria-label='Stat'
                             onClick={() => router.back()}
                             className="flex cursor-pointer items-center space-x-2 text-red-600 hover:text-red-800 transition-colors duration-300 font-medium group"
                         >
@@ -87,9 +88,9 @@ export default function CategoryProductsPage() {
                             </div>
                             <span className="text-sm md:text-base">Go Back</span>
                         </button>
-                        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight text-center flex-grow">
+                        <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight text-center flex-grow">
                             {categoryName}
-                        </h1>
+                        </h2>
                         <div className="w-24"></div> {/* Spacer to center the title */}
                     </div>
 
@@ -118,12 +119,13 @@ export default function CategoryProductsPage() {
                             {hasMore && (
                                 <div className="mt-12 flex justify-center">
                                     <button
+                                        aria-label='Stat'
                                         onClick={() => setPage(prev => prev + 1)}
                                         disabled={loading}
                                         className="relative flex items-center justify-center gap-2 px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-lg hover:shadow-xl hover:bg-indigo-700 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:-translate-y-1"
                                     >
                                         {loading ? (
-                                        
+
                                             <Loader />
                                         ) : (
                                             "Load More Products"

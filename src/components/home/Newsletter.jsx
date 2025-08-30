@@ -12,7 +12,8 @@ const Newsletter = () => {
                 <div className='text-black text-[12px] my-3 max-w-[95%] md:max-w-[45%] text-center' >Everyone loves a good deal so your subscribers are sure to enjoy getting emails from you that contain awesome coupons and promotions.</div>
                 <div className='flex flex-col md:flex-row items-center gap-4' >
                     <input type='text' placeholder='Email' className='outline-0 focus:outline-0 px-3 text-[10px] py-2 min-w-[100%] md:min-w-[500px] rounded-full bg-white' />
-                    <button className='px-3 py-1 cursor-pointer text-white text-sm bg-red-500 rounded-full' >Subscribe</button>
+                    <button
+                        aria-label='Stat' className='px-3 py-1 cursor-pointer text-white text-sm bg-red-500 rounded-full' >Subscribe</button>
                 </div>
             </div>
         </div>

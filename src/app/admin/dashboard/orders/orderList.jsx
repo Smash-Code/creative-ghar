@@ -332,6 +332,7 @@ export default function OrdersList() {
             {/* Clear Filters Button (only show if filters active) */}
             {(paymentStatusFilter !== "all" || orderStatusFilter !== "all" || searchTerm !== "") && (
               <button
+                aria-label='Stat'
                 onClick={resetFilters}
                 className="flex bg-red-500 rounded-lg cursor-pointer px-4 py-[10px] text-white hover:bg-red-600 items-center text-xs font-medium transition w-full sm:w-auto justify-center"
               >
@@ -518,6 +519,7 @@ export default function OrdersList() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
+                          aria-label='Stat'
                           className="bg-indigo-100 hover:bg-indigo-200 p-2 rounded-[4px] cursor-pointer text-indigo-600 mr-3"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -527,10 +529,8 @@ export default function OrdersList() {
                           {expandedOrderId === order.id ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                         <button
-                          // onClick={(e) => {
-                          //   e.stopPropagation();
-                          //   handleDeleteOrder(order.id);
-                          // }}
+
+                          aria-label='Stat'
                           onClick={() => handleInitiateDelete(order.id)}
                           disabled={deletingOrderId === order.id}
                           className="p-2 cursor-pointer rounded bg-red-100 hover:bg-red-200 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -585,6 +585,7 @@ export default function OrdersList() {
                                   />
                                 </div>
                                 <button
+                                  aria-label='Stat'
                                   onClick={() => handleUpdateFulfillment(order.id)}
                                   className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 >
@@ -637,6 +638,7 @@ export default function OrdersList() {
           </div>
           <div className="flex items-center space-x-2">
             <button
+              aria-label='Stat'
               onClick={prevPage}
               disabled={currentPage === 1}
               className="px-3 py-1 rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 flex items-center"
@@ -648,6 +650,7 @@ export default function OrdersList() {
             <div className="flex space-x-1">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
+                  aria-label='Stat'
                   key={page}
                   onClick={() => paginate(page)}
                   className={`px-3 py-1 rounded-md border ${currentPage === page

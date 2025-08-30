@@ -15,7 +15,8 @@ const HighRating = () => {
                         </div>
                         <div className='text-yellow-500 text-xl font-bold' >Product Name</div>
 
-                        <button className='bg-yellow-500 cursor-pointer rounded-full px-3 py-1 mt-3' >Order Now</button>
+                        <button
+                            aria-label='Stat' className='bg-yellow-500 cursor-pointer rounded-full px-3 py-1 mt-3' >Order Now</button>
 
                     </div>
                 </div>
@@ -28,7 +29,8 @@ const HighRating = () => {
                         </div>
                         <div className='text-yellow-500 text-xl font-bold' >Product Name</div>
 
-                        <button className='bg-yellow-500 cursor-pointer rounded-full px-3 py-1 mt-3' >Order Now</button>
+                        <button
+                            aria-label='Stat' className='bg-yellow-500 cursor-pointer rounded-full px-3 py-1 mt-3' >Order Now</button>
 
                     </div>
                 </div>

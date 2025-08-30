@@ -87,7 +87,6 @@ export default function HomePage() {
           <Navbar setCart={setIsCartOpen} />
         </div>
         <div className=" mt-5 md:mt-22" >
-          <h1 className="sr-only">Creative Ghar - Shop Unique and Creative Products</h1>
           <HeroSection />
         </div>
         <div className="mx-auto " >

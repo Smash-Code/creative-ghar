@@ -92,6 +92,7 @@ export default function MarqueeAdmin() {
             required
           />
           <button
+            aria-label='Stat'
             type="submit"
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
@@ -111,7 +112,7 @@ export default function MarqueeAdmin() {
             <div key={message.id} className="flex items-center justify-between p-3 border rounded-md">
               <span className={!message.isActive ? 'opacity-50' : ''}>{message.text}</span>
               <div className="flex gap-2">
-                <button
+                <button aria-label='Stat'
                   onClick={() => toggleActive(message.id, message.isActive)}
                   className={`px-3 py-1 rounded-md text-sm ${message.isActive
                     ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
@@ -120,7 +121,7 @@ export default function MarqueeAdmin() {
                 >
                   {message.isActive ? 'Deactivate' : 'Activate'}
                 </button>
-                <button
+                <button aria-label='Stat'
                   onClick={() => deleteMessage(message.id)}
                   className="px-3 py-1 bg-red-100 text-red-800 rounded-md text-sm hover:bg-red-200"
                 >

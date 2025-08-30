@@ -1005,6 +1005,7 @@ export default function ProductManagementPage() {
                 />
 
                 <button
+                  aria-label='Stat'
                   onClick={() => setViewMode('grid')}
                   className={`p-2 relative z-10 rounded-md cursor-pointer transition-colors duration-200 ${viewMode === 'grid' ? ' ' : ' hover:text-gray-700'
                     }`}
@@ -1013,6 +1014,7 @@ export default function ProductManagementPage() {
                 </button>
 
                 <button
+                  aria-label='Stat'
                   onClick={() => setViewMode('table')}
                   className={`p-2 relative z-10 rounded-md cursor-pointer transition-colors duration-200 ${viewMode === 'table' ? ' ' : ' hover:text-gray-700'
                     }`}
@@ -1030,6 +1032,7 @@ export default function ProductManagementPage() {
                 Add Product
               </Link>
               <button
+                aria-label='Stat'
                 onClick={() => logout()}
                 className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50 transition-colors flex items-center"
               >
@@ -1223,6 +1226,7 @@ export default function ProductManagementPage() {
                     <div className="flex flex-col space-y-3">
                       {/* Order Button */}
                       <button
+                        aria-label='Stat'
                         onClick={() => handleOrderClick(product)}
                         disabled={product.stock <= 0}
                         className={`w-full py-3 rounded-lg text-sm font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg ${product.stock > 0
@@ -1241,6 +1245,7 @@ export default function ProductManagementPage() {
                       {/* Edit & Delete Buttons */}
                       <div className="flex space-x-3">
                         <button
+                          aria-label='Stat'
                           onClick={() => handleEdit(product.id)}
                           className="flex-1 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors duration-200 focus:ring-2 focus:ring-gray-300"
                         >
@@ -1252,6 +1257,7 @@ export default function ProductManagementPage() {
                           </div>
                         </button>
                         <button
+                          aria-label='Stat'
                           onClick={() => handleInitiateDelete(product.id)}
                           className="flex-1 py-2 rounded-lg text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 transition-colors duration-200 focus:ring-2 focus:ring-red-300"
                         >
@@ -1361,6 +1367,7 @@ export default function ProductManagementPage() {
                             </svg>
                           </Link>
                           <button
+                            aria-label='Stat'
                             onClick={() => handleInitiateDelete(item.id)}
                             className="p-2 cursor-pointer rounded bg-red-100 hover:bg-red-200 text-red-600"
                           >
@@ -1383,6 +1390,7 @@ export default function ProductManagementPage() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
+                      aria-label='Stat'
                       onClick={prevPage}
                       disabled={currentPage === 1}
                       className="px-3 py-1 cursor-pointer rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 flex items-center"
@@ -1394,6 +1402,7 @@ export default function ProductManagementPage() {
                     <div className="flex space-x-1">
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                         <button
+                          aria-label='Stat'
                           key={page}
                           onClick={() => paginate(page)}
                           className={`px-3 py-1 rounded-md border ${currentPage === page
@@ -1407,6 +1416,7 @@ export default function ProductManagementPage() {
                     </div>
 
                     <button
+                      aria-label='Stat'
                       onClick={nextPage}
                       disabled={currentPage === totalPages}
                       className="px-3 cursor-pointer py-1 rounded-md border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 flex items-center"

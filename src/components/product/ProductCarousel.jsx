@@ -72,6 +72,7 @@ export default function ProductCarousel({ products }) {
                 {totalItems > itemsToShow && (
                     <>
                         <button
+                            aria-label='Stat'
                             onClick={prevSlide}
                             disabled={isPrevDisabled}
                             className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 
@@ -84,6 +85,7 @@ export default function ProductCarousel({ products }) {
                         </button>
 
                         <button
+                            aria-label='Stat'
                             onClick={nextSlide}
                             disabled={isNextDisabled}
                             className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 

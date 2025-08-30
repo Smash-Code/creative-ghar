@@ -62,6 +62,7 @@ export default function Carousel({ selectedCategory, setSelectedCategory }) {
     <div className="relative w-full mx-auto">
       {/* Left Arrow */}
       <button
+        aria-label='Stat'
         onClick={handlePrev}
         disabled={startIndex === 0}
         className="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full disabled:opacity-40 z-10"
@@ -104,6 +105,7 @@ export default function Carousel({ selectedCategory, setSelectedCategory }) {
 
       {/* Right Arrow */}
       <button
+        aria-label='Stat'
         onClick={handleNext}
         disabled={!category || startIndex >= category.length - 5}
         className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full disabled:opacity-40 z-10"

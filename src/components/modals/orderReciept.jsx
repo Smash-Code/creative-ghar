@@ -42,6 +42,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold text-gray-900">Order Confirmation</h3>
             <button
+              aria-label='Stat'
               onClick={handleClose}
               className="text-gray-500 hover:text-gray-700"
             >
@@ -148,6 +149,7 @@ export default function OrderReceiptModal({ orderDetails, onClose, onModalClose 
           {/* Buttons */}
           <div className="mt-4 flex items-center justify-center mx-auto">
             <button
+              aria-label='Stat'
               onClick={handleDownload}
               disabled={isDownloading}
               className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 disabled:bg-gray-400"

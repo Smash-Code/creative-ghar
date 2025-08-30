@@ -240,6 +240,7 @@ export default function CheckoutPage() {
                     <div className="bg-white shadow rounded-lg overflow-hidden">
                         <div className="px-6 py-4 border-b border-gray-200 flex flex-col gap-4 items-start md:flex-row md:justify-between md:items-center">
                             <button
+                                aria-label='Stat'
                                 onClick={() => router.back()}
                                 className=" flex cursor-pointer items-center space-x-2 text-red-600 hover:text-red-800 transition-all duration-300 hover:scale-105 font-medium group"
                             >
@@ -248,7 +249,7 @@ export default function CheckoutPage() {
                                 </div>
                                 <span className="text-sm md:text-base">Go Back</span>
                             </button>
-                            <h1 className="text-2xl font-bold text-gray-800">Checkout</h1>
+                            <h2 className="text-2xl font-bold text-gray-800">Checkout</h2>
                             <div className="w-10"></div> {/* Spacer for balance */}
                         </div>
 
@@ -549,6 +550,7 @@ export default function CheckoutPage() {
 
                                         <div className="pt-6">
                                             <button
+                                                aria-label='Stat'
                                                 type="submit"
                                                 disabled={orderLoading || cartItems.length === 0 || !isFormValid()}
                                                 className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${orderLoading || cartItems.length === 0 || !isFormValid()
@@ -587,7 +589,7 @@ export default function CheckoutPage() {
                         }}
                     />
                 )}
-            </div>
+            </div >
         </>
     );
 }

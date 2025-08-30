@@ -512,6 +512,7 @@ export default function CategoriesPage() {
             />
 
             <button
+              aria-label='Stat'
               onClick={() => setViewMode('grid')}
               className={`p-2 relative z-10 rounded-md cursor-pointer transition-colors duration-200 ${viewMode === 'grid' ? ' ' : ' hover:text-gray-700'
                 }`}
@@ -520,6 +521,7 @@ export default function CategoriesPage() {
             </button>
 
             <button
+              aria-label='Stat'
               onClick={() => setViewMode('table')}
               className={`p-2 relative z-10 rounded-md cursor-pointer transition-colors duration-200 ${viewMode === 'table' ? ' ' : ' hover:text-gray-700'
                 }`}
@@ -529,6 +531,7 @@ export default function CategoriesPage() {
           </div>
 
           <button
+            aria-label='Stat'
             onClick={handleNewCategory}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center gap-2"
           >
@@ -570,6 +573,7 @@ export default function CategoriesPage() {
                 <h3 className="text-lg font-medium text-gray-900">{category.name}</h3>
                 <div className="flex gap-2">
                   <button
+                    aria-label='Stat'
                     onClick={() => handleEdit(category)}
                     className="cursor-pointer text-indigo-500 hover:text-indigo-700 p-1 rounded-md bg-indigo-100 hover:bg-indigo-200 transition-colors"
                     title="Edit category"
@@ -577,6 +581,7 @@ export default function CategoriesPage() {
                     <Edit3 size={16} />
                   </button>
                   <button
+                    aria-label='Stat'
                     onClick={() => handleInitiateDelete(category.id)}
                     disabled={deleteLoading}
                     className="cursor-pointer bg-red-100 hover:bg-red-200 text-red-600 p-1 rounded-md transition-colors disabled:opacity-50"
@@ -633,6 +638,7 @@ export default function CategoriesPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end gap-3">
                       <button
+                        aria-label='Stat'
                         onClick={() => handleEdit(category)}
                         className="text-indigo-500 cursor-pointer bg-indigo-100 px-[10px] rounded hover:text-indigo-700 flex items-center gap-1"
                       >

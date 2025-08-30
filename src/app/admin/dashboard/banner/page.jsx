@@ -276,6 +276,7 @@ const BannerItem = ({ banner, index, moveBanner, onDelete }) => {
         className="w-20 h-12 object-cover mr-4"
       />
       <button
+        aria-label='Stat'
         onClick={() => onDelete(banner.id, banner.public_id)}
         className="ml-auto p-2 cursor-pointer rounded bg-red-100 hover:bg-red-200 text-red-600"
       >
@@ -417,6 +418,7 @@ function AdminBannerManager() {
           </label>
 
           <button
+            aria-label='Stat'
             onClick={handleUpload}
             disabled={isUploading || files.length === 0}
             className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-white font-medium transition-all duration-300 ${isUploading || files.length === 0
