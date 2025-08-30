@@ -38,7 +38,7 @@ export default function HeroSection() {
   if (banners.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[50vh] md:h-[115vh] aspect-[11/9] overflow-hidden">
+    <div className="relative w-full h-[50vh] md:h-[115vh] aspect-[11/10] overflow-hidden">
       {banners.map((banner, index) => (
         <div
           key={banner.id}
