@@ -199,10 +199,12 @@ export default function ProductDetailPage() {
         structuredData={productStructuredData}
       />
       {/* Additional structured data for breadcrumbs */}
-      <script
+      <Script
+        id="breadcrumb-schema"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbData)
+          __html: JSON.stringify(breadcrumbData),
         }}
       />
       <h1 className="text-white absolute top-0" >Creative ghar store</h1>
