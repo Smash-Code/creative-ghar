@@ -12,9 +12,14 @@ const nextConfig = {
   // Compression
   compress: true,
 
+  // SWC minifier for better performance
+  swcMinify: true,
+
   // Experimental features for better SEO
   experimental: {
     scrollRestoration: true,
+    optimizeFonts: true,
+    optimizeImages: true,
   },
 
   // Headers for security and SEO
@@ -38,6 +43,19 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

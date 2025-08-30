@@ -75,6 +75,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Organization Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationData)
+          }}
+        />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+      >
         {/* Facebook Pixel */}
         <script
           dangerouslySetInnerHTML={{
@@ -101,18 +112,6 @@ export default function RootLayout({ children }) {
             alt="Facebook Pixel"
           />
         </noscript>
-
-        {/* Organization Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationData)
-          }}
-        />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
-      >
         <Toaster position="top-right" reverseOrder={false} />
         <AuthProvider>
           {children}

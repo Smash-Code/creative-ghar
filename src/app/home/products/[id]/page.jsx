@@ -205,32 +205,6 @@ export default function ProductDetailPage() {
           __html: JSON.stringify(breadcrumbData)
         }}
       />
-      {/* Facebook Pixel */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1694571487917100');
-            fbq('track', 'PageView');
-          `,
-        }}
-      />
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=1694571487917100&ev=PageView&noscript=1"
-          alt="Facebook Pixel"
-        />
-      </noscript>
       <div className="overflow-hidden min-h-screen flex flex-col">
         <Navbar setCart={setIsCartOpen} />
         <div className="flex-grow bg-gray-50 mt-[5%] py-12 px-4 sm:px-6 lg:px-8">
@@ -314,7 +288,7 @@ export default function ProductDetailPage() {
                 {/* Product Details */}
                 <div className="space-y-4">
                   <div>
-                    <div className="text-2xl hover:underline cursor-pointer font-semibold text-gray-900">{product.title}</div>
+                    <h1 className="text-2xl hover:underline cursor-pointer font-semibold text-gray-900">{product.title}</h1>
                     <p className="text-sm text-gray-500">{product.category}</p>
                   </div>
 

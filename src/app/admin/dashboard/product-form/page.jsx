@@ -8,6 +8,7 @@ import { useProductApi } from '@/hooks/useProduct';
 import { useCategory } from '@/hooks/useCategory';
 import toast from 'react-hot-toast';
 import CustomDropdown from '@/components/products/Dropdown';
+import Loader from '@/components/Loader';
 
 function ProductFormPage() {
   const router = useRouter();
@@ -244,9 +245,7 @@ function ProductFormPage() {
 
         <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
+            <Loader />
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -727,9 +726,7 @@ function ProductFormPage() {
 export default function page() {
   return (
     <Suspense fallback={
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
+      <Loader />
     }>
       <ProductFormPage />
     </Suspense>

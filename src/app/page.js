@@ -103,33 +103,6 @@ export default function HomePage() {
         url="https://creativeghar.com"
         structuredData={organizationData}
       />
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1694571487917100');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1694571487917100&ev=PageView&noscript=1"
-            alt="Facebook Pixel"
-          />
-        </noscript>
-      </head>
       <div className="overflow-hidden">
 
         <MarqueeDisplay />
@@ -137,6 +110,7 @@ export default function HomePage() {
           <Navbar setCart={setIsCartOpen} />
         </div>
         <div className=" mt-5 md:mt-22" >
+          <h1 className="sr-only">Creative Ghar - Shop Unique and Creative Products</h1>
           <HeroSection />
         </div>
         <div className="mx-auto " >
